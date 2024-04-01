@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,7 +34,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
 import { TransportDocumentListComponent } from './components/transport-document/transport-document-list/transport-document-list.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +46,7 @@ import { TransportDocumentListComponent } from './components/transport-document/
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    CommonModule,
     // Forms
     FormsModule,
     ReactiveFormsModule,
@@ -65,7 +66,8 @@ import { TransportDocumentListComponent } from './components/transport-document/
     MatTableModule,
     MatIconModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

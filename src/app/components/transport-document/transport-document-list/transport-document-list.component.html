@@ -1,1 +1,54 @@
-<p>transport-document-list works!</p>
+    <div class="container">
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+        
+            <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef> Número </th>
+                <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{element.serie === 11 ? 'CT-e' : 'NFS-e'}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef> Valor </th>
+                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="issuedate">
+                <th mat-header-cell *matHeaderCellDef> Data de Emissão </th>
+                <td mat-cell *matCellDef="let element"> {{element.issueDate | date : 'dd/MM/yyyy' : '+03:00'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentforecast">
+                <th mat-header-cell *matHeaderCellDef> Previsão de Pagamento </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentForecast  | date : 'dd/MM/yyyy' : '+03:00'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentstatus">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentStatus}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentdate">
+                <th mat-header-cell *matHeaderCellDef> Data de Pagamento </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentDate  | date : 'dd/MM/yyyy' : '+03:00'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let element"> {{element.actions}} </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                        showFirstLastButtons 
+                        aria-label="Selecione a página.">
+            </mat-paginator>
+        </div>
+    </div>

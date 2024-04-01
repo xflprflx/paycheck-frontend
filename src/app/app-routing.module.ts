@@ -5,9 +5,9 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
 
 const routes: Routes = [
   {
-    path: "",
-    component: NavComponent,
-    children: [{ path: "dashboard", component: DashboardComponent }],
+    path: "", component: NavComponent, children: [
+      { path: "dashboard", component: DashboardComponent }
+    ],
   },
 ];
 
