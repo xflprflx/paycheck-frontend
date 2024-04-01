@@ -1,43 +1,17 @@
-<!-- <mat-stepper [linear]="isLinear" #stepper>
-  <mat-step [editable]="isEditable">
-    <ng-template matStepLabel>Lançar CT-e</ng-template>
-    <h1>Uploader</h1>
-    <div>
-      <button mat-button matStepperNext>Próximo</button>
-    </div>
-  </mat-step>
-
-  <mat-step [editable]="isEditable">
-    <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
-    <h1>Uploader</h1>
-    <div>
-      <button mat-button matStepperPrevious>Voltar</button>
-      <button mat-button matStepperNext>Próximo</button>
-    </div>
-  </mat-step>
-
-  <mat-step [editable]="isEditable">
-    <ng-template matStepLabel>Lançar Pagamentos</ng-template>
-    <h1>Uploader</h1>
-    <div>
-      <button mat-button matStepperPrevious>Voltar</button>
-    </div>
-  </mat-step>
-</mat-stepper> -->
-
-<button mat-raised-button (click)="toggleEditMode()">
-    {{ isEditable ? 'Disable edit mode' : 'Enable edit mode' }}
-  </button>
-  
-  <mat-stepper [linear]="isLinear" #stepper>
+<!-- <button mat-raised-button (click)="toggleEditMode()">
+  {{ isEditable ? "Disable edit mode" : "Enable edit mode" }}
+</button> -->
+<div class="container">
+  <mat-stepper [linear]="isLinear" #stepper class="mat-elevation-z8">
     <mat-step>
       <ng-template matStepLabel>Lançar CT-e</ng-template>
+      <h2>CT-e</h2>
       <app-uploader></app-uploader>
       <div>
         <button mat-button (click)="stepper.next()">Próximo</button>
       </div>
     </mat-step>
-  
+
     <mat-step>
       <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
       <h1>Uploader</h1>
@@ -46,7 +20,7 @@
         <button mat-button (click)="stepper.next()">Próximo</button>
       </div>
     </mat-step>
-  
+
     <mat-step>
       <ng-template matStepLabel>Lançar Pagamentos</ng-template>
       <h1>Uploader</h1>
@@ -55,4 +29,4 @@
       </div>
     </mat-step>
   </mat-stepper>
-  
+</div>

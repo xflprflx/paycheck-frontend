@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-uploader',
@@ -9,7 +10,7 @@ export class UploaderComponent implements OnInit {
   
   file: any;
 
-  constructor() { }
+  constructor(private excelService: ExcelService) { }
 
   ngOnInit(): void {
   }
@@ -19,8 +20,7 @@ export class UploaderComponent implements OnInit {
     console.log("files", this.file)
   }
 
-  returnFile() {
-    console.log("files", this.file)
-    return this.file;
+  register() {
+    this.excelService.readFile(this.file);
   }
 }

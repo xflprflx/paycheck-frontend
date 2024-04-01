@@ -1,11 +1,27 @@
 .file-container {
-    width: 600px;
-    border: 4px dotted black;
+    width: 100%; /* Ajusta a largura conforme necessário */
+    height: 200px; /* Ajusta a altura conforme necessário */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    border: 4px dotted black; /* Adiciona uma borda para visualização */
+    z-index: 3;
+    
 }
 
 .file-container .file {
+    position: absolute;
     opacity: 0;
-    padding: 5rem;
-    width: auto;
-    height: 5rem;
+    width: 1500px; /* Ajusta a largura conforme necessário */
+    height: 200px; /* Ajusta a altura conforme necessário */
+    z-index: 3;
+    cursor: pointer; 
+}
+
+.file-container img {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    object-fit: cover; /* Para ajustar a imagem dentro do contêiner */
+    z-index: 1;
 }
