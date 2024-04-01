@@ -1,11 +1,13 @@
 <div class="file-container" *ngIf="!file">
-    <input type="file" (change)="getFile($event)" class="file" />
+    <input type="file" (change)="readFile($event)" class="file" />
     <img src="/assets/img/excel.svg" alt="Imagem de exemplo">
 </div>
 
-<div *ngIf="file">
-  Nome do arquivo: {{ file.name }} <br />
-  <button (click)="file = undefined">Apagar arquivo</button>
+<div class="file-selected" *ngIf="file">
+  <div class="file-name">
+    <strong>Nome do arquivo:</strong> {{ file.name }}
+  </div>
+  <button mat-raised-button color="warn" (click)="file = undefined">Cancelar</button>
 </div>
 <br />
-<button (click)="register()">Lançar</button>
+<button mat-raised-button color="primary" (click)="readFile($event)">Lançar</button>

@@ -20,7 +20,8 @@ export class UploaderComponent implements OnInit {
     console.log("files", this.file)
   }
 
-  register() {
+  readFile(event: any) {
+    this.file = event.target.files[0];
     this.excelService.readFile(this.file);
   }
 }

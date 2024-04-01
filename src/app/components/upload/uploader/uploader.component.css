@@ -25,3 +25,12 @@
     object-fit: cover; /* Para ajustar a imagem dentro do contêiner */
     z-index: 1;
 }
+
+.file-selected {
+    height: 200px;
+    padding: 10px;
+}
+
+.file-name {
+    margin-bottom: 10px;
+}
