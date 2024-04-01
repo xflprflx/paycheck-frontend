@@ -1,1 +1,29 @@
-<p>nav works!</p>
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side" opened>
+    <img src="assets/img/logo.svg" alt="Logo">
+    <mat-nav-list class="nav-list">
+      <a mat-list-item routerLink="/">
+        <i class="material-icons">show_chart</i>
+        Dashboard
+      </a>
+      <a mat-list-item routerLink="/">
+        <i class="material-icons">upload_file</i>
+        Lançamentos
+      </a>
+      <a mat-list-item routerLink="/">
+        <i class="material-icons">settings</i>
+        Configurações
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <div class="sidenav-content">
+    <button
+      class="menu mat-elevation-z8"
+      (click)="drawer.toggle()"
+      mat-icon-button
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</mat-drawer-container>
