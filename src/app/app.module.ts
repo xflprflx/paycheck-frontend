@@ -33,6 +33,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
 import { TransportDocumentListComponent } from './components/transport-document/transport-document-list/transport-document-list.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,11 @@ import { TransportDocumentListComponent } from './components/transport-document/
     MatIconModule,
     MatListModule,
     MatCardModule,
-    
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      closeButton: true,
+      progressBar: true
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
