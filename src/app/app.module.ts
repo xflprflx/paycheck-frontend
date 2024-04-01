@@ -27,6 +27,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import {MatStepperModule} from '@angular/material/stepper';
+import { MatFileUploadModule } from 'angular-material-fileupload';
 
 // Componentes do projeto
 import { NavComponent } from './components/nav/nav.component';
@@ -34,6 +36,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
 import { TransportDocumentListComponent } from './components/transport-document/transport-document-list/transport-document-list.component';
 import { ToastrModule } from 'ngx-toastr';
+import { UploadStepperComponent } from './components/upload/upload-stepper/upload-stepper.component';
+import { UploaderComponent } from './components/upload/uploader/uploader.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,9 @@ import { ToastrModule } from 'ngx-toastr';
     NavComponent,
     DashboardComponent,
     HeaderComponent,
-    TransportDocumentListComponent
+    TransportDocumentListComponent,
+    UploadStepperComponent,
+    UploaderComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +74,8 @@ import { ToastrModule } from 'ngx-toastr';
     MatIconModule,
     MatListModule,
     MatCardModule,
+    MatStepperModule,
+    MatFileUploadModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,

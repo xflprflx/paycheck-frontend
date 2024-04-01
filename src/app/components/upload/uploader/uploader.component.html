@@ -1,0 +1,9 @@
+<div class="file-container" *ngIf="!file">
+    <input type="file" (change)="getFile($event)" class="file">
+</div>
+
+<div *ngIf="file">
+    Nome do arquivo: {{file.name}} <br />
+    <button (click)="file=undefined">Apagar arquivo</button>
+</div> <br />
+<button (click)="returnFile()">Lançar</button>
