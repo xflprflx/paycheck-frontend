@@ -21,20 +21,6 @@ export class UploadStepperComponent implements OnInit {
 
   ngOnInit() {}
 
-  // receiveFile(file: File) {
-  //   this.file = file;
-  //   if (
-  //     file.type === "text/csv" ||
-  //     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  //   ) {
-  //     var data = this.excelService.readFile(file);
-  //     console.log(":::Tipo retorno readFile::: ", typeof(data))
-  //     console.log(":::Valor retorno readFile::: ", data)
-  //     this.transportDocuments =
-  //       this.excelService.converterDadosParaTransportDocument(data);
-  //   }
-  // }
-
   async receiveFile(file: File) {
     this.file = file;
     if (

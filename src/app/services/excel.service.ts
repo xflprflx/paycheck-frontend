@@ -12,24 +12,6 @@ export class ExcelService {
 
   constructor() {}
 
-  // readFile(file: File) {
-  //   const fileReader = new FileReader();
-  //   fileReader.readAsBinaryString(file);
-  //   fileReader.onload = (event) => {
-  //     let binaryData = event.target.result;
-  //     let workbook = XLSX.read(binaryData, { type: "binary" });
-  //     workbook.SheetNames.forEach((sheet) => {
-  //       const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-  //       console.log(":::tipo utils.sheets :::", typeof(data))
-  //       console.log(":::valor utils.sheets :::", data)
-  //       this.convertedJson = JSON.stringify(data, undefined, 4);
-  //       console.log(":::tipo json.stringfy :::", typeof(this.convertedJson))
-  //       console.log(":::valor json.stringfy :::", this.convertedJson)
-  //     });
-  //   };
-  //   return this.convertedJson;
-  // }
-
   readFile(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
