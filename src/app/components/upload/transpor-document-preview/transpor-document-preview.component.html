@@ -18,7 +18,7 @@
       <ng-container matColumnDef="issueDate">
         <th mat-header-cell *matHeaderCellDef>Data de Emissão</th>
         <td mat-cell *matCellDef="let transportDocuments">
-          {{ transportDocuments.issueDate | date : "dd/MM/yyyy" : "+03:00" }}
+          {{ transportDocuments.issueDate | date : "dd/MM/yyyy" : "+00:00" }}
         </td>
       </ng-container>
 
@@ -40,7 +40,7 @@
         <th mat-header-cell *matHeaderCellDef>Notas Fiscais</th>
         <td mat-cell *matCellDef="let transportDocuments">
           <ng-container *ngFor="let invoice of transportDocuments.invoices">
-            <div>{{ invoice.number }} - {{ invoice.deliveryStatus }}</div>
+            <div>{{ invoice.number }}</div>
           </ng-container>
         </td>
       </ng-container>

@@ -79,6 +79,7 @@ export class TransportDocumentListComponent implements OnInit {
     "invoices",
     "actions",
   ];
+  
   dataSource = new MatTableDataSource<TransportDocument>(
     this.transportDocuments
   );

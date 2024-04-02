@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TransportDocument } from 'src/app/models/transport-document';
@@ -11,7 +11,7 @@ import { TransportDocument } from 'src/app/models/transport-document';
 export class TransporDocumentPreviewComponent implements OnInit {
 
   @Input()
-  transportDocuments: TransportDocument[];
+  transportDocuments: TransportDocument[] = []
 
   displayedColumns: string[] = [
     "number",
@@ -23,12 +23,23 @@ export class TransporDocumentPreviewComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<TransportDocument>(
-   // this.transportDocuments
+   this.transportDocuments
   );
 
   constructor() {}
 
   ngOnInit(): void {
+    if (this.transportDocuments) {
+      this.dataSource.data = this.transportDocuments;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.transportDocuments && !changes.transportDocuments.firstChange) {
+      if (changes.transportDocuments.currentValue) {
+        this.dataSource.data = changes.transportDocuments.currentValue;
+      }
+    }
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

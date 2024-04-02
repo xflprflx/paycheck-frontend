@@ -21,8 +21,13 @@ export class ExcelService {
         const workbook = XLSX.read(binaryData, { type: "binary" });
         let convertedJson: string;
         workbook.SheetNames.forEach((sheet) => {
-          const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+          const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {
+            raw: false, // Interpretar células de data como datas
+          });
+
+          console.log(data);
           convertedJson = JSON.stringify(data, undefined, 4);
+          console.log(convertedJson);
         });
         resolve(convertedJson);
       };
@@ -41,26 +46,41 @@ export class ExcelService {
 
     for (const transpDoc of parsedData) {
       const invoices: Invoice[] = [];
-      var invoiceNumbers: any
-      if(transpDoc["Nota Fiscal"] === "string") {
-        invoiceNumbers = transpDoc["Nota Fiscal"].split(", ")
+      var invoiceNumbers: any;
+      if (transpDoc["Nota Fiscal"] === "string") {
+        invoiceNumbers = transpDoc["Nota Fiscal"].split(", ");
         for (const invoiceNumber of invoiceNumbers) {
           const invoice = new Invoice(invoiceNumber);
           invoices.push(invoice);
         }
       } else {
-        invoiceNumbers = transpDoc["Nota Fiscal"]
+        invoiceNumbers = transpDoc["Nota Fiscal"];
         const invoice = new Invoice(invoiceNumbers);
-          invoices.push(invoice);
+        invoices.push(invoice);
       }
+
+      var issueDate = transpDoc["Data Emissão"];
+      issueDate = issueDate.toString();
+      issueDate = issueDate.split(" ")[0];
+      const partesData = issueDate.split("/");
+      var dia = parseInt(partesData[0], 10);
+      dia = dia.toString().length === 1 ? parseInt("0" + dia) : dia;
+      var mes = parseInt(partesData[1], 10); 
+      mes = mes.toString().length === 1 ? parseInt("0" + mes) - 1 : mes - 1; // Meses em JavaScript são base 0 (0-11)
+      var ano = parseInt(partesData[2], 10);
+      ano = ano.toString().length === 2 ? parseInt("20" + ano) : ano;
+      issueDate = new Date(ano, mes, dia);
+      console.log("Data ", issueDate);
+
       const transportDocument: TransportDocument = {
         number: transpDoc["Número"].toString(),
         serie: transpDoc["Série"].toString(),
         amount: transpDoc["Valor do Frete"],
         cnpjShipper: transpDoc["CPF/CNPJ Remetente"].toString(),
-        issueDate: new Date(transpDoc["Data Emissão"]),
+        issueDate: new Date(issueDate),
         invoices: invoices,
       };
+      console.log(transportDocument.issueDate);
       transportDocuments.push(transportDocument);
     }
 
