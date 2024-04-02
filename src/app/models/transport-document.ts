@@ -5,7 +5,7 @@ export interface TransportDocument {
     number: string;
     serie: string;
     amount: number;
-    cnpjShipper: string;
+    addressShipper: string;
     issueDate?: Date;
     paymentForecast?: Date;
     paymentDate?: Date;

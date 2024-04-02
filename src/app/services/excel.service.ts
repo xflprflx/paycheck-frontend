@@ -76,7 +76,7 @@ export class ExcelService {
         number: transpDoc["Número"].toString(),
         serie: transpDoc["Série"].toString(),
         amount: transpDoc["Valor do Frete"],
-        cnpjShipper: transpDoc["CPF/CNPJ Remetente"].toString(),
+        addressShipper: transpDoc["Endereço Remetente"],
         issueDate: new Date(issueDate),
         invoices: invoices,
       };

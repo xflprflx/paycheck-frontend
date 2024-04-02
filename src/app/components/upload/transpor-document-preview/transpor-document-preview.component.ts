@@ -17,7 +17,7 @@ export class TransporDocumentPreviewComponent implements OnInit {
     "number",
     "serie",
     "issueDate",
-    "shipper",
+    "addressShipper",
     "amount",
     "invoices",
   ];

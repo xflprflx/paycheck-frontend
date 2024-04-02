@@ -25,6 +25,7 @@ export class UploadStepperComponent implements OnInit {
     this.file = file;
     if (
       file.type === "text/csv" ||
+      file.type === "application/vnd.ms-excel" ||
       file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       try {
