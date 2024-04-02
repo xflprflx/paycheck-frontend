@@ -31,7 +31,7 @@ export class UploadStepperComponent implements OnInit {
       try {
         const data = await this.excelService.readFile(file);
         this.transportDocuments = this.excelService.converterDadosParaTransportDocument(data);
-        console.log(this.transportDocuments)
+        console.log(typeof this.transportDocuments[0].amount)
       } catch (error) {
         console.error("Erro ao ler o arquivo:", error);
       }

@@ -1,3 +1,4 @@
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,6 +40,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { UploadStepperComponent } from './components/upload/upload-stepper/upload-stepper.component';
 import { UploaderComponent } from './components/upload/uploader/uploader.component';
 import { TransporDocumentPreviewComponent } from './components/upload/transpor-document-preview/transpor-document-preview.component';
+
+import ptBr from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
@@ -84,7 +90,7 @@ import { TransporDocumentPreviewComponent } from './components/upload/transpor-d
       progressBar: true
     }),
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

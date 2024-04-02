@@ -75,7 +75,7 @@ export class ExcelService {
       const transportDocument: TransportDocument = {
         number: transpDoc["Número"].toString(),
         serie: transpDoc["Série"].toString(),
-        amount: transpDoc["Valor do Frete"],
+        amount: parseFloat(transpDoc["Valor do Frete"].replace(',', '.')),
         addressShipper: transpDoc["Endereço Remetente"],
         issueDate: new Date(issueDate),
         invoices: invoices,
