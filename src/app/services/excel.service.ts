@@ -22,7 +22,11 @@ export class ExcelService {
         let convertedJson: string;
         workbook.SheetNames.forEach((sheet) => {
           const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+          console.log(":::Tipo retorno sheet_to_json::: ", typeof(data));
+          console.log(":::Valor retorno sheet_to_json::: ", data);
           convertedJson = JSON.stringify(data, undefined, 4);
+          console.log(":::Tipo retorno stringify::: ", typeof(convertedJson));
+          console.log(":::Valor retorno stringify::: ", convertedJson);
         });
         resolve(convertedJson);
       };
@@ -33,11 +37,11 @@ export class ExcelService {
   }
 
   // Função para converter os dados da tabela para um array de objetos TransportDocument
-  public converterDadosParaTransportDocument(
-    data: string
-  ): TransportDocument[] {
+  public converterDadosParaTransportDocument(data: string): TransportDocument[] {
     this.obj = JSON.parse(data);
     const transportDocuments: TransportDocument[] = [];
+    console.log(":::Tipo retorno json.parse::: ", typeof(this.obj));
+    console.log(":::Valor retorno json.parse::: ", this.obj);
 
     /*
     // Iterar sobre cada linha dos dados da tabela
