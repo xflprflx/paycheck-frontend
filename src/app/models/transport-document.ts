@@ -7,10 +7,10 @@ export interface TransportDocument {
     amount: number;
     cnpjShipper: string;
     issueDate: Date;
-    paymentForecast: Date;
-    paymentDate: Date;
-    paymentStatus: string;
+    paymentForecast?: Date;
+    paymentDate?: Date;
+    paymentStatus?: string;
     invoices: Invoice[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

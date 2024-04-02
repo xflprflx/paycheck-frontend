@@ -22,11 +22,7 @@ export class ExcelService {
         let convertedJson: string;
         workbook.SheetNames.forEach((sheet) => {
           const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-          console.log(":::Tipo retorno sheet_to_json::: ", typeof(data));
-          console.log(":::Valor retorno sheet_to_json::: ", data);
           convertedJson = JSON.stringify(data, undefined, 4);
-          console.log(":::Tipo retorno stringify::: ", typeof(convertedJson));
-          console.log(":::Valor retorno stringify::: ", convertedJson);
         });
         resolve(convertedJson);
       };
@@ -37,45 +33,37 @@ export class ExcelService {
   }
 
   // Função para converter os dados da tabela para um array de objetos TransportDocument
-  public converterDadosParaTransportDocument(data: string): TransportDocument[] {
-    this.obj = JSON.parse(data);
+  public converterDadosParaTransportDocument(
+    data: string
+  ): TransportDocument[] {
     const transportDocuments: TransportDocument[] = [];
-    console.log(":::Tipo retorno json.parse::: ", typeof(this.obj));
-    console.log(":::Valor retorno json.parse::: ", this.obj);
+    const parsedData = JSON.parse(data);
 
-    /*
-    // Iterar sobre cada linha dos dados da tabela
-    for (const linha of dados) {
-      const invoiceNumber =
-        typeof linha[5] === "string"
-          ? linha[5].split(",").map((numero) => numero.trim())
-          : linha[5];
-      //      const invoiceNumber = linha[5].split(", ").map((numero) => numero.trim()); // Dividir os números das notas fiscais
-      const invoices: Invoice[] = invoiceNumber.map((numero) => ({
-        // Mapear cada número para um objeto Invoice
-        number: numero,
-        deliveryStatus: "", // Definir como necessário
-        scannedDate: new Date(), // Definir como necessário
-        createdAt: null, // Definir como necessário
-        updatedAt: null, // Definir como necessário
-      }));
-
+    for (const transpDoc of parsedData) {
+      const invoices: Invoice[] = [];
+      var invoiceNumbers: any
+      if(transpDoc["Nota Fiscal"] === "string") {
+        invoiceNumbers = transpDoc["Nota Fiscal"].split(", ")
+        for (const invoiceNumber of invoiceNumbers) {
+          const invoice = new Invoice(invoiceNumber);
+          invoices.push(invoice);
+        }
+      } else {
+        invoiceNumbers = transpDoc["Nota Fiscal"]
+        const invoice = new Invoice(invoiceNumbers);
+          invoices.push(invoice);
+      }
       const transportDocument: TransportDocument = {
-        number: linha[0],
-        serie: linha[1],
-        amount: parseFloat(linha[4].replace(",", ".")), // Converter string para número
-        cnpjShipper: linha[3],
-        issueDate: new Date(linha[2]), // Converter string para objeto Date
-        paymentForecast: null, // Definir como necessário
-        paymentDate: null, // Definir como necessário
-        paymentStatus: "", // Definir como necessário
-        invoices: invoices, // Definir como necessário
-        createdAt: null, // Definir como necessário
-        updatedAt: null, // Definir como necessário
+        number: transpDoc["Número"].toString(),
+        serie: transpDoc["Série"].toString(),
+        amount: transpDoc["Valor do Frete"],
+        cnpjShipper: transpDoc["CPF/CNPJ Remetente"].toString(),
+        issueDate: new Date(transpDoc["Data Emissão"]),
+        invoices: invoices,
       };
-
       transportDocuments.push(transportDocument);
-    }*/
+    }
+
     return transportDocuments;
   }
 }
