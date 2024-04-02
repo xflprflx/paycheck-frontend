@@ -27,10 +27,15 @@
 }
 
 .file-selected {
-    height: 200px;
     padding: 10px;
 }
 
 .file-name {
     margin-bottom: 10px;
 }
+
+.register-button {
+    width: 100%;
+    margin: 20px 0 10px 0;
+}
+

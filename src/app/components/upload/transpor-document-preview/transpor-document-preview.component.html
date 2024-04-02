@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>Número</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          {{ transportDocuments.number }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="serie">
+        <th mat-header-cell *matHeaderCellDef>Série</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          {{ transportDocuments.serie }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="issueDate">
+        <th mat-header-cell *matHeaderCellDef>Data de Emissão</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          {{ transportDocuments.issueDate | date : "dd/MM/yyyy" : "+03:00" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shipper">
+        <th mat-header-cell *matHeaderCellDef>Remetente</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          {{ transportDocuments.shipper }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Valor do Frete</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          {{ transportDocuments.amount }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="invoices">
+        <th mat-header-cell *matHeaderCellDef>Notas Fiscais</th>
+        <td mat-cell *matCellDef="let transportDocuments">
+          <ng-container *ngFor="let invoice of transportDocuments.invoices">
+            <div>{{ invoice.number }} - {{ invoice.deliveryStatus }}</div>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Selecione a página."
+    >
+    </mat-paginator>
+  </div>
+</div>

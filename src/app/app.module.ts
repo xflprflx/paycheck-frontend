@@ -38,6 +38,7 @@ import { TransportDocumentListComponent } from './components/transport-document/
 import { ToastrModule } from 'ngx-toastr';
 import { UploadStepperComponent } from './components/upload/upload-stepper/upload-stepper.component';
 import { UploaderComponent } from './components/upload/uploader/uploader.component';
+import { TransporDocumentPreviewComponent } from './components/upload/transpor-document-preview/transpor-document-preview.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { UploaderComponent } from './components/upload/uploader/uploader.compone
     HeaderComponent,
     TransportDocumentListComponent,
     UploadStepperComponent,
-    UploaderComponent
+    UploaderComponent,
+    TransporDocumentPreviewComponent
   ],
   imports: [
     BrowserModule,

@@ -6,9 +6,11 @@
     <mat-step>
       <ng-template matStepLabel>Lançar CT-e</ng-template>
       <h2>CT-e</h2>
-      <app-uploader></app-uploader>
+      <app-uploader (fileEvent)="receiveFile($event)">
+        <app-transpor-document-preview class="preview"></app-transpor-document-preview>
+      </app-uploader>
       <div>
-        <button mat-button (click)="stepper.next()">Próximo</button>
+        <button mat-button (click)="stepper.next()" style="margin-left: auto;">Próximo</button>
       </div>
     </mat-step>
 
