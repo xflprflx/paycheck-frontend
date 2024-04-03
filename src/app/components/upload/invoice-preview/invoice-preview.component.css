@@ -1,0 +1,13 @@
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.register-button {
+  width: 100%;
+  margin: 20px 0 10px 0;
+}

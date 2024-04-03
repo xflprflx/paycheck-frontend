@@ -83,4 +83,52 @@ export class ExcelService {
 
     return transportDocuments;
   }
+
+  public converterDadosParaInvoice(data: string): Invoice[] {
+    const invoices: Invoice[] = [];
+    const parsedData = JSON.parse(data);
+
+    for (const inv of parsedData) {
+      var scannedDate = inv["Data Digitalização"];
+      if(scannedDate) {
+        scannedDate = scannedDate.toString();
+        scannedDate = scannedDate.split(" ")[0];
+        const scannedDatepart = scannedDate.split("/");
+        var dia = scannedDatepart[0];
+        dia = dia.toString().length === 1 ? ("0" + dia) : dia;
+        var mes = scannedDatepart[1]; 
+        mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+        var ano = scannedDatepart[2];
+        ano = ano.toString().length === 2 ? ("20" + ano) : ano;
+        scannedDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
+      }
+
+      var paymentApprovalDate = inv["Data Liberação Pagamento"];
+      if(paymentApprovalDate) {
+        paymentApprovalDate = paymentApprovalDate.toString();
+        paymentApprovalDate = paymentApprovalDate.split(" ")[0];
+        const paymentApprovalDatePart = paymentApprovalDate.split("/");
+        var dia = paymentApprovalDatePart[0];
+        dia = dia.toString().length === 1 ? ("0" + dia) : dia;
+        var mes = paymentApprovalDatePart[1]; 
+        mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+        var ano = paymentApprovalDatePart[2];
+        ano = ano.toString().length === 2 ? ("20" + ano) : ano;
+        paymentApprovalDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
+      }
+
+      const invoice: Invoice = {
+        number: inv["Número"],
+        scannedDate: scannedDate,
+        paymentApprovalDate: paymentApprovalDate, 
+      }
+
+      invoices.push(invoice);
+      console.log(invoices)
+    }
+    console.log(invoices)
+
+    return invoices;
+  }
+
 }

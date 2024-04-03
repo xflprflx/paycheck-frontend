@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Invoice } from "src/app/models/invoice";
 import { TransportDocument } from "src/app/models/transport-document";
 import { ExcelService } from "src/app/services/excel.service";
 
@@ -12,6 +13,7 @@ export class UploadStepperComponent implements OnInit {
   isLinear = false;
   file: File;
   transportDocuments: TransportDocument[];
+  invoices: Invoice[];
 
   toggleEditMode() {
     this.isEditable = !this.isEditable;
@@ -21,7 +23,7 @@ export class UploadStepperComponent implements OnInit {
 
   ngOnInit() {}
 
-  async receiveFile(file: File) {
+  async receiveFile(file: File, doc: string) {
     this.file = file;
     if (
       file.type === "text/csv" ||
@@ -30,7 +32,13 @@ export class UploadStepperComponent implements OnInit {
     ) {
       try {
         const data = await this.excelService.readFile(file);
-        this.transportDocuments = this.excelService.converterDadosParaTransportDocument(data);
+        if(doc === 'cte') {
+          this.transportDocuments = this.excelService.converterDadosParaTransportDocument(data);
+        } else {
+          console.log(doc)
+          console.log(this.invoices)
+          this.invoices = this.excelService.converterDadosParaInvoice(data);
+        }
       } catch (error) {
         console.error("Erro ao ler o arquivo:", error);
       }
