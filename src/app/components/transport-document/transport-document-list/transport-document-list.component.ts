@@ -10,6 +10,7 @@ import { TransportDocument } from "src/app/models/transport-document";
   styleUrls: ["./transport-document-list.component.css"],
 })
 export class TransportDocumentListComponent implements OnInit {
+  
   transportDocuments: TransportDocument[] = [
     {
       id: "1",
@@ -17,9 +18,9 @@ export class TransportDocumentListComponent implements OnInit {
       serie: "1",
       amount: 125.02,
       addressShipper: "19199889000106",
-      issueDate: new Date("2024-01-01T00:00:00.000Z"),
-      paymentForecast: new Date("2024-03-01"),
-      paymentDate: new Date("2024-03-01"),
+      issueDate:"2024-01-01T00:00:00.000",
+      paymentForecast: "2024-01-01T00:00:00.000",
+      paymentDate: "2024-01-01T00:00:00.000",
       paymentStatus: "Pago no Prazo",
       invoices: [
         {
@@ -39,31 +40,8 @@ export class TransportDocumentListComponent implements OnInit {
           updatedAt: new Date(),
         },
       ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: "1",
-      number: "123",
-      serie: "1",
-      amount: 125.02,
-      addressShipper: "19199889000106",
-      issueDate: new Date("2024-01-01T00:00:00.000Z"),
-      paymentForecast: new Date("2024-03-01"),
-      paymentDate: new Date("2024-03-01"),
-      paymentStatus: "Pago no Prazo",
-      invoices: [
-        {
-          id: "1",
-          number: "147",
-          deliveryStatus: "Entregue",
-          scannedDate: new Date("2024-01-01T00:00:00.000Z"),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: "2024-01-01T00:00:00.000",
+      updatedAt: "2024-01-01T00:00:00.000",
     }
   ];
 

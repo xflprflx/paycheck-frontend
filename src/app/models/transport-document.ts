@@ -6,11 +6,11 @@ export interface TransportDocument {
     serie: string;
     amount: number;
     addressShipper: string;
-    issueDate?: Date;
-    paymentForecast?: Date;
-    paymentDate?: Date;
+    issueDate?: string;
+    paymentForecast?: string;
+    paymentDate?: string;
     paymentStatus?: string;
     invoices: Invoice[];
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt?: string;
+    updatedAt?: string;
 }

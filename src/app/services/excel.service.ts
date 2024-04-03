@@ -44,7 +44,7 @@ export class ExcelService {
     for (const transpDoc of parsedData) {
       const invoices: Invoice[] = [];
       var invoiceNumbers: any;
-      if (transpDoc["Nota Fiscal"] === "string") {
+      if (typeof transpDoc["Nota Fiscal"] === "string") {
         invoiceNumbers = transpDoc["Nota Fiscal"].split(", ");
         for (const invoiceNumber of invoiceNumbers) {
           const invoice = new Invoice(invoiceNumber);
@@ -60,25 +60,24 @@ export class ExcelService {
       issueDate = issueDate.toString();
       issueDate = issueDate.split(" ")[0];
       const partesData = issueDate.split("/");
-      var dia = parseInt(partesData[0], 10);
-      dia = dia.toString().length === 1 ? parseInt("0" + dia) : dia;
-      var mes = parseInt(partesData[1], 10); 
-      mes = mes.toString().length === 1 ? parseInt("0" + mes) - 1 : mes - 1; // Meses em JavaScript são base 0 (0-11)
-      var ano = parseInt(partesData[2], 10);
-      ano = ano.toString().length === 2 ? parseInt("20" + ano) : ano;
-      issueDate = new Date(ano, mes, dia);
+      var dia = partesData[0];
+      dia = dia.toString().length === 1 ? ("0" + dia) : dia;
+      console.log("dia",dia.toString())
+      var mes = partesData[1]; 
+      mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+      var ano = partesData[2];
+      ano = ano.toString().length === 2 ? ("20" + ano) : ano;
+      issueDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
 
       const transportDocument: TransportDocument = {
         number: transpDoc["Número"].toString(),
         serie: transpDoc["Série"].toString(),
         amount: parseFloat(transpDoc["Valor do Frete"].replace(',', '.')),
         addressShipper: transpDoc["Endereço Remetente"],
-        issueDate: new Date(issueDate),
+        issueDate: issueDate,
         invoices: invoices,
       };
       console.log(transportDocument.issueDate)
-      console.log(transportDocument.issueDate.getTime())
-      console.log(transportDocument.issueDate.getTimezoneOffset())
       transportDocuments.push(transportDocument);
     }
 
