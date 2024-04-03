@@ -8,7 +8,6 @@ import { Invoice } from "../models/invoice";
 })
 export class ExcelService {
   convertedJson!: string;
-  obj: Object;
 
   constructor() {}
 
@@ -124,7 +123,6 @@ export class ExcelService {
 
       invoices.push(invoice);
     }
-
     return invoices;
   }
 }
