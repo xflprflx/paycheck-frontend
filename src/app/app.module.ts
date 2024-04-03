@@ -43,6 +43,7 @@ import { TransporDocumentPreviewComponent } from './components/upload/transpor-d
 
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { InvoicePreviewComponent } from './upload/invoice-preview/invoice-preview.component';
 
 registerLocaleData(ptBr);
 
@@ -55,7 +56,8 @@ registerLocaleData(ptBr);
     TransportDocumentListComponent,
     UploadStepperComponent,
     UploaderComponent,
-    TransporDocumentPreviewComponent
+    TransporDocumentPreviewComponent,
+    InvoicePreviewComponent
   ],
   imports: [
     BrowserModule,

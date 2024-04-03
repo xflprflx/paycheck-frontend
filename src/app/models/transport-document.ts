@@ -11,6 +11,4 @@ export interface TransportDocument {
     paymentDate?: string;
     paymentStatus?: string;
     invoices: Invoice[];
-    createdAt?: string;
-    updatedAt?: string;
 }

@@ -10,7 +10,6 @@ import { TransportDocument } from "src/app/models/transport-document";
   styleUrls: ["./transport-document-list.component.css"],
 })
 export class TransportDocumentListComponent implements OnInit {
-  
   transportDocuments: TransportDocument[] = [
     {
       id: "1",
@@ -18,7 +17,7 @@ export class TransportDocumentListComponent implements OnInit {
       serie: "1",
       amount: 125.02,
       addressShipper: "19199889000106",
-      issueDate:"2024-01-01T00:00:00.000",
+      issueDate: "2024-01-01T00:00:00.000",
       paymentForecast: "2024-01-01T00:00:00.000",
       paymentDate: "2024-01-01T00:00:00.000",
       paymentStatus: "Pago no Prazo",
@@ -27,22 +26,14 @@ export class TransportDocumentListComponent implements OnInit {
           id: "1",
           number: "147",
           deliveryStatus: "Entregue",
-          scannedDate: new Date("2024-01-01T00:00:00.000Z"),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: "2",
           number: "258",
           deliveryStatus: "Entregue",
-          scannedDate: new Date("2024-01-01T00:00:00.000Z"),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       ],
-      createdAt: "2024-01-01T00:00:00.000",
-      updatedAt: "2024-01-01T00:00:00.000",
-    }
+    },
   ];
 
   displayedColumns: string[] = [
@@ -56,15 +47,14 @@ export class TransportDocumentListComponent implements OnInit {
     "invoices",
     "actions",
   ];
-  
+
   dataSource = new MatTableDataSource<TransportDocument>(
     this.transportDocuments
   );
 
   constructor(private toast: ToastrService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
