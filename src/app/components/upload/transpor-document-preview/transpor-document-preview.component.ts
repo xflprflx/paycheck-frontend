@@ -2,8 +2,10 @@ import {
   Component,
   Input,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
+  EventEmitter,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -19,6 +21,7 @@ import { TransportDocumentService } from "src/app/services/transport-document.se
 export class TransporDocumentPreviewComponent implements OnInit {
   @Input()
   transportDocuments: TransportDocument[] = [];
+  loading: boolean = false;
 
   displayedColumns: string[] = [
     "number",
@@ -59,18 +62,17 @@ export class TransporDocumentPreviewComponent implements OnInit {
   }
 
   postTransportDocuments() {
-    console.log("post preview");
+    this.loading = true;
     this.transporteDocumentService
       .postTransportDocumentList(this.transportDocuments)
       .subscribe(
         (response) => {
           this.toast.success(response, "Sucesso");
-          console.log("Resposta", response);
+          this.loading = false;
         },
         (error) => {
           this.toast.error(error.error);
-
-          console.log("erro ", error);
+          this.loading = false;
         }
       );
   }

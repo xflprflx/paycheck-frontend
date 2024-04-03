@@ -1,7 +1,9 @@
 import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { Invoice } from 'src/app/models/invoice';
+import { InvoiceService } from 'src/app/services/invoice.service';
 
 @Component({
   selector: 'app-invoice-preview',
@@ -11,6 +13,7 @@ import { Invoice } from 'src/app/models/invoice';
 export class InvoicePreviewComponent implements OnInit {
   @Input()
   invoices: Invoice[] = [];
+  loading: boolean = false;
 
   displayedColumns: string[] = [
     "number",
@@ -22,7 +25,7 @@ export class InvoicePreviewComponent implements OnInit {
     this.invoices
   );
 
-  constructor() { }
+  constructor(private invoiceService: InvoiceService, private toast: ToastrService) { }
 
   ngOnInit(): void {
     if(this.invoices) {
@@ -44,4 +47,19 @@ export class InvoicePreviewComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  postInvoices() {
+    this.loading = true;
+    this.invoiceService
+      .postInvoiceList(this.invoices)
+      .subscribe(
+        (response) => {
+          this.toast.success(response, "Sucesso");
+          this.loading = false;
+        },
+        (error) => {
+          this.toast.error(error.error);
+          this.loading = false;
+        }
+      );
+  }
 }

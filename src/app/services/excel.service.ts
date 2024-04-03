@@ -61,23 +61,22 @@ export class ExcelService {
       issueDate = issueDate.split(" ")[0];
       const partesData = issueDate.split("/");
       var dia = partesData[0];
-      dia = dia.toString().length === 1 ? ("0" + dia) : dia;
-      console.log("dia",dia.toString())
-      var mes = partesData[1]; 
-      mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+      dia = dia.toString().length === 1 ? "0" + dia : dia;
+      var mes = partesData[1];
+      mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
       var ano = partesData[2];
-      ano = ano.toString().length === 2 ? ("20" + ano) : ano;
-      issueDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
+      ano = ano.toString().length === 2 ? "20" + ano : ano;
+      issueDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
 
       const transportDocument: TransportDocument = {
         number: transpDoc["Número"].toString(),
         serie: transpDoc["Série"].toString(),
-        amount: parseFloat(transpDoc["Valor do Frete"].replace(',', '.')),
+        amount: parseFloat(transpDoc["Valor do Frete"].replace(",", ".")),
         addressShipper: transpDoc["Endereço Remetente"],
         issueDate: issueDate,
         invoices: invoices,
       };
-      console.log(transportDocument.issueDate)
+
       transportDocuments.push(transportDocument);
     }
 
@@ -90,45 +89,42 @@ export class ExcelService {
 
     for (const inv of parsedData) {
       var scannedDate = inv["Data Digitalização"];
-      if(scannedDate) {
+      if (scannedDate) {
         scannedDate = scannedDate.toString();
         scannedDate = scannedDate.split(" ")[0];
         const scannedDatepart = scannedDate.split("/");
         var dia = scannedDatepart[0];
-        dia = dia.toString().length === 1 ? ("0" + dia) : dia;
-        var mes = scannedDatepart[1]; 
-        mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+        dia = dia.toString().length === 1 ? "0" + dia : dia;
+        var mes = scannedDatepart[1];
+        mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
         var ano = scannedDatepart[2];
-        ano = ano.toString().length === 2 ? ("20" + ano) : ano;
-        scannedDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
+        ano = ano.toString().length === 2 ? "20" + ano : ano;
+        scannedDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
       }
 
       var paymentApprovalDate = inv["Data Liberação Pagamento"];
-      if(paymentApprovalDate) {
+      if (paymentApprovalDate) {
         paymentApprovalDate = paymentApprovalDate.toString();
         paymentApprovalDate = paymentApprovalDate.split(" ")[0];
         const paymentApprovalDatePart = paymentApprovalDate.split("/");
         var dia = paymentApprovalDatePart[0];
-        dia = dia.toString().length === 1 ? ("0" + dia) : dia;
-        var mes = paymentApprovalDatePart[1]; 
-        mes = mes.toString().length === 1 ? ("0" + (mes).toString()) : mes;
+        dia = dia.toString().length === 1 ? "0" + dia : dia;
+        var mes = paymentApprovalDatePart[1];
+        mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
         var ano = paymentApprovalDatePart[2];
-        ano = ano.toString().length === 2 ? ("20" + ano) : ano;
-        paymentApprovalDate = ano+"-"+mes+"-"+dia+"T00:00:00.000";
+        ano = ano.toString().length === 2 ? "20" + ano : ano;
+        paymentApprovalDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
       }
 
       const invoice: Invoice = {
         number: inv["Número"],
         scannedDate: scannedDate,
-        paymentApprovalDate: paymentApprovalDate, 
-      }
+        paymentApprovalDate: paymentApprovalDate,
+      };
 
       invoices.push(invoice);
-      console.log(invoices)
     }
-    console.log(invoices)
 
     return invoices;
   }
-
 }

@@ -25,18 +25,19 @@ export class UploadStepperComponent implements OnInit {
 
   async receiveFile(file: File, doc: string) {
     this.file = file;
+    console.log(file.type)
     if (
       file.type === "text/csv" ||
       file.type === "application/vnd.ms-excel" ||
-      file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       try {
         const data = await this.excelService.readFile(file);
-        if(doc === 'cte') {
-          this.transportDocuments = this.excelService.converterDadosParaTransportDocument(data);
+        if (doc === "cte") {
+          this.transportDocuments =
+            this.excelService.converterDadosParaTransportDocument(data);
         } else {
-          console.log(doc)
-          console.log(this.invoices)
           this.invoices = this.excelService.converterDadosParaInvoice(data);
         }
       } catch (error) {
@@ -45,7 +46,10 @@ export class UploadStepperComponent implements OnInit {
     } else {
       console.error("Tipo de arquivo não suportado:", file.type);
     }
-  }
-  
 
+    if(file.type === "application/pdf"){
+
+    }
+
+  }
 }

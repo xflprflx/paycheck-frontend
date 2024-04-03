@@ -1,39 +1,48 @@
 <div class="container">
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource">
-        <ng-container matColumnDef="number">
-          <th mat-header-cell *matHeaderCellDef>Número</th>
-          <td mat-cell *matCellDef="let invoices">
-            {{ invoices.number }}
-          </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="scannedDate">
-          <th mat-header-cell *matHeaderCellDef>Data de digitalização</th>
-          <td mat-cell *matCellDef="let invoices">
-            {{ invoices.scannedDate | date : "dd/MM/yyyy" : "+00:00"}}
-          </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="paymentApprovalDate">
-          <th mat-header-cell *matHeaderCellDef>Data de aprovação</th>
-          <td mat-cell *matCellDef="let invoices">
-            {{ invoices.paymentApprovalDate | date : "dd/MM/yyyy" : "+00:00" }}
-          </td>
-        </ng-container>
-  
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-  
-      <mat-paginator
-        [pageSizeOptions]="[5, 10, 20]"
-        showFirstLastButtons
-        aria-label="Selecione a página."
-      >
-      </mat-paginator>
-    </div>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>Número</th>
+        <td mat-cell *matCellDef="let invoices">
+          {{ invoices.number }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="scannedDate">
+        <th mat-header-cell *matHeaderCellDef>Data de digitalização</th>
+        <td mat-cell *matCellDef="let invoices">
+          {{ invoices.scannedDate | date : "dd/MM/yyyy" : "+00:00" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paymentApprovalDate">
+        <th mat-header-cell *matHeaderCellDef>Data de aprovação</th>
+        <td mat-cell *matCellDef="let invoices">
+          {{ invoices.paymentApprovalDate | date : "dd/MM/yyyy" : "+00:00" }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Selecione a página."
+    >
+    </mat-paginator>
   </div>
-  <button *ngIf="invoices" class="register-button" mat-raised-button color="primary">Lançar</button>
-  
+</div>
+<button
+  *ngIf="invoices"
+  class="register-button"
+  (click)="postInvoices()"
+  mat-raised-button
+  color="primary"
+>
+  Lançar
+</button>
+<div *ngIf="loading" class="loading-overlay">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>

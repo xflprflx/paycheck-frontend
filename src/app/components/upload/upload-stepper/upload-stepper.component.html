@@ -6,7 +6,7 @@
     <mat-step>
       <ng-template matStepLabel>Lançar CT-e</ng-template>
       <h2>CT-e</h2>
-      <app-uploader (fileEvent)="receiveFile($event, 'cte')">
+      <app-uploader (fileEvent)="receiveFile($event, 'cte')" img="/assets/img/excel.svg">
         <app-transpor-document-preview class="preview" [transportDocuments]="transportDocuments"></app-transpor-document-preview>
       </app-uploader>
       <div>
@@ -17,7 +17,7 @@
     <mat-step>
       <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
       <h2>Notas Fiscais</h2>
-      <app-uploader (fileEvent)="receiveFile($event, 'nf')">
+      <app-uploader (fileEvent)="receiveFile($event, 'nf')" img="/assets/img/excel.svg">
         <app-invoice-preview class="preview" [invoices]="invoices"></app-invoice-preview>
       </app-uploader>
       <div>
@@ -28,7 +28,10 @@
 
     <mat-step>
       <ng-template matStepLabel>Lançar Pagamentos</ng-template>
-      <h1>Uploader</h1>
+      <h2>Pagamentos</h2>
+      <app-uploader (fileEvent)="receiveFile($event, 'nf')" img="/assets/img/pdf.svg">
+        <app-invoice-preview class="preview" [invoices]="invoices"></app-invoice-preview>
+      </app-uploader>
       <div>
         <button mat-button (click)="stepper.previous()">Voltar</button>
       </div>

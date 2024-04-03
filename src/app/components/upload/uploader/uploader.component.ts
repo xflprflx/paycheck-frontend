@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
   selector: "app-uploader",
@@ -8,6 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 export class UploaderComponent implements OnInit {
   file: any;
   @Output() fileEvent = new EventEmitter<File>();
+  @Input() img: string;
 
   constructor() {}
 
