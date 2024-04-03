@@ -24,10 +24,7 @@ export class ExcelService {
           const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {
             raw: false, // Interpretar células de data como datas
           });
-
-          console.log(data);
           convertedJson = JSON.stringify(data, undefined, 4);
-          console.log(convertedJson);
         });
         resolve(convertedJson);
       };
@@ -70,7 +67,6 @@ export class ExcelService {
       var ano = parseInt(partesData[2], 10);
       ano = ano.toString().length === 2 ? parseInt("20" + ano) : ano;
       issueDate = new Date(ano, mes, dia);
-      console.log("Data ", issueDate);
 
       const transportDocument: TransportDocument = {
         number: transpDoc["Número"].toString(),
@@ -80,7 +76,9 @@ export class ExcelService {
         issueDate: new Date(issueDate),
         invoices: invoices,
       };
-      console.log(transportDocument.issueDate);
+      console.log(transportDocument.issueDate)
+      console.log(transportDocument.issueDate.getTime())
+      console.log(transportDocument.issueDate.getTimezoneOffset())
       transportDocuments.push(transportDocument);
     }
 

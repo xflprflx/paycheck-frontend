@@ -17,4 +17,4 @@ export class UploaderComponent implements OnInit {
     this.file = event.target.files[0];
     this.fileEvent.emit(this.file);
   }
-}
+} 

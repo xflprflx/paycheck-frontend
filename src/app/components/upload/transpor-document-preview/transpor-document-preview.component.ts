@@ -2,6 +2,7 @@ import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/cor
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TransportDocument } from 'src/app/models/transport-document';
+import { TransportDocumentService } from 'src/app/services/transport-document.service';
 
 @Component({
   selector: 'app-transpor-document-preview',
@@ -26,7 +27,10 @@ export class TransporDocumentPreviewComponent implements OnInit {
    this.transportDocuments
   );
 
-  constructor() {}
+  constructor(private transporteDocumentService: TransportDocumentService) {
+
+  }
+
 
   ngOnInit(): void {
     if (this.transportDocuments) {
@@ -46,5 +50,17 @@ export class TransporDocumentPreviewComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  postTransportDocuments() {
+    console.log("post preview")
+    this.transporteDocumentService.postTransportDocumentList(this.transportDocuments).subscribe(
+      (response) => {
+        console.log("Resposta", response);
+      },
+      (error) => {
+        console.log("erro ", error )
+      }
+    );
   }
 }
