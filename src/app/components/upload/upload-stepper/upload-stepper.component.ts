@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Invoice } from "src/app/models/invoice";
 import { TransportDocument } from "src/app/models/transport-document";
 import { ExcelService } from "src/app/services/excel.service";
+import { PdfService } from "src/app/services/pdf.service";
 
 @Component({
   selector: "app-upload-stepper",
@@ -14,18 +15,19 @@ export class UploadStepperComponent implements OnInit {
   file: File;
   transportDocuments: TransportDocument[];
   invoices: Invoice[];
+  tableData: string[][] = [];
 
   toggleEditMode() {
     this.isEditable = !this.isEditable;
   }
 
-  constructor(private excelService: ExcelService) {}
+  constructor(private excelService: ExcelService, private pdfService: PdfService) {}
 
   ngOnInit() {}
 
   async receiveFile(file: File, doc: string) {
     this.file = file;
-    console.log(file.type)
+    console.log(file.type);
     if (
       file.type === "text/csv" ||
       file.type === "application/vnd.ms-excel" ||
@@ -47,9 +49,13 @@ export class UploadStepperComponent implements OnInit {
       console.error("Tipo de arquivo não suportado:", file.type);
     }
 
-    if(file.type === "application/pdf"){
-
+    if (file.type === "application/pdf") {
+      try {
+        const data = await this.pdfService.extractTablesFromPdf(file);
+        console.log("Dados\n" + data)
+      } catch (error) {
+        console.error(error.message);
+      }
     }
-
   }
 }
