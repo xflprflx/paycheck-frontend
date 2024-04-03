@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { ToastrService } from "ngx-toastr";
 import { TransportDocument } from "src/app/models/transport-document";
 import { TransportDocumentService } from "src/app/services/transport-document.service";
 
@@ -32,7 +33,10 @@ export class TransporDocumentPreviewComponent implements OnInit {
     this.transportDocuments
   );
 
-  constructor(private transporteDocumentService: TransportDocumentService) {}
+  constructor(
+    private transporteDocumentService: TransportDocumentService,
+    private toast: ToastrService
+  ) {}
 
   ngOnInit(): void {
     if (this.transportDocuments) {
@@ -60,9 +64,12 @@ export class TransporDocumentPreviewComponent implements OnInit {
       .postTransportDocumentList(this.transportDocuments)
       .subscribe(
         (response) => {
+          this.toast.success(response, "Sucesso");
           console.log("Resposta", response);
         },
         (error) => {
+          this.toast.error(error.error);
+
           console.log("erro ", error);
         }
       );

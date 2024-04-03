@@ -16,7 +16,9 @@
 
     <mat-step>
       <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
-      <h1>Uploader</h1>
+      <h2>Notas Fiscais</h2>
+      <app-uploader (fileEvent)="receiveFile($event)">
+      </app-uploader>
       <div>
         <button mat-button (click)="stepper.previous()">Voltar</button>
         <button mat-button (click)="stepper.next()">Próximo</button>
