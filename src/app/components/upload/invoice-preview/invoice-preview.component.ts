@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { UploadEventsService } from 'src/app/services/upload-events.service';
 
 @Component({
   selector: 'app-invoice-preview',
@@ -25,7 +26,7 @@ export class InvoicePreviewComponent implements OnInit {
     this.invoices
   );
 
-  constructor(private invoiceService: InvoiceService, private toast: ToastrService) { }
+  constructor(private invoiceService: InvoiceService, private toast: ToastrService, private uploadEventsService: UploadEventsService) { }
 
   ngOnInit(): void {
     if(this.invoices) {
@@ -54,6 +55,8 @@ export class InvoicePreviewComponent implements OnInit {
       .subscribe(
         (response) => {
           this.toast.success(response, "Sucesso");
+          this.invoices = null;
+          this.uploadEventsService.documentPosted.emit();
           this.loading = false;
         },
         (error) => {

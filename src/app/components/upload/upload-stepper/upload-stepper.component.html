@@ -30,7 +30,7 @@
       <ng-template matStepLabel>Lançar Pagamentos</ng-template>
       <h2>Pagamentos</h2>
       <app-uploader (fileEvent)="receiveFile($event, 'nf')" img="/assets/img/pdf.svg">
-        <app-invoice-preview class="preview" [invoices]="invoices"></app-invoice-preview>
+        <app-payment-preview class="preview" [file]="file"></app-payment-preview>
       </app-uploader>
       <div>
         <button mat-button (click)="stepper.previous()">Voltar</button>

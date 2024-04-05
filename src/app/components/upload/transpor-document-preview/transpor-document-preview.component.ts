@@ -1,17 +1,11 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  EventEmitter,
-} from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { ToastrService } from "ngx-toastr";
-import { TransportDocument } from "src/app/models/transport-document";
-import { TransportDocumentService } from "src/app/services/transport-document.service";
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { TransportDocumentService } from 'src/app/services/transport-document.service';
+import { UploadEventsService } from 'src/app/services/upload-events.service';
+
+import { TransportDocument } from './../../../models/transport-document';
 
 @Component({
   selector: "app-transpor-document-preview",
@@ -38,7 +32,8 @@ export class TransporDocumentPreviewComponent implements OnInit {
 
   constructor(
     private transporteDocumentService: TransportDocumentService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private uploadEventsService: UploadEventsService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +63,8 @@ export class TransporDocumentPreviewComponent implements OnInit {
       .subscribe(
         (response) => {
           this.toast.success(response, "Sucesso");
+          this.transportDocuments = null;
+          this.uploadEventsService.documentPosted.emit();
           this.loading = false;
         },
         (error) => {

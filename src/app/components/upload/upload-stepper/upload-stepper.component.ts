@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { Invoice } from "src/app/models/invoice";
-import { TransportDocument } from "src/app/models/transport-document";
-import { ExcelService } from "src/app/services/excel.service";
-import { PdfService } from "src/app/services/pdf.service";
+import { Component, OnInit } from '@angular/core';
+import { Invoice } from 'src/app/models/invoice';
+import { TransportDocument } from 'src/app/models/transport-document';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: "app-upload-stepper",
@@ -15,13 +14,13 @@ export class UploadStepperComponent implements OnInit {
   file: File;
   transportDocuments: TransportDocument[];
   invoices: Invoice[];
-  tableData: string[][] = [];
+  loading: boolean = false;
 
   toggleEditMode() {
     this.isEditable = !this.isEditable;
   }
 
-  constructor(private excelService: ExcelService, private pdfService: PdfService) {}
+  constructor(private excelService: ExcelService) {}
 
   ngOnInit() {}
 
@@ -45,17 +44,25 @@ export class UploadStepperComponent implements OnInit {
       } catch (error) {
         console.error("Erro ao ler o arquivo:", error);
       }
+    } else if (file.type === "application/pdf") {
+      this.file = file;
+      /*try {
+        this.loading = true;
+        this.pdfService.uploadFile(file).subscribe(
+          (response) => {
+            this.toast.success(response, "Sucesso");
+            this.loading = false;
+          },
+          (error) => {
+            this.toast.error(error.error);
+            this.loading = false;
+          }
+        );
+      } catch (error) {
+        console.error("Erro ao enviar o arquivo:", error);
+      }*/
     } else {
       console.error("Tipo de arquivo não suportado:", file.type);
-    }
-
-    if (file.type === "application/pdf") {
-      try {
-        const data = await this.pdfService.extractTablesFromPdf(file);
-        console.log("Dados\n" + data)
-      } catch (error) {
-        console.error(error.message);
-      }
     }
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TransportDocument } from 'src/app/models/transport-document';
+import { TransportDocumentService } from 'src/app/services/transport-document.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  transportDocuments: TransportDocument[]
+
+  constructor(private transportDocumentService: TransportDocumentService) { }
 
   ngOnInit(): void {
+    this.transportDocumentService.getTransportDocuments().subscribe((response) => {
+      this.transportDocuments = response;
+      console.log(response)
+    })
   }
 
 }

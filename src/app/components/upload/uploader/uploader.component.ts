@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { UploadEventsService } from "src/app/services/upload-events.service";
 
 @Component({
   selector: "app-uploader",
@@ -10,9 +11,13 @@ export class UploaderComponent implements OnInit {
   @Output() fileEvent = new EventEmitter<File>();
   @Input() img: string;
 
-  constructor() {}
+  constructor(private uploadEventsService: UploadEventsService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.uploadEventsService.documentPosted.subscribe(() => {
+      this.file = null;
+    })
+  }
 
   getFile(event: any) {
     this.file = event.target.files[0];

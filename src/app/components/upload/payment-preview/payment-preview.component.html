@@ -1,0 +1,7 @@
+<h3>*A etapa de upload do PDF não tem pré visualização.</h3>
+<button *ngIf="file" class="register-button" mat-raised-button color="primary" (click)="postPayments()">
+  Lançar
+</button>
+<div *ngIf="loading" class="loading-overlay">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>

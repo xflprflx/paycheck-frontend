@@ -1,59 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PDFDocumentProxy } from 'pdfjs-dist';
-import * as pdfjsLib from 'pdfjs-dist';
+import { API_CONFIG } from '../config/api.config';
+import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class PdfService {
-  
-    constructor() { }
-  
-    async extractTablesFromPdf(file: File): Promise<string[]> {
-      return new Promise<string[]>((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(file);
-        fileReader.onload = async (event) => {
-          try {
-            if (event.target?.result instanceof ArrayBuffer) {
-              const pdfData = event.target.result;
-              const pdf = await this.loadPdf(pdfData);
-              const textContents = await this.extractTextFromPdf(pdf);
-              resolve(textContents);
-            } else {
-              reject(new Error('O resultado da leitura do arquivo não é um ArrayBuffer.'));
-            }
-          } catch (error) {
-            reject(error);
-          }
-        };
-      });
-    }
-  
-    private async loadPdf(pdfData: ArrayBuffer): Promise<PDFDocumentProxy> {
-      return pdfjsLib.getDocument({ data: pdfData }).promise;
-    }
-  
-    private async extractTextFromPdf(pdf: PDFDocumentProxy): Promise<string[]> {
-      const numPages = pdf.numPages;
-      const textContents: string[] = [];
-  
-      for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-        const page = await pdf.getPage(pageNum);
-        const textContent = await page.getTextContent();
-  
-        const pageText = textContent.items.map(async (item) => {
-          if ('str' in item) {
-            return item.str;
-          } else {
-            return '';
-          }
-        });
-  
-        textContents.push((await Promise.all(pageText)).join('\n'));
-      }
-  
-      return textContents;
-    }
+  providedIn: 'root'
+})
+export class PdfService {
+
+  constructor(private http: HttpClient) { }
+
+  uploadFile(file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    
+    return this.http.post(`${API_CONFIG.baseUrl}/payments`, formData, {"responseType": "text"});
   }
-  
+}
