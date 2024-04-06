@@ -11,10 +11,7 @@ mat-form-field {
   width: 100%;
 }
 
-.edit {
-  color: rgb(102, 102, 235);
-}
-
-.delete {
-  color: red;
+.edit-button {
+  background-color: rgb(102, 102, 235);
+  margin-right: 10px;
 }

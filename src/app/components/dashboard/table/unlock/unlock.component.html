@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Reabrir Pagamento</h2>
+<mat-dialog-content class="mat-typography form">
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>CT-e</mat-label>
+    <input matInput disabled [value]="data.transportDocument.number" />
+  </mat-form-field>
+
+  <table class="full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Valor</mat-label>
+          <input
+            matInput
+            disabled
+            [value]="data.transportDocument.amount | currency : 'BRL'"
+          />
+        </mat-form-field>
+      </td>
+
+      <td>
+        <mat-form-field appearance="fill">
+          <mat-label>Selecione um status para reabrir</mat-label>
+          <mat-select class="full-width" [(ngModel)]="selectedValue" name="paymentStatus" [formControl]="paymentStatusFormControl">
+            <mat-option *ngFor="let paymentStatus of paymentStatuses" [value]="paymentStatus.value">
+              {{paymentStatus.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>Justificativa atual</mat-label>
+    <textarea
+      matInput
+      [disabled]="true"
+      name="reasonReduction"
+      [value]="data.transportDocument.reasonReduction"
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    [disabled]="!validateFields()"
+    cdkFocusInitial
+    (click)="unlockPayment()"
+  >
+    Confirmar Baixa
+  </button>
+</mat-dialog-actions>

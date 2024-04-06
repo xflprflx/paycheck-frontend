@@ -23,6 +23,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFileUploadModule } from 'angular-material-fileupload';
 import { ToastrModule } from 'ngx-toastr';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,6 +38,8 @@ import {
 } from './components/upload/transpor-document-preview/transpor-document-preview.component';
 import { UploadStepperComponent } from './components/upload/upload-stepper/upload-stepper.component';
 import { UploaderComponent } from './components/upload/uploader/uploader.component';
+import { TransportDocumentUpdateComponent } from './components/dashboard/table/transport-document-update/transport-document-update.component';
+import { UnlockComponent } from './components/dashboard/table/unlock/unlock.component';
 
 // Para trabalhar com formulários no Angular 12
 // Para realizar requisições HTTP
@@ -56,6 +59,8 @@ registerLocaleData(ptBr);
     InvoicePreviewComponent,
     PaymentPreviewComponent,
     TableComponent,
+    TransportDocumentUpdateComponent,
+    UnlockComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +90,7 @@ registerLocaleData(ptBr);
     MatStepperModule,
     MatFileUploadModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,

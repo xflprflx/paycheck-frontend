@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Baixar Pagamento</h2>
+<mat-dialog-content class="mat-typography form">
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>CT-e</mat-label>
+    <input matInput disabled [value]="data.transportDocument.number" />
+  </mat-form-field>
+
+  <table class="full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Valor</mat-label>
+          <input
+            matInput
+            disabled
+            [value]="data.transportDocument.amount | currency : 'BRL'"
+          />
+        </mat-form-field>
+      </td>
+
+      <td>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Status de Pagamento Atual</mat-label>
+          <input
+            matInput
+            disabled
+            [value]="data.transportDocument.paymentStatus"
+          />
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>Justifique a baixa do pagamento deste frete</mat-label>
+    <textarea
+      matInput
+      placeholder="Descreva o motivo da baixa"
+      [(ngModel)]="transportDocument.reasonReduction"
+      name="reasonReduction"
+      [formControl]="reasonReductionFormControl"
+      required
+      matInput
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    [disabled]="!validateFields()"
+    cdkFocusInitial
+    (click)="blockPayment()"
+  >
+    Confirmar Baixa
+  </button>
+</mat-dialog-actions>

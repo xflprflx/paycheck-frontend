@@ -14,7 +14,6 @@ import { UploadEventsService } from 'src/app/services/upload-events.service';
 export class InvoicePreviewComponent implements OnInit {
   @Input()
   invoices: Invoice[] = [];
-  loading: boolean = false;
 
   displayedColumns: string[] = [
     "number",
@@ -49,7 +48,7 @@ export class InvoicePreviewComponent implements OnInit {
   }
 
   postInvoices() {
-    this.loading = true;
+    this.uploadEventsService.isLoading.emit(true);
     this.invoiceService
       .postInvoiceList(this.invoices)
       .subscribe(
@@ -57,11 +56,11 @@ export class InvoicePreviewComponent implements OnInit {
           this.toast.success(response, "Sucesso");
           this.invoices = null;
           this.uploadEventsService.documentPosted.emit();
-          this.loading = false;
+          this.uploadEventsService.isLoading.emit(false);
         },
         (error) => {
           this.toast.error(error.error);
-          this.loading = false;
+          this.uploadEventsService.isLoading.emit(false);
         }
       );
   }

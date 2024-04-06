@@ -15,7 +15,6 @@ import { TransportDocument } from './../../../models/transport-document';
 export class TransporDocumentPreviewComponent implements OnInit {
   @Input()
   transportDocuments: TransportDocument[] = [];
-  loading: boolean = false;
 
   displayedColumns: string[] = [
     "number",
@@ -57,7 +56,7 @@ export class TransporDocumentPreviewComponent implements OnInit {
   }
 
   postTransportDocuments() {
-    this.loading = true;
+    this.uploadEventsService.isLoading.emit(true)
     this.transporteDocumentService
       .postTransportDocumentList(this.transportDocuments)
       .subscribe(
@@ -65,11 +64,11 @@ export class TransporDocumentPreviewComponent implements OnInit {
           this.toast.success(response, "Sucesso");
           this.transportDocuments = null;
           this.uploadEventsService.documentPosted.emit();
-          this.loading = false;
+          this.uploadEventsService.isLoading.emit(false)
         },
         (error) => {
           this.toast.error(error.error);
-          this.loading = false;
+          this.uploadEventsService.isLoading.emit(false)
         }
       );
   }

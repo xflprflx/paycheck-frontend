@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { TransportDocument } from 'src/app/models/transport-document';
-import { TransportDocumentService } from 'src/app/services/transport-document.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { TransportDocument } from "src/app/models/transport-document";
+import { TransportDocumentService } from "src/app/services/transport-document.service";
+import { TransportDocumentUpdateComponent } from "./transport-document-update/transport-document-update.component";
+import { UnlockComponent } from "./unlock/unlock.component";
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  selector: "app-table",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.css"],
 })
 export class TableComponent implements OnInit {
-
   transportDocuments: TransportDocument[] = [];
 
   displayedColumns: string[] = [
@@ -34,15 +36,16 @@ export class TableComponent implements OnInit {
   dataSource = new MatTableDataSource<TransportDocument>(
     this.transportDocuments
   );
-  
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    public dialog: MatDialog,
     private transportDocumentService: TransportDocumentService
   ) {}
 
   ngOnInit(): void {
-   this.findAll()
+    this.findAll();
   }
 
   findAll() {
@@ -59,5 +62,28 @@ export class TableComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-}
 
+  blockPayment(transportDocument: TransportDocument) {
+    const dialogRef = this.dialog.open(TransportDocumentUpdateComponent, {
+      width: "500px",
+      height: "450px",
+      data: { transportDocument: transportDocument },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit()
+    });
+  }
+
+  unlockPayment(transportDocument: TransportDocument) {
+    const dialogRef = this.dialog.open(UnlockComponent, {
+      width: "500px",
+      height: "450px",
+      data: { transportDocument: transportDocument },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit()
+    });
+  }
+}

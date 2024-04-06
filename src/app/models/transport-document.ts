@@ -11,6 +11,7 @@ export interface TransportDocument {
     paymentForecastByScannedDate?: string;
     paymentForecastByPaymentApprovalDate?: string;
     paymentStatus?: string;
-    invoices: Invoice[];
+    reasonReduction?: string;
+    invoices?: Invoice[];
     paymentDTO?: Payment;
 }
