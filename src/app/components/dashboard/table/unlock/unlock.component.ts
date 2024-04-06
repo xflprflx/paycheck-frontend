@@ -3,6 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { TransportDocumentService } from "src/app/services/transport-document.service";
+import { UploadEventsService } from "src/app/services/upload-events.service";
 
 interface PaymentStatus {
   value: number;
@@ -15,8 +16,6 @@ interface PaymentStatus {
   styleUrls: ["./unlock.component.css"],
 })
 export class UnlockComponent implements OnInit {
-
-  @Output() updatedEvent = new EventEmitter<void>();
 
   selectedValue: number;
   paymentStatuses: PaymentStatus[] = [
@@ -35,12 +34,14 @@ export class UnlockComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private transportDocumentService: TransportDocumentService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private uploadEventService: UploadEventsService
   ) {}
 
   ngOnInit(): void {}
 
   unlockPayment(): void {
+    this.uploadEventService.isLoading.emit(true);
     this.transportDocumentService
       .unlockPayment(
         this.data.transportDocument.id,
@@ -49,8 +50,12 @@ export class UnlockComponent implements OnInit {
       .subscribe((response) => {
         this.toast.success(response, "Sucesso");
         this.selectedValue = null;
-        this.updatedEvent.emit();
+        this.uploadEventService.isLoading.emit(false);
       });
+      (error) => {
+        this.toast.error(error.error);
+        this.uploadEventService.isLoading.emit(false);
+      }
   }
 
   validateFields(): boolean {

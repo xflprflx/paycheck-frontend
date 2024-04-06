@@ -42,4 +42,8 @@ export class TransportDocumentService {
       `${API_CONFIG.baseUrl}/transportDocuments/unlockPayment/${id}`, paymentStatus, { responseType: "text" }
     );
   }
+
+  deletePayment(id: number): Observable<string> {
+    return this.http.delete(`${API_CONFIG.baseUrl}/transportDocuments/${id}`, { responseType: "text" });
+  }
 }

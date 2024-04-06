@@ -6,6 +6,7 @@ import { TransportDocument } from "src/app/models/transport-document";
 import { TransportDocumentService } from "src/app/services/transport-document.service";
 import { TransportDocumentUpdateComponent } from "./transport-document-update/transport-document-update.component";
 import { UnlockComponent } from "./unlock/unlock.component";
+import { DeleteComponent } from "./delete/delete.component";
 
 @Component({
   selector: "app-table",
@@ -79,6 +80,18 @@ export class TableComponent implements OnInit {
     const dialogRef = this.dialog.open(UnlockComponent, {
       width: "500px",
       height: "450px",
+      data: { transportDocument: transportDocument },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit()
+    });
+  }
+
+  delete(transportDocument: TransportDocument) {
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      width: "500px",
+      height: "480px",
       data: { transportDocument: transportDocument },
     });
 
