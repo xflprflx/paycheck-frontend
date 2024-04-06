@@ -42,6 +42,7 @@ import { UploaderComponent } from './components/upload/uploader/uploader.compone
 import { TransportDocumentUpdateComponent } from './components/dashboard/table/transport-document-update/transport-document-update.component';
 import { UnlockComponent } from './components/dashboard/table/unlock/unlock.component';
 import { DeleteComponent } from './components/dashboard/table/delete/delete.component';
+import { PaymentCardComponent } from './components/dashboard/payment-card/payment-card.component';
 
 // Para trabalhar com formulários no Angular 12
 // Para realizar requisições HTTP
@@ -64,6 +65,7 @@ registerLocaleData(ptBr);
     TransportDocumentUpdateComponent,
     UnlockComponent,
     DeleteComponent,
+    PaymentCardComponent,
   ],
   imports: [
     BrowserModule,

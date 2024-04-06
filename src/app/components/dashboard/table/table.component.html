@@ -117,7 +117,7 @@
         <td mat-cell *matCellDef="let transportDocuments">
           {{
             transportDocuments.paymentDTO?.amount &&
-              transportDocuments.amount - transportDocuments.paymentDTO?.amount
+              transportDocuments.paymentDTO?.amount - transportDocuments.amount
               | currency : "BRL"
           }}
         </td>

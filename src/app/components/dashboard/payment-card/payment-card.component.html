@@ -1,0 +1,7 @@
+<mat-card [style.color]="color" class="card mat-elevation-z8">
+  <mat-card-title class="margin-bottom">{{ title }}</mat-card-title>
+  <mat-divider inset></mat-divider>
+  <mat-card-content class="margin-top">
+    <h1 class="value">{{ value | currency : "BRL" }}</h1>
+  </mat-card-content>
+</mat-card>

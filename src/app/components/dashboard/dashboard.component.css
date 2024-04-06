@@ -1,0 +1,8 @@
+.payment-card-container {
+  display: flex;
+  flex-direction: row;
+}
+/*
+.payment-card-container app-payment-card {
+  margin: 20px; 
+}*/
