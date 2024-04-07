@@ -25,6 +25,9 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
 import { ToastrModule } from 'ngx-toastr';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,6 +46,7 @@ import { TransportDocumentUpdateComponent } from './components/dashboard/table/t
 import { UnlockComponent } from './components/dashboard/table/unlock/unlock.component';
 import { DeleteComponent } from './components/dashboard/table/delete/delete.component';
 import { PaymentCardComponent } from './components/dashboard/payment-card/payment-card.component';
+import { FilterComponent } from './components/dashboard/filter/filter.component';
 
 // Para trabalhar com formulários no Angular 12
 // Para realizar requisições HTTP
@@ -66,6 +70,7 @@ registerLocaleData(ptBr);
     UnlockComponent,
     DeleteComponent,
     PaymentCardComponent,
+    FilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +102,9 @@ registerLocaleData(ptBr);
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTooltipModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,

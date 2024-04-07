@@ -1,0 +1,32 @@
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.container {
+  margin: 25px 25px 10px 25px;
+}
+
+.filter-icon {
+  color: rgb(119, 119, 119);
+}
+
+.date-range-pickers-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Isso distribuirá os elementos horizontalmente */
+  }
+  
+  /* Adiciona margem direita a cada mat-form-field, exceto o último */
+  .date-range-pickers-container mat-form-field:not(:last-child) {
+    margin-right: 16px; /* Ajuste conforme necessário */
+  }
