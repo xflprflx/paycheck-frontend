@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { Specification } from "src/app/models/specification";
 import { TransportDocument } from "src/app/models/transport-document";
-import { TransportDocumentService } from "src/app/services/transport-document.service";
+import { DeleteComponent } from "./delete/delete.component";
 import { TransportDocumentUpdateComponent } from "./transport-document-update/transport-document-update.component";
 import { UnlockComponent } from "./unlock/unlock.component";
-import { DeleteComponent } from "./delete/delete.component";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
 
 @Component({
   selector: "app-table",
@@ -14,7 +15,13 @@ import { DeleteComponent } from "./delete/delete.component";
   styleUrls: ["./table.component.css"],
 })
 export class TableComponent implements OnInit {
-  transportDocuments: TransportDocument[] = [];
+  @Input()
+  transportDocuments: TransportDocument[] = []
+
+  @Output()
+  onUpdateTable = new EventEmitter<Specification>();
+
+  @Input() specification: Specification;
 
   displayedColumns: string[] = [
     "number",
@@ -35,28 +42,33 @@ export class TableComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<TransportDocument>(
-    this.transportDocuments
+    this.transportDocuments,
   );
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public dialog: MatDialog,
-    private transportDocumentService: TransportDocumentService
+    private dashboardEventService: DashboardEventService
   ) {}
 
   ngOnInit(): void {
-    this.findAll();
+    this.dataSource.paginator = this.paginator;
+    this.dashboardEventService.onConfirmeDialog.subscribe((response) => {
+      console.log("ouvi")
+      if(this.specification !== undefined) {
+        this.dashboardEventService.onUpdateTable.emit(this.specification);
+      }
+      this.dashboardEventService.onUpdateTable.emit(new Specification());
+    })
   }
 
-  findAll() {
-    this.transportDocumentService
-      .getTransportDocuments()
-      .subscribe((response) => {
-        this.transportDocuments = response;
-        this.dataSource = new MatTableDataSource<TransportDocument>(response);
-        this.dataSource.paginator = this.paginator;
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.transportDocuments && changes.transportDocuments.currentValue) {
+      this.dataSource.data = changes.transportDocuments.currentValue;
+      this.dataSource.paginator = this.paginator;
+    }
+    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -72,7 +84,12 @@ export class TableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.ngOnInit()
+      if(this.specification !== undefined) {
+        this.dashboardEventService.onUpdateTable.emit(this.specification);
+      } else {
+        this.dashboardEventService.onUpdateTable.emit(new Specification());
+      }
+      this.dataSource.paginator = this.paginator;
     });
   }
 
@@ -84,7 +101,12 @@ export class TableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.ngOnInit()
+      if(this.specification !== undefined) {
+        this.dashboardEventService.onUpdateTable.emit(this.specification);
+      } else {
+        this.dashboardEventService.onUpdateTable.emit(new Specification());
+      }
+      this.dataSource.paginator = this.paginator;
     });
   }
 
@@ -96,7 +118,12 @@ export class TableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.ngOnInit()
+      if(this.specification !== undefined) {
+        this.dashboardEventService.onUpdateTable.emit(this.specification);
+      } else {
+        this.dashboardEventService.onUpdateTable.emit(new Specification());
+      }
+      this.dataSource.paginator = this.paginator;
     });
   }
 }

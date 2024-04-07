@@ -3,6 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { TransportDocument } from "src/app/models/transport-document";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
 import { TransportDocumentService } from "src/app/services/transport-document.service";
 import { UploadEventsService } from "src/app/services/upload-events.service";
 
@@ -24,7 +25,8 @@ export class TransportDocumentUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private transportDocumentService: TransportDocumentService,
     private toast: ToastrService,
-    private uploadEventService: UploadEventsService
+    private uploadEventService: UploadEventsService,
+    private dashboardEventService: DashboardEventService
   ) {}
 
   ngOnInit(): void {}
@@ -40,6 +42,7 @@ export class TransportDocumentUpdateComponent implements OnInit {
         this.toast.success(response, "Sucesso");
         this.transportDocument.reasonReduction = null;
         this.uploadEventService.isLoading.emit(false);
+        this.dashboardEventService.onConfirmeDialog.emit();
       });
     (error) => {
       this.toast.error(error.error);

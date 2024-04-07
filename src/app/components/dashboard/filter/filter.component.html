@@ -1,6 +1,7 @@
 <div class="container">
   <mat-accordion>
     <mat-expansion-panel
+      [expanded]="panelOpenState"
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false"
     >
@@ -12,19 +13,13 @@
       <div class="date-range-pickers-container">
         <mat-form-field appearance="fill">
           <mat-label>Emitido entre</mat-label>
-          <mat-date-range-input [formGroup]="range" [rangePicker]="issuePicker">
+          <mat-date-range-input [rangePicker]="issuePicker">
             <input
               matStartDate
-              formControlName="issueStart"
+              [(ngModel)]="issueStart"
               placeholder="Data inicial"
-              readonly
             />
-            <input
-              matEndDate
-              formControlName="issueEnd"
-              placeholder="Data final"
-              readonly
-            />
+            <input matEndDate [(ngModel)]="issueEnd" placeholder="Data final" />
           </mat-date-range-input>
           <mat-datepicker-toggle
             matSuffix
@@ -32,33 +27,26 @@
           ></mat-datepicker-toggle>
           <mat-date-range-picker #issuePicker></mat-date-range-picker>
 
-          <mat-error
-            *ngIf="range.controls.issueStart.hasError('matStartDateInvalid')"
+          <mat-error *ngIf="issueStartFC.hasError('matStartDateInvalid')"
             >Data inicial inválida</mat-error
           >
-          <mat-error
-            *ngIf="range.controls.issueEnd.hasError('matEndDateInvalid')"
+          <mat-error *ngIf="issueEndFC.hasError('matEndDateInvalid')"
             >Data final inválida</mat-error
           >
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Digitalizado entre</mat-label>
-          <mat-date-range-input
-            [formGroup]="range"
-            [rangePicker]="scannedPicker"
-          >
+          <mat-date-range-input [rangePicker]="scannedPicker">
             <input
               matStartDate
-              formControlName="scannedStart"
+              [(ngModel)]="scannedStart"
               placeholder="Data inicial"
-              readonly
             />
             <input
               matEndDate
-              formControlName="scannedEnd"
+              [(ngModel)]="scannedEnd"
               placeholder="Data final"
-              readonly
             />
           </mat-date-range-input>
           <mat-datepicker-toggle
@@ -67,33 +55,26 @@
           ></mat-datepicker-toggle>
           <mat-date-range-picker #scannedPicker></mat-date-range-picker>
 
-          <mat-error
-            *ngIf="range.controls.scannedStart.hasError('matStartDateInvalid')"
+          <mat-error *ngIf="scannedStartFC.hasError('matStartDateInvalid')"
             >Data inicial inválida</mat-error
           >
-          <mat-error
-            *ngIf="range.controls.scannedEnd.hasError('matEndDateInvalid')"
+          <mat-error *ngIf="scannedEndFC.hasError('matEndDateInvalid')"
             >Data final inválida</mat-error
           >
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Previsão de pagamento (Dig)</mat-label>
-          <mat-date-range-input
-            [formGroup]="range"
-            [rangePicker]="forecastScPicker"
-          >
+          <mat-date-range-input [rangePicker]="forecastScPicker">
             <input
               matStartDate
-              formControlName="forecastScStart"
+              [(ngModel)]="forecastScStart"
               placeholder="Data inicial"
-              readonly
             />
             <input
               matEndDate
-              formControlName="forecastScEnd"
+              [(ngModel)]="forecastScEnd"
               placeholder="Data final"
-              readonly
             />
           </mat-date-range-input>
           <mat-datepicker-toggle
@@ -102,35 +83,26 @@
           ></mat-datepicker-toggle>
           <mat-date-range-picker #forecastScPicker></mat-date-range-picker>
 
-          <mat-error
-            *ngIf="
-              range.controls.forecastScStart.hasError('matStartDateInvalid')
-            "
+          <mat-error *ngIf="forecastScStartFC.hasError('matStartDateInvalid')"
             >Data inicial inválida</mat-error
           >
-          <mat-error
-            *ngIf="range.controls.forecastScEnd.hasError('matEndDateInvalid')"
+          <mat-error *ngIf="forecastScEndFC.hasError('matEndDateInvalid')"
             >Data final inválida</mat-error
           >
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Previsão de pagamento (Apr)</mat-label>
-          <mat-date-range-input
-            [formGroup]="range"
-            [rangePicker]="forecastApprPicker"
-          >
+          <mat-date-range-input [rangePicker]="forecastApprPicker">
             <input
               matStartDate
-              formControlName="forecastApprStart"
+              [(ngModel)]="forecastApprStart"
               placeholder="Data inicial"
-              readonly
             />
             <input
               matEndDate
-              formControlName="forecastApprEnd"
+              [(ngModel)]="forecastApprEnd"
               placeholder="Data final"
-              readonly
             />
           </mat-date-range-input>
           <mat-datepicker-toggle
@@ -139,90 +111,95 @@
           ></mat-datepicker-toggle>
           <mat-date-range-picker #forecastApprPicker></mat-date-range-picker>
 
-          <mat-error
-            *ngIf="
-              range.controls.forecastApprStart.hasError('matStartDateInvalid')
-            "
+          <mat-error *ngIf="forecastApprStartFC.hasError('matStartDateInvalid')"
             >Data inicial inválida</mat-error
           >
-          <mat-error
-            *ngIf="range.controls.forecastApprEnd.hasError('matEndDateInvalid')"
+          <mat-error *ngIf="forecastApprEndFC.hasError('matEndDateInvalid')"
             >Data final inválida</mat-error
           >
         </mat-form-field>
       </div>
 
       <div class="date-range-pickers-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Aprovado entre</mat-label>
+          <mat-date-range-input [rangePicker]="approvalPicker">
+            <input
+              matStartDate
+              [(ngModel)]="approvalStart"
+              placeholder="Data inicial"
+            />
+            <input
+              matEndDate
+              [(ngModel)]="approvalEnd"
+              placeholder="Data final"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="approvalPicker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #approvalPicker></mat-date-range-picker>
+
+          <mat-error *ngIf="approvalStartFC.hasError('matStartDateInvalid')"
+            >Data inicial inválida</mat-error
+          >
+          <mat-error *ngIf="approvalEndFC.hasError('matEndDateInvalid')"
+            >Data final inválida</mat-error
+          >
+        </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Aprovado entre</mat-label>
-            <mat-date-range-input [formGroup]="range" [rangePicker]="approvalPicker">
-              <input
-                matStartDate
-                formControlName="approvalStart"
-                placeholder="Data inicial"
-                readonly
-              />
-              <input
-                matEndDate
-                formControlName="approvalEnd"
-                placeholder="Data final"
-                readonly
-              />
-            </mat-date-range-input>
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="approvalPicker"
-            ></mat-datepicker-toggle>
-            <mat-date-range-picker #approvalPicker></mat-date-range-picker>
-  
-            <mat-error
-              *ngIf="range.controls.approvalStart.hasError('matStartDateInvalid')"
-              >Data inicial inválida</mat-error
+          <mat-label>Pagamento realizado entre</mat-label>
+          <mat-date-range-input [rangePicker]="paymentPicker">
+            <input
+              matStartDate
+              [(ngModel)]="paymentStart"
+              placeholder="Data inicial"
+            />
+            <input
+              matEndDate
+              [(ngModel)]="paymentEnd"
+              placeholder="Data final"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="paymentPicker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #paymentPicker></mat-date-range-picker>
+
+          <mat-error *ngIf="paymentStartFC.hasError('matStartDateInvalid')"
+            >Data inicial inválida</mat-error
+          >
+          <mat-error *ngIf="paymentEndFC.hasError('matEndDateInvalid')"
+            >Data final inválida</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Selecione um status para reabrir</mat-label>
+          <mat-select
+            class="full-width"
+            [(ngModel)]="paymentStatus"
+            name="paymentStatus"
+          >
+            <mat-option
+              *ngFor="let paymentStatus of paymentStatuses"
+              [value]="paymentStatus.value"
             >
-            <mat-error
-              *ngIf="range.controls.approvalEnd.hasError('matEndDateInvalid')"
-              >Data final inválida</mat-error
-            >
-          </mat-form-field>
+              {{ paymentStatus.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Pagamento realizado entre</mat-label>
-            <mat-date-range-input [formGroup]="range" [rangePicker]="paymentPicker">
-              <input
-                matStartDate
-                formControlName="paymentStart"
-                placeholder="Data inicial"
-                readonly
-              />
-              <input
-                matEndDate
-                formControlName="paymentEnd"
-                placeholder="Data final"
-                readonly
-              />
-            </mat-date-range-input>
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="paymentPicker"
-            ></mat-datepicker-toggle>
-            <mat-date-range-picker #paymentPicker></mat-date-range-picker>
-  
-            <mat-error
-              *ngIf="range.controls.paymentStart.hasError('matStartDateInvalid')"
-              >Data inicial inválida</mat-error
-            >
-            <mat-error
-              *ngIf="range.controls.paymentEnd.hasError('matEndDateInvalid')"
-              >Data final inválida</mat-error
-            >
-          </mat-form-field>
-
-
-        </div>
-
-
-      <p>Selected range: {{ range.value | json }}</p>
+        <button mat-fab color="primary" (click)="searchData()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-fab color="warn" (click)="clearFilter()">
+          <mat-icon>cleaning_services</mat-icon>
+        </button>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

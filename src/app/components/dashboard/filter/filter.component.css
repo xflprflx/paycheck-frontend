@@ -23,10 +23,14 @@
 .date-range-pickers-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between; /* Isso distribuirá os elementos horizontalmente */
+    justify-content: flex-start;
   }
   
   /* Adiciona margem direita a cada mat-form-field, exceto o último */
   .date-range-pickers-container mat-form-field:not(:last-child) {
     margin-right: 16px; /* Ajuste conforme necessário */
+  }
+
+  button {
+    margin-right: 20px;
   }

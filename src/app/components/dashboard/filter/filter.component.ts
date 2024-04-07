@@ -1,5 +1,6 @@
-import { FormControl, FormGroup } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { Specification } from "src/app/models/specification";
 
 interface PaymentStatus {
   value: number;
@@ -13,22 +14,23 @@ interface PaymentStatus {
 })
 export class FilterComponent implements OnInit {
   panelOpenState = false;
+  @Output() onSearchRequest = new EventEmitter<Specification>();
 
-  range = new FormGroup({
-    issueStart: new FormControl(),
-    issueEnd: new FormControl(),
-    scannedStart: new FormControl(),
-    scannedEnd: new FormControl(),
-    forecastScStart: new FormControl(),
-    forecastScEnd: new FormControl(),
-    forecastApprStart: new FormControl(),
-    forecastApprEnd: new FormControl(),
-    approvalStart: new FormControl(),
-    approvalEnd: new FormControl(),
-    paymentStatus: new FormControl(),
-    paymentStart: new FormControl(),
-    paymentEnd: new FormControl(),
-  });
+  issueStart: Date;
+  issueEnd: Date;
+  scannedStart: Date;
+  scannedEnd: Date;
+  forecastScStart: Date;
+  forecastScEnd: Date;
+  forecastApprStart: Date;
+  forecastApprEnd: Date;
+  approvalStart: Date;
+  approvalEnd: Date;
+  paymentStart: Date;
+  paymentEnd: Date;
+  paymentStatus: number;
+
+  specification: Specification;
 
   issuePicker: any;
   scannedPicker: any;
@@ -37,8 +39,6 @@ export class FilterComponent implements OnInit {
   approvalPicker: any;
   paymentPicker: any;
 
-
-  selectedValue: number;
   paymentStatuses: PaymentStatus[] = [
     { value: 0, viewValue: "Pago no prazo" },
     { value: 1, viewValue: "Pago em atraso" },
@@ -49,7 +49,65 @@ export class FilterComponent implements OnInit {
     { value: 6, viewValue: "Pagamento abatido" },
   ];
 
+  issueStartFC = new FormControl();
+  issueEndFC = new FormControl();
+  scannedStartFC = new FormControl();
+  scannedEndFC = new FormControl();
+  forecastScStartFC = new FormControl();
+  forecastScEndFC = new FormControl();
+  forecastApprStartFC = new FormControl();
+  forecastApprEndFC = new FormControl();
+  approvalStartFC = new FormControl();
+  approvalEndFC = new FormControl();
+  paymentStartFC = new FormControl();
+  paymentEndFC = new FormControl();
+  paymentStatusFC = new FormControl();
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  closedState() {
+    this.panelOpenState = false;
+  }
+
+  searchData() {
+    this.specification = this.attributesToSpecification();
+    this.onSearchRequest.emit(this.specification);
+    this.closedState();
+  }
+
+  attributesToSpecification(): Specification {
+    return new Specification(
+      this.issueStart,
+      this.issueEnd,
+      this.scannedStart,
+      this.scannedEnd,
+      this.forecastScStart,
+      this.forecastScEnd,
+      this.forecastApprStart,
+      this.forecastApprEnd,
+      this.approvalStart,
+      this.approvalEnd,
+      this.paymentStart,
+      this.paymentEnd,
+      this.paymentStatus
+    );
+  }
+
+  clearFilter() {
+    this.issueStart = undefined;
+    this.issueEnd = undefined;
+    this.scannedStart = undefined;
+    this.scannedEnd = undefined;
+    this.forecastScStart = undefined;
+    this.forecastScEnd = undefined;
+    this.forecastApprStart = undefined;
+    this.forecastApprEnd = undefined;
+    this.approvalStart = undefined;
+    this.approvalEnd = undefined;
+    this.paymentStart = undefined;
+    this.paymentEnd = undefined;
+    this.paymentStatus = undefined;
+  }
 }

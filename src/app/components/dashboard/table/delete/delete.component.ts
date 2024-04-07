@@ -1,3 +1,4 @@
+import { DashboardEventService } from 'src/app/services/dashboard-event.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +16,8 @@ export class DeleteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private transportDocumentService: TransportDocumentService,
     private toast: ToastrService,
-    private uploadEventService: UploadEventsService
+    private uploadEventService: UploadEventsService,
+    private dashboardEventService : DashboardEventService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class DeleteComponent implements OnInit {
       .subscribe((response) => {
         this.toast.success(response, "Sucesso");
         this.uploadEventService.isLoading.emit(false);
+        this.dashboardEventService.onConfirmeDialog.emit();
       });
       (error) => {
         this.toast.error(error.error);

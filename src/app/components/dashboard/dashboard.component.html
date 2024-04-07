@@ -1,15 +1,36 @@
-<app-filter></app-filter>
+<app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
 <div class="payment-card-container">
   <app-payment-card
+    [money]="true"
     title="Pagamentos Pendentes"
-    [value]="740550.5"
+    [value]="pendingAmountValue"
     color="rgb(243, 130, 130)"
   ></app-payment-card>
   <app-payment-card
+    [money]="true"
     title="Pagamentos Realizados"
-    [value]="24.5"
+    [value]="paidAmountValue"
+    color="rgb(121, 177, 121)"
+  ></app-payment-card>
+
+  <app-payment-card
+    [money]="false"
+    title="Lead Time Digitalização"
+    [value]="scannedLeadTimeValue"
+    [label]="scannedLeadTimeLabel"
+    color="rgb(121, 177, 121)"
+  ></app-payment-card>
+
+  <app-payment-card
+    [money]="false"
+    title="Lead Time Aprovação"
+    [value]="approvalLeadTimeValue"
+    [label]="approvalLeadTimeLabel"
     color="rgb(121, 177, 121)"
   ></app-payment-card>
 </div>
 
-<app-table></app-table>
+<app-table
+  [transportDocuments]="transportDocuments"
+  [specification]="specification"
+></app-table>
