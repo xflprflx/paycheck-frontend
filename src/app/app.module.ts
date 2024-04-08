@@ -28,6 +28,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ChartsModule } from 'ng2-charts';
+import 'chartjs-plugin-colorschemes';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -47,6 +50,8 @@ import { UnlockComponent } from './components/dashboard/table/unlock/unlock.comp
 import { DeleteComponent } from './components/dashboard/table/delete/delete.component';
 import { PaymentCardComponent } from './components/dashboard/payment-card/payment-card.component';
 import { FilterComponent } from './components/dashboard/filter/filter.component';
+import { PaymentStatusComponent } from './components/dashboard/payment-status/payment-status.component';
+
 
 // Para trabalhar com formulários no Angular 12
 // Para realizar requisições HTTP
@@ -71,6 +76,8 @@ registerLocaleData(ptBr);
     DeleteComponent,
     PaymentCardComponent,
     FilterComponent,
+    PaymentStatusComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -105,6 +112,7 @@ registerLocaleData(ptBr);
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    ChartsModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,

@@ -1,10 +1,10 @@
-import { DateUtilService } from "./../../services/date-utils.service";
-import { Component, OnInit } from "@angular/core";
-import { Specification } from "src/app/models/specification";
-import { TransportDocument } from "src/app/models/transport-document";
-import { TransportDocumentService } from "src/app/services/transport-document.service";
-import { TableComponent } from "./table/table.component";
-import { DashboardEventService } from "src/app/services/dashboard-event.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { Specification } from 'src/app/models/specification';
+import { TransportDocument } from 'src/app/models/transport-document';
+import { DashboardEventService } from 'src/app/services/dashboard-event.service';
+import { TransportDocumentService } from 'src/app/services/transport-document.service';
+
+import { DateUtilService } from './../../services/date-utils.service';
 
 @Component({
   selector: "app-dashboard",
@@ -12,7 +12,8 @@ import { DashboardEventService } from "src/app/services/dashboard-event.service"
   styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit {
-  transportDocuments: TransportDocument[];
+  
+  transportDocuments: TransportDocument[] = []
   specification: Specification;
   pendingAmountValue: number;
   paidAmountValue: number;
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit {
         this.paidAmount();
         this.scannedLeadTime();
         this.approvalLeadTime();
+        this.dashboardEventService.initDash.emit(this.transportDocuments);
       });
     this.dashboardEventService.onUpdateTable.subscribe((response) => {
       this.specDashboard(response);

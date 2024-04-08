@@ -1,0 +1,13 @@
+<mat-card class="card mat-elevation-z8">
+    <mat-card-title class="title">Valores por Status</mat-card-title>
+    <div style="display: block" class="pie-chart">
+        <canvas
+        baseChart
+        [colors]="chartColors"
+        [data]="chartData"
+        [labels]="chartLabels"  
+        [chartType]="chartType"
+        [options]="chartOptions"
+        ></canvas>
+    </div>
+</mat-card>

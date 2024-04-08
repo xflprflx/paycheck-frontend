@@ -1,3 +1,4 @@
+
 <app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
 <div class="payment-card-container">
   <app-payment-card
@@ -29,7 +30,7 @@
     color="rgb(121, 177, 121)"
   ></app-payment-card>
 </div>
-
+<app-payment-status [transportDocuments]="transportDocuments"></app-payment-status>
 <app-table
   [transportDocuments]="transportDocuments"
   [specification]="specification"
