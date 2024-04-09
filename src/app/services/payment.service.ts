@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Payment } from '../models/payment';
+import { API_CONFIG } from '../config/api.config';
 
 
 @Injectable({
@@ -7,7 +10,13 @@ import { Injectable } from '@angular/core';
 })
 export class PaymentService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getPayments(): Observable<Payment[]> {
+    return this.http.get<Payment[]>(
+      `${API_CONFIG.baseUrl}/payments`
+    );
+  }
 
 
 }

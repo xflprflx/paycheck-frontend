@@ -51,6 +51,7 @@ import { DeleteComponent } from './components/dashboard/table/delete/delete.comp
 import { PaymentCardComponent } from './components/dashboard/payment-card/payment-card.component';
 import { FilterComponent } from './components/dashboard/filter/filter.component';
 import { PaymentStatusComponent } from './components/dashboard/payment-status/payment-status.component';
+import { TimelineComponent } from './components/dashboard/timeline/timeline.component';
 
 
 // Para trabalhar com formulários no Angular 12
@@ -77,6 +78,7 @@ registerLocaleData(ptBr);
     PaymentCardComponent,
     FilterComponent,
     PaymentStatusComponent,
+    TimelineComponent
 
   ],
   imports: [

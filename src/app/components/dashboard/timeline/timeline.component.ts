@@ -1,118 +1,146 @@
-// import { Component, OnInit } from "@angular/core";
-// import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
-// import * as moment from 'moment'; // Import moment.js for date formatting
-// import 'chartjs-plugin-colorschemes'; // Import the plugin
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Chart } from "chart.js";
+import * as moment from "moment"; // Import moment.js for date formatting
+import "chartjs-plugin-colorschemes"; // Import the plugin
+import { TransportDocument } from "src/app/models/transport-document";
+import { Payment } from "src/app/models/payment";
+import { PaymentService } from "src/app/services/payment.service";
 
-// @Component({
-//   selector: "app-timeline",
-//   templateUrl: "./timeline.component.html",
-//   styleUrls: ["./timeline.component.css"],
-// })
-// export class TimelineComponent implements OnInit {
-//   barChartData: ChartDataSets[] = [];
-//   chartLabels: string[] = [];
-//   chartType: ChartType = "bar";
-//   chartOptions: ChartOptions = {
-//     responsive: true,
-//     scales: {
-//       xAxes: [
-//         {
-//           stacked: true, // Enable stacking for multiple datasets
-//           ticks: {
-//             callback: (value: any, index: number, values: any[]) => {
-//               // Format x-axis labels as month-year (e.g., Jan-2024)
-//               return moment(value).format("MMM-YYYY");
-//             },
-//           },
-//         },
-//       ],
-//       yAxes: [
-//         {
-//           stacked: true, // Enable stacking for multiple datasets
-//         },
-//       ],
-//     },
-//   };
+@Component({
+  selector: "app-timeline",
+  templateUrl: "./timeline.component.html",
+  styleUrls: ["./timeline.component.css"],
+})
+export class TimelineComponent implements OnChanges, OnInit {
 
-//   constructor() {}
+  @Input() transportDocuments: TransportDocument[];
+  @Input() payments: Payment[];
+  private barChart: Chart; // Property to store the chart reference
 
-//   ngOnInit() {
-//     const data = [
-//       {
-//         id: 222,
-//         number: "22352",
-//         serie: "11",
-//         amount: 63.83,
-//         addressShipper: "Av. Sertorio",
-//         issueDate: "23/01/2024",
-//         paymentForecastByScannedDate: "01/03/2024",
-//         paymentForecastByPaymentApprovalDate: "01/03/2024",
-//         paymentStatus: "Pago no prazo",
-//         reasonReduction: "",
-//         paymentDTO: {
-//           id: 161,
-//           number: "22352",
-//           serie: "11",
-//           invoiceSG: "1900003050",
-//           myInvoice: "",
-//           docCompensation: "2000005080",
-//           amount: 63.83,
-//           text: "Fatura Transp. TMS FABIANO CA",
-//           paymentDate: "01/03/2024",
-//         },
-//         invoices: [
-//           {
-//             id: 232,
-//             number: "4342009",
-//             deliveryStatus: "Entregue",
-//             scannedDate: "12/01/2024",
-//             paymentApprovalDate: "12/01/2024",
-//           },
-//         ],
-//       },
-//       // ... other data objects
-//     ];
+  constructor(private paymentService: PaymentService) {}
 
-//     // Group data by month-year (considering potential null paymentDTO.paymentDate)
-//     const groupedData = data.reduce((acc, curr) => {
-//       const monthYear = moment(curr.paymentForecastByScannedDate).format(
-//         "MMM-YYYY"
-//       );
-//       acc[monthYear] = acc[monthYear] || {
-//         monthYear,
-//         paymentForecastByScannedDate: 0,
-//         paymentForecastByPaymentApprovalDate: 0,
-//         paymentDate: 0,
-//       };
-//       acc[monthYear].paymentForecastByScannedDate += curr.amount;
-//       acc[monthYear].paymentForecastByPaymentApprovalDate += curr.amount;
-//       if (curr.paymentDTO && curr.paymentDTO.paymentDate) {
-//         acc[monthYear].paymentDate += curr.amount;
-//       }
-//       return acc;
-//     }, {});
+  ngOnInit(): void {
 
-//     // Extract labels and datasets from grouped data
-//     this.chartLabels = Object.keys(groupedData).sort(); // Ensure labels are sorted chronologically
-//     this.barChartData = [
-//       {
-//         label: "paymentForecastByScannedDate",
-//         data: this.chartLabels.map(
-//           (monthYear) => groupedData[monthYear].paymentForecastByScannedDate
-//         ),
-//       },
-//       {
-//         label: "paymentForecastByApprovalDate",
-//         data: this.chartLabels.map(
-//           (monthYear) => groupedData[monthYear].paymentForecastByApprovalDate
-//         ),
-//       },
-//       {
-//         label: "paymentDate",
-//         data: this.chartLabels.map(
-//           (monthYear) => groupedData[monthYear].paymentDto.paymentDate
-//         ),
-//       },
-//     ];
-//   }
-// }
+  }
+  
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.transportDocuments && changes.transportDocuments.currentValue
+      // && changes.payments && changes.payments.currentValue
+    ) {
+      this.createBarChart();
+    }
+  }
+
+  createBarChart() {
+    const categoriesTotalPayment = {};
+    const categoriesTotalForecastScanned = {};
+    const categoriesTotalForecastApproval = {};
+
+    // Iterate over the documents to calculate the sum of each category
+    this.transportDocuments.forEach((item) => {
+      var forecastScannedDate;
+      var forecastApprovalDate;
+      var monthYearScanned;
+      var monthYearApproval;
+      if (item.paymentForecastByScannedDate != null) {
+        forecastScannedDate = moment(
+          item.paymentForecastByScannedDate,
+          "DD/MM/YYYY"
+        );
+        monthYearScanned = forecastScannedDate.format("MMM-YYYY");
+        categoriesTotalForecastScanned[monthYearScanned] =
+          (categoriesTotalForecastScanned[monthYearScanned] || 0) + item.amount; // Use item.amount for forecast
+      }
+
+      if (item.paymentForecastByPaymentApprovalDate != null) {
+        forecastApprovalDate = moment(
+          item.paymentForecastByPaymentApprovalDate,
+          "DD/MM/YYYY"
+        );
+        monthYearApproval = forecastApprovalDate.format("MMM-YYYY");
+        categoriesTotalForecastApproval[monthYearApproval] =
+          (categoriesTotalForecastApproval[monthYearApproval] || 0) +
+          item.amount; // Use item.amount for forecast
+      }
+    });
+
+    this.payments.forEach((item) => {
+      console.log(item)
+      var paymentDate
+      var monthYearPayment
+      if(item.paymentDate != null) {
+        paymentDate = moment(item.paymentDate, "DD/MM/YYYY");
+  
+        monthYearPayment = paymentDate.format("MMM-YYYY");
+  
+        // Add the document's value to the corresponding category
+        categoriesTotalPayment[monthYearPayment] =
+          (categoriesTotalPayment[monthYearPayment] || 0) + (item.amount || 0); // Use paymentDTO amount
+      }
+    });
+
+    // Generate labels and values for each category
+    const barLabelsSet = new Set<string>([
+      ...Object.keys(categoriesTotalPayment),
+      ...Object.keys(categoriesTotalForecastScanned),
+      ...Object.keys(categoriesTotalForecastApproval),
+    ]);
+
+    const barLabels = Array.from(barLabelsSet);
+
+    const barAmountsPayment = barLabels.map(
+      (key) => categoriesTotalPayment[key] || 0
+    );
+    const barAmountsForecastScanned = barLabels.map(
+      (key) => categoriesTotalForecastScanned[key] || 0
+    );
+    const barAmountsForecastApproval = barLabels.map(
+      (key) => categoriesTotalForecastApproval[key] || 0
+    );
+
+    const ctx = document.getElementById("bar-chart") as HTMLCanvasElement;
+    this.barChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: barLabels,
+        datasets: [
+          {
+            label: "Amount (Payment)",
+            data: barAmountsPayment,
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: "Amount (Forecast - Scanned)",
+            data: barAmountsForecastScanned,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: "Amount (Forecast - Approval)",
+            data: barAmountsForecastApproval,
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              // Remove the stacked option:
+              // stacked: true,
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+}
