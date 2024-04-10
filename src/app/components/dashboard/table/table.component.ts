@@ -57,7 +57,6 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dashboardEventService.onConfirmeDialog.subscribe((response) => {
-      console.log("ouvi")
       if(this.specification !== undefined) {
         this.dashboardEventService.onUpdateTable.emit(this.specification);
       }

@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Specification } from 'src/app/models/specification';
-import { TransportDocument } from 'src/app/models/transport-document';
-import { DashboardEventService } from 'src/app/services/dashboard-event.service';
-import { TransportDocumentService } from 'src/app/services/transport-document.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { Specification } from "src/app/models/specification";
+import { TransportDocument } from "src/app/models/transport-document";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
+import { TransportDocumentService } from "src/app/services/transport-document.service";
 
-import { DateUtilService } from './../../services/date-utils.service';
-import { Payment } from 'src/app/models/payment';
-import { PaymentService } from 'src/app/services/payment.service';
+import { DateUtilService } from "./../../services/date-utils.service";
+import { Payment } from "src/app/models/payment";
+import { PaymentService } from "src/app/services/payment.service";
 
 @Component({
   selector: "app-dashboard",
@@ -14,8 +14,7 @@ import { PaymentService } from 'src/app/services/payment.service';
   styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit {
-  
-  transportDocuments: TransportDocument[] = []
+  transportDocuments: TransportDocument[] = [];
   specification: Specification;
   pendingAmountValue: number;
   paidAmountValue: number;
@@ -24,8 +23,8 @@ export class DashboardComponent implements OnInit {
   scannedLeadTimeLabel: string;
   approvalLeadTimeValue: number;
   approvalLeadTimeLabel: string;
-  payments: Payment[] = []
-  
+  payments: Payment[] = [];
+
   constructor(
     private transportDocumentService: TransportDocumentService,
     private dateUtilService: DateUtilService,
@@ -34,6 +33,12 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dashboardEventService.onUpdateTable.subscribe((response) => {
+      this.specDashboard(response);
+    });
+    this.paymentService.getPayments().subscribe((response) => {
+      this.payments = response;
+    });
     this.transportDocumentService
       .getTransportDocuments()
       .subscribe((response) => {
@@ -45,16 +50,13 @@ export class DashboardComponent implements OnInit {
         this.approvalLeadTime();
         this.dashboardEventService.initDash.emit(this.transportDocuments);
       });
-    this.dashboardEventService.onUpdateTable.subscribe((response) => {
-      this.specDashboard(response);
-    })
-    this.paymentService.getPayments().subscribe(response => {
-      this.payments = response;
-    })
-  } 
+  }
 
   specDashboard(spec: Specification) {
     this.specification = spec;
+    this.paymentService.getPaymentsFiltered(spec).subscribe((response) => {
+      this.payments = response;
+    });
     this.transportDocumentService
       .getTransportDocumentsFiltered(spec)
       .subscribe((response) => {
@@ -63,11 +65,8 @@ export class DashboardComponent implements OnInit {
         this.paidAmount();
         this.debateAmount();
         this.scannedLeadTime();
-        this.approvalLeadTime();  
+        this.approvalLeadTime();
       });
-      this.paymentService.getPayments().subscribe(response => {
-        this.payments = response;
-      })
   }
 
   pendingAmount() {
@@ -103,10 +102,7 @@ export class DashboardComponent implements OnInit {
 
   debateAmount() {
     const amount = this.transportDocuments.reduce((amount, obj) => {
-      if (
-        obj.paymentStatus === "Pagamento abatido"
-      ) {
-        console.log(obj)
+      if (obj.paymentStatus === "Pagamento abatido") {
         amount += obj.amount;
       }
 
