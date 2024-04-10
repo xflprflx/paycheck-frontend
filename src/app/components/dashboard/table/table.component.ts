@@ -8,6 +8,7 @@ import { DeleteComponent } from "./delete/delete.component";
 import { TransportDocumentUpdateComponent } from "./transport-document-update/transport-document-update.component";
 import { UnlockComponent } from "./unlock/unlock.component";
 import { DashboardEventService } from "src/app/services/dashboard-event.service";
+import { PreviewPdfComponent } from "./preview-pdf/preview-pdf.component";
 
 @Component({
   selector: "app-table",
@@ -125,6 +126,19 @@ export class TableComponent implements OnInit {
         this.dashboardEventService.onUpdateTable.emit(new Specification());
       }
       this.dataSource.paginator = this.paginator;
+    });
+  }
+
+  printPdf(transportDocuments: TransportDocument[]) {
+    console.log(transportDocuments)
+    const dialogRef = this.dialog.open(PreviewPdfComponent, {
+      width: "1123px",
+      height: "794px",
+      data: { transportDocuments: transportDocuments },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      
     });
   }
 }

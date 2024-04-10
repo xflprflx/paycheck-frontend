@@ -30,3 +30,7 @@ mat-form-field {
 .italic-text {
   font-style: italic;
 }
+
+.filter {
+  display: flex;
+}

@@ -1,14 +1,31 @@
 <div class="container">
-  <mat-form-field appearance="standard">
-    <mat-label>Filtre pelo CT-e</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Digite o número de um CT-e por exemplo"
-      #input
-    />
-  </mat-form-field>
-
+  <div class="filter">
+    <mat-form-field appearance="standard">
+      <mat-label>Filtre pelo CT-e</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Digite o número de um CT-e por exemplo"
+        #input
+      />
+    </mat-form-field>
+    <button
+      mat-mini-fab
+      class="edit-button"
+      (click)="printPdf(transportDocuments)"
+      [disabled]="transportDocuments === null"
+    >
+      <mat-icon>picture_as_pdf</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      class="edit-button"
+      (click)="printPdf(transportDocuments)"
+      [disabled]="transportDocuments === null"
+    >
+      <img src="./../../../../assets/img/excel.png" style="width: 20px" />
+    </button>
+  </div>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="number">

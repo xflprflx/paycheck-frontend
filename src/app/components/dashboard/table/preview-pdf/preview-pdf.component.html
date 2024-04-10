@@ -1,0 +1,19 @@
+<table>
+    <thead>
+      <tr>
+        <th>Coluna 1</th>
+        <th>Coluna 2</th>
+        <th>Coluna 3</th>
+        <!-- Adicione mais colunas conforme necessário -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of transportDocuments">
+        <td>{{ item.addressShipper }}</td>
+        <td>{{ item.amount }}</td>
+        <td>{{ item.issueDate }}</td>
+        <!-- Adicione mais células conforme necessário -->
+      </tr>
+    </tbody>
+  </table>
+  
