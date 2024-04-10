@@ -17,7 +17,6 @@ export class TransportDocumentService {
   postTransportDocumentList(
     transportDocuments: TransportDocument[]
   ): Observable<string> {
-    console.log(transportDocuments[0]);
     return this.http.post(
       `${API_CONFIG.baseUrl}/transportDocuments/list`,
       transportDocuments,
@@ -57,7 +56,6 @@ export class TransportDocumentService {
     spec: Specification
   ): Observable<TransportDocument[]> {
     let params = this.specDashboard(spec);
-    console.log("PARAMS", params);
     return this.http.get<TransportDocument[]>(
       `${API_CONFIG.baseUrl}/transportDocuments/filtered`,
       { params }

@@ -18,6 +18,8 @@ export class TableComponent implements OnInit {
   @Input()
   transportDocuments: TransportDocument[] = []
 
+  isPaid: boolean;
+
   @Output()
   onUpdateTable = new EventEmitter<Specification>();
 

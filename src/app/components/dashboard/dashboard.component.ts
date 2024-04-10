@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   specification: Specification;
   pendingAmountValue: number;
   paidAmountValue: number;
+  debateAmountValue: number;
   scannedLeadTimeValue: number;
   scannedLeadTimeLabel: string;
   approvalLeadTimeValue: number;
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
         this.transportDocuments = response;
         this.pendingAmount();
         this.paidAmount();
+        this.debateAmount();
         this.scannedLeadTime();
         this.approvalLeadTime();
         this.dashboardEventService.initDash.emit(this.transportDocuments);
@@ -47,7 +49,6 @@ export class DashboardComponent implements OnInit {
       this.specDashboard(response);
     })
     this.paymentService.getPayments().subscribe(response => {
-      console.log(response)
       this.payments = response;
     })
   } 
@@ -60,16 +61,21 @@ export class DashboardComponent implements OnInit {
         this.transportDocuments = response;
         this.pendingAmount();
         this.paidAmount();
+        this.debateAmount();
         this.scannedLeadTime();
-        this.approvalLeadTime();
+        this.approvalLeadTime();  
       });
+      this.paymentService.getPayments().subscribe(response => {
+        this.payments = response;
+      })
   }
 
   pendingAmount() {
     const amount = this.transportDocuments.reduce((amount, obj) => {
       if (
         obj.paymentStatus !== "Pago no prazo" &&
-        obj.paymentStatus !== "Pago em atraso"
+        obj.paymentStatus !== "Pago em atraso" &&
+        obj.paymentStatus !== "Pagamento abatido"
       ) {
         amount += obj.amount;
       }
@@ -93,6 +99,21 @@ export class DashboardComponent implements OnInit {
     }, 0);
 
     this.paidAmountValue = amount;
+  }
+
+  debateAmount() {
+    const amount = this.transportDocuments.reduce((amount, obj) => {
+      if (
+        obj.paymentStatus === "Pagamento abatido"
+      ) {
+        console.log(obj)
+        amount += obj.amount;
+      }
+
+      return amount;
+    }, 0);
+
+    this.debateAmountValue = amount;
   }
 
   scannedLeadTime() {

@@ -6,3 +6,7 @@
 .payment-card-container app-payment-card {
   margin: 20px; 
 }*/
+
+.charts {
+  display: flex;
+}

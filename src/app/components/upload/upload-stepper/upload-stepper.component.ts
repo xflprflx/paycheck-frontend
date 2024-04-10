@@ -26,7 +26,6 @@ export class UploadStepperComponent implements OnInit {
 
   async receiveFile(file: File, doc: string) {
     this.file = file;
-    console.log(file.type);
     if (
       file.type === "text/csv" ||
       file.type === "application/vnd.ms-excel" ||

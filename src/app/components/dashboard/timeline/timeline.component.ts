@@ -25,9 +25,7 @@ export class TimelineComponent implements OnChanges, OnInit {
   
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.transportDocuments && changes.transportDocuments.currentValue
-      // && changes.payments && changes.payments.currentValue
-    ) {
+    if (changes.transportDocuments && changes.transportDocuments.currentValue) {
       this.createBarChart();
     }
   }
@@ -66,7 +64,6 @@ export class TimelineComponent implements OnChanges, OnInit {
     });
 
     this.payments.forEach((item) => {
-      console.log(item)
       var paymentDate
       var monthYearPayment
       if(item.paymentDate != null) {
@@ -87,7 +84,7 @@ export class TimelineComponent implements OnChanges, OnInit {
       ...Object.keys(categoriesTotalForecastApproval),
     ]);
 
-    const barLabels = Array.from(barLabelsSet);
+    const barLabels = Array.from(barLabelsSet).sort((a, b) => moment(a, "MMM-YYYY").valueOf() - moment(b, "MMM-YYYY").valueOf());
 
     const barAmountsPayment = barLabels.map(
       (key) => categoriesTotalPayment[key] || 0
