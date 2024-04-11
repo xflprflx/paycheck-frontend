@@ -25,6 +25,8 @@
     "chartjs-plugin-colorschemes": "^0.2.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^3.6.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.45",
     "ng2-charts": "^2.4.3",

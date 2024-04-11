@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { Specification } from "src/app/models/specification";
 import { TransportDocument } from "src/app/models/transport-document";
 import { DeleteComponent } from "./delete/delete.component";
@@ -9,6 +9,10 @@ import { TransportDocumentUpdateComponent } from "./transport-document-update/tr
 import { UnlockComponent } from "./unlock/unlock.component";
 import { DashboardEventService } from "src/app/services/dashboard-event.service";
 import { PreviewPdfComponent } from "./preview-pdf/preview-pdf.component";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from 'xlsx';
+import { TableModel } from "src/app/models/tablemodel";
 
 @Component({
   selector: "app-table",
@@ -18,6 +22,8 @@ import { PreviewPdfComponent } from "./preview-pdf/preview-pdf.component";
 export class TableComponent implements OnInit {
   @Input()
   transportDocuments: TransportDocument[] = []
+
+  @ViewChild(MatTable) table: MatTable<any>;
 
   isPaid: boolean;
 
@@ -130,7 +136,6 @@ export class TableComponent implements OnInit {
   }
 
   printPdf(transportDocuments: TransportDocument[]) {
-    console.log(transportDocuments)
     const dialogRef = this.dialog.open(PreviewPdfComponent, {
       width: "1123px",
       height: "794px",
@@ -141,4 +146,50 @@ export class TableComponent implements OnInit {
       
     });
   }
+
+  downloadPdf() {
+    const doc = new jsPDF('l', 'px', 'a4'); // 'l' para orientação horizontal
+    autoTable(doc, { html: '#pdfTable', startY: 20 });
+    doc.save('table.pdf');
+  }
+
+  exportToExcel(): void {
+    const values = this.transportDocuments.map(x => new TableModel(x))
+    const data = values;
+    const header = [
+      "Número",
+      "Tipo",
+      "Valor",
+      "Emissão",
+      "Notas Fiscais",
+      "Status Entrega",
+      "Digitalização",
+      "Prev Pagamento (Dig)",
+      "Aprovação",
+      "Prev Pagamento (Apr)",
+      "Status Pagamento",
+      "Pago em",
+      "Valor pago",
+      "Diferença"
+    ];
+    const headerRow = {};
+    header.forEach((item, index) => {
+      headerRow[XLSX.utils.encode_col(index)] = item;
+    });
+  
+    const dataRows = data.map(obj => {
+      const row = {};
+      Object.keys(obj).forEach((key, index) => {
+        row[XLSX.utils.encode_col(index)] = obj[key];
+      });
+      return row;
+    });
+  
+    const workSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([headerRow, ...dataRows], { skipHeader: true });
+    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'data');
+    XLSX.writeFile(workBook, 'Pagamentos.xlsx');
+  }
+
+
 }
