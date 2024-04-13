@@ -13,6 +13,13 @@ export class DateUtilService {
     var ano = partesData[2];
     ano = ano.toString().length === 2 ? "20" + ano : ano;
 
-    return new Date(ano+"-"+mes+"-"+dia);
+    return new Date(ano + "-" + mes + "-" + dia + "T00:00:00.000");
   }
+
+  formatDate(date) {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
 }

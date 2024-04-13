@@ -19,6 +19,12 @@ export class PaymentService {
     );
   }
 
+  getPaymentsWithoutDoc(): Observable<Payment[]> {
+    return this.http.get<Payment[]>(
+      `${API_CONFIG.baseUrl}/payments/paymentsWithoutDoc`
+    );
+  }
+
   getPaymentsFiltered(
     spec: Specification
   ): Observable<Payment[]> {

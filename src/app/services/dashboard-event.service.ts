@@ -9,5 +9,6 @@ export class DashboardEventService {
   onConfirmeDialog = new EventEmitter<void>();
   onUpdateTable = new EventEmitter<Specification>();
   initDash = new EventEmitter<TransportDocument[]>();
+  onUpdatePaymentTerms = new EventEmitter<number>();
   constructor() { }
 }

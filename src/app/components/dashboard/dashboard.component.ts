@@ -7,6 +7,7 @@ import { TransportDocumentService } from "src/app/services/transport-document.se
 import { DateUtilService } from "./../../services/date-utils.service";
 import { Payment } from "src/app/models/payment";
 import { PaymentService } from "src/app/services/payment.service";
+import { ConfigService } from "src/app/services/config.service";
 
 @Component({
   selector: "app-dashboard",
@@ -24,15 +25,23 @@ export class DashboardComponent implements OnInit {
   approvalLeadTimeValue: number;
   approvalLeadTimeLabel: string;
   payments: Payment[] = [];
+  config: number;
 
   constructor(
     private transportDocumentService: TransportDocumentService,
     private dateUtilService: DateUtilService,
     private dashboardEventService: DashboardEventService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private configService: ConfigService
   ) {}
 
   ngOnInit(): void {
+    this.configService.getPaymentTerms().subscribe((response) => {
+      this.config = response;
+    })
+    this.dashboardEventService.onUpdatePaymentTerms.subscribe((response) => {
+      this.config = response;
+    })
     this.dashboardEventService.onUpdateTable.subscribe((response) => {
       this.specDashboard(response);
     });

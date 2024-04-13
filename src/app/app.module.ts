@@ -53,6 +53,7 @@ import { FilterComponent } from './components/dashboard/filter/filter.component'
 import { PaymentStatusComponent } from './components/dashboard/payment-status/payment-status.component';
 import { TimelineComponent } from './components/dashboard/timeline/timeline.component';
 import { PreviewPdfComponent } from './components/dashboard/table/preview-pdf/preview-pdf.component';
+import { ConfigComponent } from './components/config/config.component';
 
 
 // Para trabalhar com formulários no Angular 12
@@ -80,7 +81,8 @@ registerLocaleData(ptBr);
     FilterComponent,
     PaymentStatusComponent,
     TimelineComponent,
-    PreviewPdfComponent
+    PreviewPdfComponent,
+    ConfigComponent
 
   ],
   imports: [

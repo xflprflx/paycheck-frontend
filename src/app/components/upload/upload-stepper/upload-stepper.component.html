@@ -6,35 +6,53 @@
     <mat-step>
       <ng-template matStepLabel>Lançar CT-e</ng-template>
       <h2>CT-e</h2>
-      <app-uploader (fileEvent)="receiveFile($event, 'cte')" img="/assets/img/excel.svg">
-        <app-transpor-document-preview class="preview" [transportDocuments]="transportDocuments"></app-transpor-document-preview>
+      <app-uploader
+        (fileEvent)="receiveFile($event, 'cte')"
+        img="/assets/img/excel.svg"
+      >
+        <app-transpor-document-preview
+          class="preview"
+          [transportDocuments]="transportDocuments"
+        ></app-transpor-document-preview>
       </app-uploader>
-      <div>
-        <button mat-button (click)="stepper.next()" style="margin-left: auto;">Próximo</button>
-      </div>
+
+      <strong>Data mais recente: </strong>
+      <p>{{ mostRecentIssueDate }}</p>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
       <h2>Notas Fiscais</h2>
-      <app-uploader (fileEvent)="receiveFile($event, 'nf')" img="/assets/img/excel.svg">
-        <app-invoice-preview class="preview" [invoices]="invoices"></app-invoice-preview>
+      <app-uploader
+        (fileEvent)="receiveFile($event, 'nf')"
+        img="/assets/img/excel.svg"
+      >
+        <app-invoice-preview
+          class="preview"
+          [invoices]="invoices"
+        ></app-invoice-preview>
       </app-uploader>
-      <div>
-        <button mat-button (click)="stepper.previous()">Voltar</button>
-        <button mat-button (click)="stepper.next()">Próximo</button>
-      </div>
+      <strong>Data mais antiga: </strong>
+      <p>{{ mostOldestIssueDateByInvoice }}</p>
+      <strong>Data mais recente: </strong>
+      <p>{{ mostRecentIssueDateByInvoice }}</p>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>Lançar Pagamentos</ng-template>
       <h2>Pagamentos</h2>
-      <app-uploader (fileEvent)="receiveFile($event, 'nf')" img="/assets/img/pdf.svg">
-        <app-payment-preview class="preview" [file]="file"></app-payment-preview>
+      <app-uploader
+        (fileEvent)="receiveFile($event, 'nf')"
+        img="/assets/img/pdf.svg"
+      >
+        <app-payment-preview
+          class="preview"
+          [file]="file"
+        ></app-payment-preview>
       </app-uploader>
-      <div>
-        <button mat-button (click)="stepper.previous()">Voltar</button>
-      </div>
+      <p><strong>NFS-e faltantes:</strong> {{minNumberSerie1}} - {{maxNumberSerie1}}</p>
+      <p><strong>CT-e faltantes:</strong> {{minNumberSerie11}} - {{maxNumberSerie11}}</p>
+      <p *ngFor="let item of paymentWithoutDocs">{{ item }}</p>
     </mat-step>
   </mat-stepper>
 </div>
