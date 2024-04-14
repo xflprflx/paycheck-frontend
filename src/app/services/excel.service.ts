@@ -22,6 +22,7 @@ export class ExcelService {
         workbook.SheetNames.forEach((sheet) => {
           const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {
             raw: false, // Interpretar células de data como datas
+            dateNF: 'dd/MM/yyyy hh:mm:ss'
           });
           convertedJson = JSON.stringify(data, undefined, 4);
         });
@@ -33,6 +34,7 @@ export class ExcelService {
     });
   }
 
+  
   // Função para converter os dados da tabela para um array de objetos TransportDocument
   public converterDadosParaTransportDocument(
     data: string
@@ -100,23 +102,27 @@ export class ExcelService {
         ano = ano.toString().length === 2 ? "20" + ano : ano;
         scannedDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
       }
-
+      
       var paymentApprovalDate = inv["Data Liberação Pagamento"];
+      console.log(paymentApprovalDate + " - " + inv["Número"])
       if (paymentApprovalDate) {
         paymentApprovalDate = paymentApprovalDate.toString();
-        paymentApprovalDate = paymentApprovalDate.split(" ")[0];
+        //paymentApprovalDate = paymentApprovalDate.split(" ")[0];
         const paymentApprovalDatePart = paymentApprovalDate.split("/");
         var dia = paymentApprovalDatePart[0];
+        console.log(dia + " - " + inv["Número"])
         dia = dia.toString().length === 1 ? "0" + dia : dia;
+        console.log(dia + " - " + inv["Número"])
         var mes = paymentApprovalDatePart[1];
-        console.log(mes)
+        console.log(mes + " - " + inv["Número"])
         mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
-        console.log(mes)
+        console.log(mes + " - " + inv["Número"])
         var ano = paymentApprovalDatePart[2];
+        console.log(ano + " - " + inv["Número"])
         ano = ano.toString().length === 2 ? "20" + ano : ano;
+        console.log(ano + " - " + inv["Número"])
         paymentApprovalDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
-
-        
+        console.log(paymentApprovalDate + " - " + inv["Número"])
       }
 
       const invoice: Invoice = {
