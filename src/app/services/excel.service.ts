@@ -109,10 +109,14 @@ export class ExcelService {
         var dia = paymentApprovalDatePart[0];
         dia = dia.toString().length === 1 ? "0" + dia : dia;
         var mes = paymentApprovalDatePart[1];
+        console.log(mes)
         mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
+        console.log(mes)
         var ano = paymentApprovalDatePart[2];
         ano = ano.toString().length === 2 ? "20" + ano : ano;
         paymentApprovalDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
+
+        
       }
 
       const invoice: Invoice = {
