@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs";
 import { Invoice } from "src/app/models/invoice";
 import { Payment } from "src/app/models/payment";
 import { TransportDocument } from "src/app/models/transport-document";
 import { DateUtilService } from "src/app/services/date-utils.service";
 import { ExcelService } from "src/app/services/excel.service";
+import { InvoiceService } from "src/app/services/invoice.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { TransportDocumentService } from "src/app/services/transport-document.service";
 import { UploadEventsService } from "src/app/services/upload-events.service";
@@ -39,10 +42,26 @@ export class UploadStepperComponent implements OnInit {
     private tds: TransportDocumentService,
     private dateUtilService: DateUtilService,
     private uploadEventsService: UploadEventsService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private invoiceService: InvoiceService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit() {
+    this.uploadEventsService.onCleaningFile.subscribe(() => {
+      this.transportDocuments = null;
+      //this.invoices = null;
+      this.file = null;
+    });
+    //refactoring
+    this.uploadEventsService.invoiceFileSent.subscribe((x) => {
+      this.invoices = x;
+      this.invoices.map((x) => {
+        x.scannedDate = x.scannedDate != undefined ? this.dateUtilService.stringToDate(x.scannedDate).toISOString() : undefined;
+        x.paymentApprovalDate = x.paymentApprovalDate != undefined ? this.dateUtilService.stringToDate(x.paymentApprovalDate).toISOString() : undefined;
+      });
+    });
+
     this.tds.getTransportDocuments().subscribe((response) => {
       this.mostRecentIssueDate = this.getLatestIssueDate(response);
       this.mostRecentIssueDateByInvoice =
@@ -63,7 +82,7 @@ export class UploadStepperComponent implements OnInit {
         this.mostRecentIssueDateByInvoice =
           this.getLatestPendingDeliveryIssueDate(response);
         this.mostOldestIssueDateByInvoice =
-        this.getOldestPendingDeliveryIssueDate(response);
+          this.getOldestPendingDeliveryIssueDate(response);
         this.paymentService.getPaymentsWithoutDoc().subscribe((response) => {
           this.minNumberSerie1 = this.findMinNumberBySerie(response).serie1;
           this.minNumberSerie11 = this.findMinNumberBySerie(response).serie11;
@@ -98,23 +117,25 @@ export class UploadStepperComponent implements OnInit {
   getLatestPendingDeliveryIssueDate(
     documents: TransportDocument[]
   ): string | undefined {
-      this.mostRecentIssueDateByInvoice = null;
-      let latestDate;
-  
-      for (const doc of documents) {
-        if (doc.invoices) {
-          for (const invoice of doc.invoices) {
-            if (invoice.deliveryStatus === "Pendente") {
-              // Case-sensitive check
-              const issueDate = this.dateUtilService.stringToDate(doc.issueDate); // Assuming valid date format
-              if (!latestDate || issueDate > latestDate) {
-                latestDate = issueDate;
-              }
+    this.mostRecentIssueDateByInvoice = null;
+    let latestDate;
+
+    for (const doc of documents) {
+      if (doc.invoices) {
+        for (const invoice of doc.invoices) {
+          if (invoice.deliveryStatus === "Pendente") {
+            // Case-sensitive check
+            const issueDate = this.dateUtilService.stringToDate(doc.issueDate); // Assuming valid date format
+            if (!latestDate || issueDate > latestDate) {
+              latestDate = issueDate;
             }
           }
         }
       }
-      return latestDate!=undefined ? this.dateUtilService.formatDate(latestDate) : null;
+    }
+    return latestDate != undefined
+      ? this.dateUtilService.formatDate(latestDate)
+      : null;
   }
 
   getOldestPendingDeliveryIssueDate(
@@ -134,7 +155,9 @@ export class UploadStepperComponent implements OnInit {
         }
       }
     }
-    return oldestDate!= undefined ? this.dateUtilService.formatDate(oldestDate) : null
+    return oldestDate != undefined
+      ? this.dateUtilService.formatDate(oldestDate)
+      : null;
   }
 
   findMinNumberBySerie(payments: Payment[]): {
@@ -201,21 +224,27 @@ export class UploadStepperComponent implements OnInit {
     return maxNumber;
   }
 
-  async receiveFile(file: File, doc: string) {
-    this.file = file;
-    if (
+  isExcelFile(file: File): boolean {
+    return (
       file.type === "text/csv" ||
       file.type === "application/vnd.ms-excel" ||
       file.type ===
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
+    );
+  }
+
+  async receiveFile(file: File, doc: string) {
+    this.file = file;
+    if (this.isExcelFile(file)) {
       try {
         const data = await this.excelService.readFile(file);
         if (doc === "cte") {
           this.transportDocuments =
             this.excelService.converterDadosParaTransportDocument(data);
-        } else {
-          this.invoices = this.excelService.converterDadosParaInvoice(data);
+        }
+        //refactoring
+        if (doc === "nf") {
+          this.sendFileAndGetInvoiceList(file);
         }
       } catch (error) {
         console.error("Erro ao ler o arquivo:", error);
@@ -240,5 +269,21 @@ export class UploadStepperComponent implements OnInit {
     } else {
       console.error("Tipo de arquivo não suportado:", file.type);
     }
+  }
+
+  //refactoring
+  sendFileAndGetInvoiceList(file: File) {
+    this.uploadEventsService.isLoading.emit(true);
+    this.invoiceService.sendFileAndGetInvoiceList(file).subscribe(
+      (response) => {
+        console.log(response);
+        this.uploadEventsService.invoiceFileSent.emit(response);
+        this.uploadEventsService.isLoading.emit(false);
+      },
+      (error) => {
+        this.toast.error(error.error);
+        this.uploadEventsService.isLoading.emit(false);
+      }
+    );
   }
 }

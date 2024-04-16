@@ -1,34 +1,40 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
-import { Invoice } from 'src/app/models/invoice';
-import { InvoiceService } from 'src/app/services/invoice.service';
-import { UploadEventsService } from 'src/app/services/upload-events.service';
+import {
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { ToastrService } from "ngx-toastr";
+import { Invoice } from "src/app/models/invoice";
+import { DateUtilService } from "src/app/services/date-utils.service";
+import { InvoiceService } from "src/app/services/invoice.service";
+import { UploadEventsService } from "src/app/services/upload-events.service";
 
 @Component({
-  selector: 'app-invoice-preview',
-  templateUrl: './invoice-preview.component.html',
-  styleUrls: ['./invoice-preview.component.css']
+  selector: "app-invoice-preview",
+  templateUrl: "./invoice-preview.component.html",
+  styleUrls: ["./invoice-preview.component.css"],
 })
 export class InvoicePreviewComponent implements OnInit {
   @Input()
   invoices: Invoice[] = [];
 
-  displayedColumns: string[] = [
-    "number",
-    "scannedDate",
-    "paymentApprovalDate",
-  ];
+  displayedColumns: string[] = ["number", "scannedDate", "paymentApprovalDate"];
 
-  dataSource = new MatTableDataSource<Invoice>(
-    this.invoices
-  );
+  dataSource = new MatTableDataSource<Invoice>(this.invoices);
 
-  constructor(private invoiceService: InvoiceService, private toast: ToastrService, private uploadEventsService: UploadEventsService) { }
+  constructor(
+    private invoiceService: InvoiceService,
+    private toast: ToastrService,
+    private uploadEventsService: UploadEventsService
+  ) {}
 
   ngOnInit(): void {
-    if(this.invoices) {
+
+    if (this.invoices) {
       this.dataSource.data = this.invoices;
     }
   }
@@ -49,19 +55,17 @@ export class InvoicePreviewComponent implements OnInit {
 
   postInvoices() {
     this.uploadEventsService.isLoading.emit(true);
-    this.invoiceService
-      .postInvoiceList(this.invoices)
-      .subscribe(
-        (response) => {
-          this.toast.success(response, "Sucesso");
-          this.invoices = null;
-          this.uploadEventsService.documentPosted.emit();
-          this.uploadEventsService.isLoading.emit(false);
-        },
-        (error) => {
-          this.toast.error(error.error);
-          this.uploadEventsService.isLoading.emit(false);
-        }
-      );
+    this.invoiceService.postInvoiceList(this.invoices).subscribe(
+      (response) => {
+        this.toast.success(response, "Sucesso");
+        this.invoices = null;
+        this.uploadEventsService.documentPosted.emit();
+        this.uploadEventsService.isLoading.emit(false);
+      },
+      (error) => {
+        this.toast.error(error.error);
+        this.uploadEventsService.isLoading.emit(false);
+      }
+    );
   }
 }
