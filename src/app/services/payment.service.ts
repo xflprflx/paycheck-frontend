@@ -35,6 +35,11 @@ export class PaymentService {
     );
   }
 
+  sendFileAndGetPaymentList(file: File) {
+    //TODO-PDF
+    return null;
+  }
+
   specDashboard(spec: Specification) {
     let params = new HttpParams();
     params = params.append("issueStart", spec.issueStart);
