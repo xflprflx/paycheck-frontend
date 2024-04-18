@@ -246,8 +246,6 @@ export class UploadStepperComponent implements OnInit {
         const data = await this.excelService.readFile(file);
         if (doc === "cte") {
           this.sendFileAndGetTransportDocumentList(file);
-          /*this.transportDocuments =
-            this.excelService.converterDadosParaTransportDocument(data);*/
         }
         //refactoring
         if (doc === "nf") {
