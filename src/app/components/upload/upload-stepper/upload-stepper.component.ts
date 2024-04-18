@@ -255,22 +255,7 @@ export class UploadStepperComponent implements OnInit {
         console.error("Erro ao ler o arquivo:", error);
       }
     } else if (file.type === "application/pdf") {
-      this.file = file;
-      /*try {
-        this.loading = true;
-        this.pdfService.uploadFile(file).subscribe(
-          (response) => {
-            this.toast.success(response, "Sucesso");
-            this.loading = false;
-          },
-          (error) => {
-            this.toast.error(error.error);
-            this.loading = false;
-          }
-        );
-      } catch (error) {
-        console.error("Erro ao enviar o arquivo:", error);
-      }*/
+      this.sendFileAndGetPaymentList(file);
     } else {
       console.error("Tipo de arquivo não suportado:", file.type);
     }
