@@ -1,15 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
-import { Observable } from "rxjs";
-import { Invoice } from "src/app/models/invoice";
-import { Payment } from "src/app/models/payment";
-import { TransportDocument } from "src/app/models/transport-document";
-import { DateUtilService } from "src/app/services/date-utils.service";
-import { ExcelService } from "src/app/services/excel.service";
-import { InvoiceService } from "src/app/services/invoice.service";
-import { PaymentService } from "src/app/services/payment.service";
-import { TransportDocumentService } from "src/app/services/transport-document.service";
-import { UploadEventsService } from "src/app/services/upload-events.service";
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Invoice } from 'src/app/models/invoice';
+import { Payment } from 'src/app/models/payment';
+import { TransportDocument } from 'src/app/models/transport-document';
+import { DateUtilService } from 'src/app/services/date-utils.service';
+import { ExcelService } from 'src/app/services/excel.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
+import { PaymentService } from 'src/app/services/payment.service';
+import { TransportDocumentService } from 'src/app/services/transport-document.service';
+import { UploadEventsService } from 'src/app/services/upload-events.service';
 
 @Component({
   selector: "app-upload-stepper",
@@ -39,7 +38,7 @@ export class UploadStepperComponent implements OnInit {
 
   constructor(
     private excelService: ExcelService,
-    private tds: TransportDocumentService,
+    private transportDocumentService: TransportDocumentService,
     private dateUtilService: DateUtilService,
     private uploadEventsService: UploadEventsService,
     private paymentService: PaymentService,
@@ -49,8 +48,6 @@ export class UploadStepperComponent implements OnInit {
 
   ngOnInit() {
     this.uploadEventsService.onCleaningFile.subscribe(() => {
-      this.transportDocuments = null;
-      //this.invoices = null;
       this.file = null;
     });
     //refactoring
@@ -62,7 +59,16 @@ export class UploadStepperComponent implements OnInit {
       });
     });
 
-    this.tds.getTransportDocuments().subscribe((response) => {
+    this.uploadEventsService.transportDocumentFileSent.subscribe((x) => {
+      this.transportDocuments = x;
+      this.transportDocuments.map((x) => {
+        x.issueDate = x.issueDate != undefined ? this.dateUtilService.stringToDate(x.issueDate).toISOString() : undefined;
+        x.paymentForecastByScannedDate = x.paymentForecastByScannedDate != undefined ? this.dateUtilService.stringToDate(x.paymentForecastByScannedDate).toISOString() : undefined;
+        x.paymentForecastByPaymentApprovalDate = x.paymentForecastByPaymentApprovalDate != undefined ? this.dateUtilService.stringToDate(x.paymentForecastByPaymentApprovalDate).toISOString() : undefined;
+      })
+    })
+
+    this.transportDocumentService.getTransportDocuments().subscribe((response) => {
       this.mostRecentIssueDate = this.getLatestIssueDate(response);
       this.mostRecentIssueDateByInvoice =
         this.getLatestPendingDeliveryIssueDate(response);
@@ -77,7 +83,7 @@ export class UploadStepperComponent implements OnInit {
     });
 
     this.uploadEventsService.documentPosted.subscribe((x) => {
-      this.tds.getTransportDocuments().subscribe((response) => {
+      this.transportDocumentService.getTransportDocuments().subscribe((response) => {
         this.mostRecentIssueDate = this.getLatestIssueDate(response);
         this.mostRecentIssueDateByInvoice =
           this.getLatestPendingDeliveryIssueDate(response);
@@ -239,8 +245,9 @@ export class UploadStepperComponent implements OnInit {
       try {
         const data = await this.excelService.readFile(file);
         if (doc === "cte") {
-          this.transportDocuments =
-            this.excelService.converterDadosParaTransportDocument(data);
+          this.sendFileAndGetTransportDocumentList(file);
+          /*this.transportDocuments =
+            this.excelService.converterDadosParaTransportDocument(data);*/
         }
         //refactoring
         if (doc === "nf") {
@@ -276,7 +283,6 @@ export class UploadStepperComponent implements OnInit {
     this.uploadEventsService.isLoading.emit(true);
     this.invoiceService.sendFileAndGetInvoiceList(file).subscribe(
       (response) => {
-        console.log(response);
         this.uploadEventsService.invoiceFileSent.emit(response);
         this.uploadEventsService.isLoading.emit(false);
       },
@@ -285,5 +291,20 @@ export class UploadStepperComponent implements OnInit {
         this.uploadEventsService.isLoading.emit(false);
       }
     );
+  }
+
+  sendFileAndGetTransportDocumentList(file: File) {
+    this.uploadEventsService.isLoading.emit(true);
+    this.transportDocumentService.sendFileAndGetTransportDocumentList(file).subscribe(
+      (response) => {
+        console.log(response);
+        this.uploadEventsService.transportDocumentFileSent.emit(response);
+        this.uploadEventsService.isLoading.emit(false);
+      },
+      (error) => {
+        this.toast.error(error.error);
+        this.uploadEventsService.isLoading.emit(false);
+      }
+    )
   }
 }

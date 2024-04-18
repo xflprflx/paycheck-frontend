@@ -7,10 +7,13 @@ export class DateUtilService {
   stringToDate(date: string) {
     const partesData = date.toString().split("/");
     var dia = partesData[0];
+    console.log(dia)
     dia = dia.toString().length === 1 ? "0" + dia : dia;
     var mes = partesData[1];
+    console.log(mes)
     mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
     var ano = partesData[2];
+    console.log(ano)
     ano = ano.toString().length === 2 ? "20" + ano : ano;
 
     return new Date(ano + "-" + mes + "-" + dia + "T00:00:00.000");

@@ -62,6 +62,11 @@ export class TransportDocumentService {
     );
   }
 
+  sendFileAndGetTransportDocumentList(file: File): Observable<TransportDocument[]> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<TransportDocument[]>(`${API_CONFIG.baseUrl}/transportDocuments/file`, formData);
+  }
 
   specDashboard(spec: Specification) {
     let params = new HttpParams();
