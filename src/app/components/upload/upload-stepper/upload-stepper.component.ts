@@ -21,6 +21,7 @@ export class UploadStepperComponent implements OnInit {
   file: File;
   transportDocuments: TransportDocument[];
   invoices: Invoice[];
+  payments: Payment[];
   loading: boolean = false;
 
   mostRecentIssueDate: string;
@@ -50,7 +51,6 @@ export class UploadStepperComponent implements OnInit {
     this.uploadEventsService.onCleaningFile.subscribe(() => {
       this.file = null;
     });
-    //refactoring
     this.uploadEventsService.invoiceFileSent.subscribe((x) => {
       this.invoices = x;
       this.invoices.map((x) => {
@@ -304,5 +304,19 @@ export class UploadStepperComponent implements OnInit {
         this.uploadEventsService.isLoading.emit(false);
       }
     )
+  }
+
+  sendFileAndGetPaymentList(file: File) {
+    this.uploadEventsService.isLoading.emit(true);
+    this.paymentService.sendFileAndGetPaymentList(file).subscribe(
+      (response) => {
+        this.uploadEventsService.paymentFileSent.emit(response);
+        this.uploadEventsService.isLoading.emit(false);
+      },
+      (error) => {
+        this.toast.error(error.error);
+        this.uploadEventsService.isLoading.emit(false);
+      }
+    );
   }
 }

@@ -35,10 +35,12 @@ export class PaymentService {
     );
   }
 
-  sendFileAndGetPaymentList(file: File) {
-    //TODO-PDF
-    return null;
+  sendFileAndGetPaymentList(file: File): Observable<Payment[]> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<Payment[]>(`${API_CONFIG.baseUrl}/payments/file`, formData);
   }
+
 
   specDashboard(spec: Specification) {
     let params = new HttpParams();
