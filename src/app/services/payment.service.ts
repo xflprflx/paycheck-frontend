@@ -41,6 +41,11 @@ export class PaymentService {
     return this.http.post<Payment[]>(`${API_CONFIG.baseUrl}/payments/file`, formData);
   }
 
+  postPaymentList(payments: Payment[]): Observable<string> {
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/payments/list`, payments, { "responseType":"text" });
+  }
+
 
   specDashboard(spec: Specification) {
     let params = new HttpParams();

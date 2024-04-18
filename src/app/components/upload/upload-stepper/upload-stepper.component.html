@@ -1,6 +1,3 @@
-<!-- <button mat-raised-button (click)="toggleEditMode()">
-  {{ isEditable ? "Disable edit mode" : "Enable edit mode" }}
-</button> -->
 <div class="container">
   <mat-stepper [linear]="isLinear" #stepper class="mat-elevation-z8">
     <mat-step>
@@ -47,7 +44,7 @@
       >
         <app-payment-preview
           class="preview"
-          [file]="file"
+          [payments]="payments"
         ></app-payment-preview>
       </app-uploader>
       <p><strong>NFS-e faltantes:</strong> {{minNumberSerie1}} - {{maxNumberSerie1}}</p>

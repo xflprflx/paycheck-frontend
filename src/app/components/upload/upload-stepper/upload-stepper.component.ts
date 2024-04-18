@@ -68,6 +68,13 @@ export class UploadStepperComponent implements OnInit {
       })
     })
 
+    this.uploadEventsService.paymentFileSent.subscribe((x) => {
+      this.payments = x;
+      this.payments.map((x) => {
+        x.paymentDate = x.paymentDate != undefined ? this.dateUtilService.stringToDate(x.paymentDate).toISOString() : undefined;
+      });
+    });
+
     this.transportDocumentService.getTransportDocuments().subscribe((response) => {
       this.mostRecentIssueDate = this.getLatestIssueDate(response);
       this.mostRecentIssueDateByInvoice =
@@ -280,7 +287,6 @@ export class UploadStepperComponent implements OnInit {
     this.uploadEventsService.isLoading.emit(true);
     this.transportDocumentService.sendFileAndGetTransportDocumentList(file).subscribe(
       (response) => {
-        console.log(response);
         this.uploadEventsService.transportDocumentFileSent.emit(response);
         this.uploadEventsService.isLoading.emit(false);
       },

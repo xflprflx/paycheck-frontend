@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { ToastrService } from "ngx-toastr";
+import { Payment } from "src/app/models/payment";
+import { PaymentService } from "src/app/services/payment.service";
 import { PdfService } from "src/app/services/pdf.service";
 import { UploadEventsService } from "src/app/services/upload-events.service";
 
@@ -9,23 +13,42 @@ import { UploadEventsService } from "src/app/services/upload-events.service";
   styleUrls: ["./payment-preview.component.css"],
 })
 export class PaymentPreviewComponent implements OnInit {
+
   @Input()
-  file: any;
+  payments: Payment[] = [];
+
+  displayedColumns: string[] = ["number", "serie", "paymentDate", "amount"];
+
+  dataSource = new MatTableDataSource<Payment>(this.payments);
+
 
   constructor(
-    private pdfService: PdfService,
+    private paymentService: PaymentService,
     private toast: ToastrService,
     private uploadEventsService: UploadEventsService
   ) {}
 
   ngOnInit(): void {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.payments && !changes.payments.firstChange) {
+      if (changes.payments.currentValue) {
+        this.dataSource.data = changes.payments.currentValue;
+      }
+    }
+  }
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   postPayments() {
     this.uploadEventsService.isLoading.emit(true);
-    this.pdfService.uploadFile(this.file).subscribe(
+    this.paymentService.postPaymentList(this.payments).subscribe(
       (response) => {
         this.toast.success(response, "Sucesso");
-        this.file = null;
         this.uploadEventsService.documentPosted.emit();
         this.uploadEventsService.isLoading.emit(false);
       },

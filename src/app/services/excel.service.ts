@@ -104,25 +104,17 @@ export class ExcelService {
       }
       
       var paymentApprovalDate = inv["Data Liberação Pagamento"];
-      console.log(paymentApprovalDate + " - " + inv["Número"])
       if (paymentApprovalDate) {
         paymentApprovalDate = paymentApprovalDate.toString();
         //paymentApprovalDate = paymentApprovalDate.split(" ")[0];
         const paymentApprovalDatePart = paymentApprovalDate.split("/");
         var dia = paymentApprovalDatePart[0];
-        console.log(dia + " - " + inv["Número"])
         dia = dia.toString().length === 1 ? "0" + dia : dia;
-        console.log(dia + " - " + inv["Número"])
         var mes = paymentApprovalDatePart[1];
-        console.log(mes + " - " + inv["Número"])
         mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
-        console.log(mes + " - " + inv["Número"])
         var ano = paymentApprovalDatePart[2];
-        console.log(ano + " - " + inv["Número"])
         ano = ano.toString().length === 2 ? "20" + ano : ano;
-        console.log(ano + " - " + inv["Número"])
         paymentApprovalDate = ano + "-" + mes + "-" + dia + "T00:00:00.000";
-        console.log(paymentApprovalDate + " - " + inv["Número"])
       }
 
       const invoice: Invoice = {
