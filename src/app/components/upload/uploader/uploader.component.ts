@@ -15,6 +15,7 @@ export class UploaderComponent implements OnInit {
   file: any;
   @Output() fileEvent = new EventEmitter<File>();
   @Input() img: string;
+  
   mostRecentIssueDate: string;
   mostRecentIssueDateByInvoice: string;
   mostOldestIssueDateByInvoice: string;

@@ -7,11 +7,11 @@ export class DateUtilService {
   stringToDate(date: string) {
     const partesData = date.toString().split("/");
     var dia = partesData[0];
-    dia = dia.toString().length === 1 ? "0" + dia : dia;
+    dia = dia && dia.toString().length === 1 ? "0" + dia : dia;
     var mes = partesData[1];
-    mes = mes.toString().length === 1 ? "0" + mes.toString() : mes;
+    mes = mes && mes.toString().length === 1 ? "0" + mes.toString() : mes;
     var ano = partesData[2];
-    ano = ano.toString().length === 2 ? "20" + ano : ano;
+    ano = ano && ano.toString().length === 2 ? "20" + ano : ano;
 
     return new Date(ano + "-" + mes + "-" + dia + "T00:00:00.000");
   }
@@ -30,9 +30,9 @@ export class DateUtilService {
   }
 
   formatDate(date) {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
+    const day = date && date.getDate().toString().padStart(2, '0');
+    const month = date && (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date && date.getFullYear();
     return `${day}/${month}/${year}`;
 }
 }

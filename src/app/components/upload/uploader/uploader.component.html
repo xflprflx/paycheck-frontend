@@ -1,6 +1,6 @@
 <div class="file-container" *ngIf="!file">
     <input type="file" (change)="getFile($event)" class="file" />
-    <img [src]="img" alt="Imagem de exemplo">
+    <img [src]="img" alt="Tipo de Arquivo">
 </div>
 
 <div class="file-selected" *ngIf="file">
