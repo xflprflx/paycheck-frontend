@@ -161,8 +161,14 @@ export class UploaderComponent implements OnInit {
     let minNumber = "";
 
     for (const payment of payments) {
-      if (!minNumber || (payment.number && payment.number < minNumber)) {
-        minNumber = payment.number ?? "";
+      const paymentNumber = parseFloat(payment.number); // Convertendo para número
+
+      if (
+        !isNaN(paymentNumber) && // Verifica se é um número válido
+        (minNumber === "" || paymentNumber < parseFloat(minNumber))
+      ) {
+        // Compara com o menor número atual
+        minNumber = payment.number;
       }
     }
 
@@ -197,7 +203,13 @@ export class UploaderComponent implements OnInit {
     let maxNumber = "";
 
     for (const payment of payments) {
-      if (payment.number && payment.number > maxNumber) {
+      const paymentNumber = parseFloat(payment.number); // Convertendo para número
+
+      if (
+        !isNaN(paymentNumber) && // Verifica se é um número válido
+        (maxNumber === "" || paymentNumber > parseFloat(maxNumber))
+      ) {
+        // Compara com o menor número atual
         maxNumber = payment.number;
       }
     }
