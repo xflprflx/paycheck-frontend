@@ -14,7 +14,6 @@ import { UploadEventsService } from "src/app/services/upload-events.service";
 })
 export class PaymentPreviewComponent implements OnInit {
 
-  @Input()
   payments: Payment[] = [];
 
   displayedColumns: string[] = ["number", "serie", "paymentDate", "amount"];
@@ -28,7 +27,12 @@ export class PaymentPreviewComponent implements OnInit {
     private uploadEventsService: UploadEventsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.uploadEventsService.paymentFileSent.subscribe((response) => {
+      this.payments = response;
+      this.dataSource.data = this.payments;
+    })
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.payments && !changes.payments.firstChange) {
@@ -49,7 +53,9 @@ export class PaymentPreviewComponent implements OnInit {
     this.paymentService.postPaymentList(this.payments).subscribe(
       (response) => {
         this.toast.success(response, "Sucesso");
+        this.payments = null;
         this.uploadEventsService.documentPosted.emit();
+        this.uploadEventsService.paymentDocumentPosted.emit();
         this.uploadEventsService.isLoading.emit(false);
       },
       (error) => {

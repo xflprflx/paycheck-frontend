@@ -1,17 +1,10 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { ToastrService } from "ngx-toastr";
-import { Invoice } from "src/app/models/invoice";
-import { DateUtilService } from "src/app/services/date-utils.service";
-import { InvoiceService } from "src/app/services/invoice.service";
-import { UploadEventsService } from "src/app/services/upload-events.service";
+import { Component, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { Invoice } from 'src/app/models/invoice';
+import { InvoiceService } from 'src/app/services/invoice.service';
+import { UploadEventsService } from 'src/app/services/upload-events.service';
 
 @Component({
   selector: "app-invoice-preview",
@@ -19,7 +12,7 @@ import { UploadEventsService } from "src/app/services/upload-events.service";
   styleUrls: ["./invoice-preview.component.css"],
 })
 export class InvoicePreviewComponent implements OnInit {
-  @Input()
+
   invoices: Invoice[] = [];
 
   displayedColumns: string[] = ["number", "scannedDate", "paymentApprovalDate"];
@@ -34,6 +27,11 @@ export class InvoicePreviewComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.uploadEventsService.invoiceFileSent.subscribe((response) => {
+      this.invoices = response;
+      this.dataSource.data = this.invoices;
+    })
+
     if (this.invoices) {
       this.dataSource.data = this.invoices;
     }
@@ -42,6 +40,7 @@ export class InvoicePreviewComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.invoices && !changes.invoices.firstChange) {
       if (changes.invoices.currentValue) {
+        this.invoices = changes.invoices.currentValue
         this.dataSource.data = changes.invoices.currentValue;
       }
     }

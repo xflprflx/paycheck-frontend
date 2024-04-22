@@ -1,6 +1,6 @@
 <div class="file-container" *ngIf="!file">
-    <input type="file" (change)="getFile($event)" class="file" />
-    <img [src]="img" alt="Imagem de exemplo">
+  <input type="file" (change)="getFile($event)" class="file" />
+  <img [src]="img" alt="Tipo de Arquivo" />
 </div>
 
 <div class="file-selected" *ngIf="file">
@@ -15,5 +15,69 @@
 </div>
 <br />
 <ng-content select=".preview" *ngIf="file"></ng-content>
-<!-- <button *ngIf="file" class="register-button" mat-raised-button color="primary" (click)="getFile($event)">Lançar</button> -->
+<mat-divider></mat-divider>
+<div class="tip-container">
+  <h1>Sugestões de Lançamento</h1>
+  <div
+    class="td-tip-container"
+    *ngIf="(transportDocuments && transportDocuments.length > 0) || minNumberSerie1 || minNumberSerie11"
+  >
+    <h2>CT-e | NFS-e</h2>
+    <p>
+      Emissão de <span class="bcyellow">{{ mostRecentIssueDate }}</span> até:
+      <span class="bcyellow">{{ today }}</span
+      >, por que o último registro tem emissão em {{ mostRecentIssueDate }}
+    </p>
+    <mat-divider></mat-divider>
+    <p style="margin-top: 10px" *ngIf="minNumberSerie1 && maxNumberSerie1">
+      Da NFS-e <span class="bcyellow">{{ minNumberSerie1 }}</span> até
+      <span class="bcyellow">{{ maxNumberSerie1 }}</span> série 1, por que há
+      pagamentos já lançados que não constam estas NFS-e no sistema
+    </p>
+    <p *ngIf="minNumberSerie11 && maxNumberSerie11">
+      Do CT-e <span class="bcyellow">{{ minNumberSerie11 }}</span> até
+      <span class="bcyellow">{{ maxNumberSerie11 }}</span> série 11, por que há
+      pagamentos já lançados que não constam estes CT-e no sistema
+    </p>
+  </div>
+  <mat-divider></mat-divider>
+  <div
+    class="invoice-tip-container"
+    style="margin-top: 10px"
+    *ngIf="minNumberNfseByPendingInvoice || minNumberCteByPendingInvoice"
+  >
+    <h2>Canhotos</h2>
 
+    <mat-divider></mat-divider>
+    <p
+      style="margin-top: 10px"
+      *ngIf="minDateNfseByPendingInvoice && minNumberNfseByPendingInvoice"
+    >
+     
+      De
+      <span class="bcyellow">{{
+        minDateNfseByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span>
+      até
+      <span class="bcyellow">{{
+        maxDateNfseByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span
+      > série 1, por que constam NFS-e pendentes de digitalização ou pendente de aprovação
+    </p>
+    <p *ngIf="minDateCteByPendingInvoice && minNumberCteByPendingInvoice">
+      Do CT-e
+      <span class="bcyellow">{{ minNumberCteByPendingInvoice }}</span> até
+      <span class="bcyellow">{{ maxNumberCteByPendingInvoice }}</span> série 11,
+      de
+      <span class="bcyellow">{{
+        minDateCteByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span>
+      até
+      <span class="bcyellow">{{
+        maxDateCteByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span
+      >, por que constam CT-e pendentes de digitalização ou pendente de aprovação
+    </p>
+  </div>
+</div>
+<!-- <button *ngIf="file" class="register-button" mat-raised-button color="primary" (click)="getFile($event)">Lançar</button> -->

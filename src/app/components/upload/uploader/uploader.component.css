@@ -6,36 +6,63 @@
     align-items: center; /* Centraliza verticalmente */
     border: 4px dotted black; /* Adiciona uma borda para visualização */
     z-index: 3;
-    
-}
-
-.file-container .file {
+  }
+  
+  .file-container .file {
     position: absolute;
     opacity: 0;
     width: 1500px; /* Ajusta a largura conforme necessário */
     height: 200px; /* Ajusta a altura conforme necessário */
     z-index: 3;
-    cursor: pointer; 
-}
-
-.file-container img {
+    cursor: pointer;
+  }
+  
+  .file-container img {
     position: absolute;
     width: 15%;
     height: 15%;
     object-fit: cover; /* Para ajustar a imagem dentro do contêiner */
     z-index: 1;
-}
-
-.file-selected {
+  }
+  
+  .file-selected {
     padding: 10px;
-}
-
-.file-name {
+  }
+  
+  .file-name {
     margin-bottom: 10px;
-}
-
-button {
+  }
+  
+  button {
     margin-left: 10px;
+  }
+  
+  .tip-container h1 {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .tip-container p {
+    font-size: 18px;
+  }
+  
+  .bcyellow{
+    background-color: yellow;
+    font-style: italic;
+  }
+
+.td-tip-container {
+  padding: 10px;
+  border-radius: 10px;
+  border: solid rgb(51, 50, 50);
+  box-shadow: 10;
 }
 
-
+.invoice-tip-container {
+  padding: 10px;
+  border-radius: 10px;
+  border: solid rgb(51, 50, 50);
+  box-shadow: 10;
+}

@@ -9,12 +9,8 @@
       >
         <app-transpor-document-preview
           class="preview"
-          [transportDocuments]="transportDocuments"
         ></app-transpor-document-preview>
       </app-uploader>
-
-      <strong>Data mais recente: </strong>
-      <p>{{ mostRecentIssueDate }}</p>
     </mat-step>
 
     <mat-step>
@@ -26,13 +22,8 @@
       >
         <app-invoice-preview
           class="preview"
-          [invoices]="invoices"
         ></app-invoice-preview>
       </app-uploader>
-      <strong>Data mais antiga: </strong>
-      <p>{{ mostOldestIssueDateByInvoice }}</p>
-      <strong>Data mais recente: </strong>
-      <p>{{ mostRecentIssueDateByInvoice }}</p>
     </mat-step>
 
     <mat-step>
@@ -44,12 +35,8 @@
       >
         <app-payment-preview
           class="preview"
-          [payments]="payments"
         ></app-payment-preview>
       </app-uploader>
-      <p><strong>NFS-e faltantes:</strong> {{minNumberSerie1}} - {{maxNumberSerie1}}</p>
-      <p><strong>CT-e faltantes:</strong> {{minNumberSerie11}} - {{maxNumberSerie11}}</p>
-      <p *ngFor="let item of paymentWithoutDocs">{{ item }}</p>
     </mat-step>
   </mat-stepper>
 </div>
