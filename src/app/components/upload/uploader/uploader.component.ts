@@ -35,9 +35,6 @@ export class UploaderComponent implements OnInit {
   maxNumberCteByPendingInvoice: string;
   maxDateCteByPendingInvoice: string;
 
-  mostRecentIssueDateByInvoice: string;
-  mostOldestIssueDateByInvoice: string;
-
   today: string = this.dateUtilService.formatDate(new Date());
 
   constructor(
@@ -57,10 +54,7 @@ export class UploaderComponent implements OnInit {
       .subscribe((response) => {
         this.transportDocuments = response;
         this.mostRecentIssueDate = this.getLatestIssueDate(response);
-        this.mostRecentIssueDateByInvoice =
-          this.getLatestPendingDeliveryIssueDate(response);
-        this.mostOldestIssueDateByInvoice =
-          this.getOldestPendingDeliveryIssueDate(response);
+        
         const transportDocumentNFSE = response.filter(x => x.serie === "1");
         const transportDocumentCTE = response.filter(x => x.serie === "11");
 
@@ -87,10 +81,21 @@ export class UploaderComponent implements OnInit {
         .getTransportDocuments()
         .subscribe((response) => {
           this.mostRecentIssueDate = this.getLatestIssueDate(response);
-          this.mostRecentIssueDateByInvoice =
-            this.getLatestPendingDeliveryIssueDate(response);
-          this.mostOldestIssueDateByInvoice =
-            this.getOldestPendingDeliveryIssueDate(response);
+
+          const transportDocumentNFSE = response.filter(x => x.serie === "1");
+          const transportDocumentCTE = response.filter(x => x.serie === "11");
+  
+          this.minNumberNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).doc;
+          this.minDateNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).date;
+          this.maxNumberNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).doc;
+          this.maxDateNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).date;
+  
+          this.minNumberCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).doc;
+          this.minDateCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).date;
+          this.maxNumberCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).doc;
+          this.maxDateCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).date;
+  
+
           this.paymentService.getPaymentsWithoutDoc().subscribe((response) => {
             this.minNumberSerie1 = this.findMinNumberBySerie(response).serie1;
             this.minNumberSerie11 = this.findMinNumberBySerie(response).serie11;
@@ -120,52 +125,6 @@ export class UploaderComponent implements OnInit {
     }, null);
 
     return latestIssueDate;
-  }
-
-  getLatestPendingDeliveryIssueDate(
-    documents: TransportDocument[]
-  ): string | undefined {
-    this.mostRecentIssueDateByInvoice = null;
-    let latestDate;
-
-    for (const doc of documents) {
-      if (doc.invoices) {
-        for (const invoice of doc.invoices) {
-          if (invoice.deliveryStatus === "Pendente") {
-            // Case-sensitive check
-            const issueDate = this.dateUtilService.stringToDate(doc.issueDate); // Assuming valid date format
-            if (!latestDate || issueDate > latestDate) {
-              latestDate = issueDate;
-            }
-          }
-        }
-      }
-    }
-    return latestDate != undefined
-      ? this.dateUtilService.formatDate(latestDate)
-      : null;
-  }
-
-  getOldestPendingDeliveryIssueDate(
-    documents: TransportDocument[]
-  ): string | undefined {
-    this.mostOldestIssueDateByInvoice = null;
-    let oldestDate;
-
-    for (const doc of documents) {
-      for (const invoice of doc.invoices) {
-        if (invoice.deliveryStatus === "Pendente") {
-          // Case-sensitive check
-          const issueDate = this.dateUtilService.stringToDate(doc.issueDate); // Assuming valid date format
-          if (!oldestDate || issueDate < oldestDate) {
-            oldestDate = issueDate;
-          }
-        }
-      }
-    }
-    return oldestDate != undefined
-      ? this.dateUtilService.formatDate(oldestDate)
-      : null;
   }
 
   getOldestPending(documents: TransportDocument[]): { doc: string; date: string} {
