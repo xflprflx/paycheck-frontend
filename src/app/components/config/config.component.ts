@@ -29,6 +29,7 @@ export class ConfigComponent implements OnInit {
       .updatePaymentTerms(new Parameters(1, paymentTerms))
       .subscribe((response) => {
         this.paymentTerms = response.paymentTerms;
+        this.dashboardEventService.onUpdatePaymentTerms.emit(this.paymentTerms);
         this.toast.success("Condição de pagamento salva com sucesso!");
       });
   }

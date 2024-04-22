@@ -1,6 +1,6 @@
 <app-config *ngIf="!config"></app-config>
 <app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
-<div class="payment-card-container">
+<div class="payment-card-container" *ngIf="transportDocuments.length > 0">
   <app-payment-card
     [money]="true"
     title="Pagamentos Pendentes"
@@ -30,7 +30,7 @@
     color="rgb(121, 177, 121)"
   ></app-payment-card>
 </div>
-<div class="charts">
+<div class="charts" *ngIf="transportDocuments.length > 0 || payments.length > 0">
   <div >
     <app-payment-card
       [money]="true"
@@ -47,7 +47,7 @@
     [transportDocuments]="transportDocuments"
   ></app-timeline>
 </div>
-<app-table
+<app-table *ngIf="transportDocuments.length > 0"
   [transportDocuments]="transportDocuments"
   [specification]="specification"
 ></app-table>
