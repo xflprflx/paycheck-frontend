@@ -1,5 +1,7 @@
+<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px;">A condição de pagamento ainda não foi configurada. Faça isso no card abaixo antes de continuar.</h2>
 <app-config *ngIf="!config"></app-config>
-<app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
+<h2 *ngIf="transportDocuments.length == 0 && payments.length == 0" style="margin-left: 25px; margin-top: 25px;">Nenhum documento lançado! Vá ao menu <span style="font-style: italic;">Lançamentos</span> para começar.</h2>
+<app-filter (onSearchRequest)="specDashboard($event)" *ngIf="transportDocuments.length > 0 || payments.length > 0"></app-filter>
 <div class="payment-card-container" *ngIf="transportDocuments.length > 0">
   <app-payment-card
     [money]="true"
