@@ -21,7 +21,8 @@ export class NavComponent implements OnInit {
     private router: Router,
     private uploadEventService: UploadEventsService,
     private transportDocumentService: TransportDocumentService,
-    private modelEventService: ModelEventService
+    private modelEventService: ModelEventService,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +35,12 @@ export class NavComponent implements OnInit {
       this.transportDocumentService.getTransportDocuments().subscribe(response => {
         this.transportDocuments = response;
         this.modelEventService.transportDocuments.emit(this.transportDocuments);
+      });
+    });
+    this.uploadEventService.paymentDocumentPosted.subscribe(() => {
+      this.paymentService.getPayments().subscribe(response => {
+        this.payments = response;
+        this.modelEventService.payments.emit(this.payments);
       });
     });
   }

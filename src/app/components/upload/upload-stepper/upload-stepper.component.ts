@@ -83,9 +83,6 @@ export class UploadStepperComponent implements OnInit {
     this.uploadEventsService.paymentFileSent.subscribe((x) => {
       this.payments = x;
       this.payments.map((x) => {
-        if(x.paymentDate!=undefined && x.paymentDate!=null){
-          console.log(x.paymentDate, x.number)
-        }
         x.paymentDate =
           x.paymentDate != undefined
             ? this.dateUtilService.stringToDate(x.paymentDate).toISOString()

@@ -1,3 +1,4 @@
+import { ModelEventService } from 'src/app/services/model-event.service';
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Payment } from "src/app/models/payment";
 import { TransportDocument } from "src/app/models/transport-document";
@@ -17,6 +18,7 @@ export class UploaderComponent implements OnInit {
   @Input() img: string;
 
   transportDocuments: TransportDocument[];
+  payments: Payment[];
 
   mostRecentIssueDate: string;
 
@@ -41,10 +43,21 @@ export class UploaderComponent implements OnInit {
     private uploadEventsService: UploadEventsService,
     private transportDocumentService: TransportDocumentService,
     private dateUtilService: DateUtilService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private modelEventService: ModelEventService
   ) {}
 
+
   ngOnInit(): void {
+
+    this.modelEventService.transportDocuments.subscribe((response) => {
+      this.transportDocuments = response;
+    })
+
+    this.modelEventService.payments.subscribe((response) => {
+      this.payments = response;
+    })
+
     this.uploadEventsService.documentPosted.subscribe(() => {
       this.file = null;
     });
@@ -54,19 +67,30 @@ export class UploaderComponent implements OnInit {
       .subscribe((response) => {
         this.transportDocuments = response;
         this.mostRecentIssueDate = this.getLatestIssueDate(response);
-        
-        const transportDocumentNFSE = response.filter(x => x.serie === "1");
-        const transportDocumentCTE = response.filter(x => x.serie === "11");
+        const transportDocumentNFSE = response.filter((x) => x.serie === "1");
+        const transportDocumentCTE = response.filter((x) => x.serie === "11");
 
-        this.minNumberNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).doc;
-        this.minDateNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).date;
-        this.maxNumberNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).doc;
-        this.maxDateNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).date;
+        this.minNumberNfseByPendingInvoice = this.getOldestPending(
+          transportDocumentNFSE
+        ).doc;
+        this.minDateNfseByPendingInvoice = this.getOldestPending(
+          transportDocumentNFSE
+        ).date;
+        this.maxNumberNfseByPendingInvoice = this.getLatestPending(
+          transportDocumentNFSE
+        ).doc;
+        this.maxDateNfseByPendingInvoice = this.getLatestPending(
+          transportDocumentNFSE
+        ).date;
 
-        this.minNumberCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).doc;
-        this.minDateCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).date;
-        this.maxNumberCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).doc;
-        this.maxDateCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).date;
+        this.minNumberCteByPendingInvoice =
+          this.getOldestPending(transportDocumentCTE).doc;
+        this.minDateCteByPendingInvoice =
+          this.getOldestPending(transportDocumentCTE).date;
+        this.maxNumberCteByPendingInvoice =
+          this.getLatestPending(transportDocumentCTE).doc;
+        this.maxDateCteByPendingInvoice =
+          this.getLatestPending(transportDocumentCTE).date;
 
         this.paymentService.getPaymentsWithoutDoc().subscribe((response) => {
           this.minNumberSerie1 = this.findMinNumberBySerie(response).serie1;
@@ -82,19 +106,30 @@ export class UploaderComponent implements OnInit {
         .subscribe((response) => {
           this.mostRecentIssueDate = this.getLatestIssueDate(response);
 
-          const transportDocumentNFSE = response.filter(x => x.serie === "1");
-          const transportDocumentCTE = response.filter(x => x.serie === "11");
-  
-          this.minNumberNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).doc;
-          this.minDateNfseByPendingInvoice = this.getOldestPending(transportDocumentNFSE).date;
-          this.maxNumberNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).doc;
-          this.maxDateNfseByPendingInvoice = this.getLatestPending(transportDocumentNFSE).date;
-  
-          this.minNumberCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).doc;
-          this.minDateCteByPendingInvoice = this.getOldestPending(transportDocumentCTE).date;
-          this.maxNumberCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).doc;
-          this.maxDateCteByPendingInvoice = this.getLatestPending(transportDocumentCTE).date;
-  
+          const transportDocumentNFSE = response.filter((x) => x.serie === "1");
+          const transportDocumentCTE = response.filter((x) => x.serie === "11");
+
+          this.minNumberNfseByPendingInvoice = this.getOldestPending(
+            transportDocumentNFSE
+          ).doc;
+          this.minDateNfseByPendingInvoice = this.getOldestPending(
+            transportDocumentNFSE
+          ).date;
+          this.maxNumberNfseByPendingInvoice = this.getLatestPending(
+            transportDocumentNFSE
+          ).doc;
+          this.maxDateNfseByPendingInvoice = this.getLatestPending(
+            transportDocumentNFSE
+          ).date;
+
+          this.minNumberCteByPendingInvoice =
+            this.getOldestPending(transportDocumentCTE).doc;
+          this.minDateCteByPendingInvoice =
+            this.getOldestPending(transportDocumentCTE).date;
+          this.maxNumberCteByPendingInvoice =
+            this.getLatestPending(transportDocumentCTE).doc;
+          this.maxDateCteByPendingInvoice =
+            this.getLatestPending(transportDocumentCTE).date;
 
           this.paymentService.getPaymentsWithoutDoc().subscribe((response) => {
             this.minNumberSerie1 = this.findMinNumberBySerie(response).serie1;
@@ -127,14 +162,17 @@ export class UploaderComponent implements OnInit {
     return latestIssueDate;
   }
 
-  getOldestPending(documents: TransportDocument[]): { doc: string; date: string} {
+  getOldestPending(documents: TransportDocument[]): {
+    doc: string;
+    date: string;
+  } {
     let dateTemp;
     let docTemp;
-    for(const doc of documents) {
-      for(const invoice of doc.invoices) {
-        if(!invoice.paymentApprovalDate){
+    for (const doc of documents) {
+      for (const invoice of doc.invoices) {
+        if (!invoice.paymentApprovalDate) {
           const issueDate = this.dateUtilService.stringToDate(doc.issueDate);
-          if(!dateTemp || issueDate < dateTemp) {
+          if (!dateTemp || issueDate < dateTemp) {
             dateTemp = issueDate;
             docTemp = doc.number;
           }
@@ -143,18 +181,21 @@ export class UploaderComponent implements OnInit {
     }
     return {
       doc: docTemp,
-      date: dateTemp
+      date: dateTemp,
     };
   }
 
-  getLatestPending(documents: TransportDocument[]): { doc: string; date: string} {
+  getLatestPending(documents: TransportDocument[]): {
+    doc: string;
+    date: string;
+  } {
     let dateTemp;
     let docTemp;
-    for(const doc of documents) {
-      for(const invoice of doc.invoices) {
-        if(!invoice.paymentApprovalDate){
+    for (const doc of documents) {
+      for (const invoice of doc.invoices) {
+        if (!invoice.paymentApprovalDate) {
           const issueDate = this.dateUtilService.stringToDate(doc.issueDate);
-          if(!dateTemp || issueDate > dateTemp) {
+          if (!dateTemp || issueDate > dateTemp) {
             dateTemp = issueDate;
             docTemp = doc.number;
           }
@@ -163,7 +204,7 @@ export class UploaderComponent implements OnInit {
     }
     return {
       doc: docTemp,
-      date: dateTemp
+      date: dateTemp,
     };
   }
 

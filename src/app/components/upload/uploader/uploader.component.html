@@ -18,17 +18,12 @@
 <mat-divider></mat-divider>
 <div class="tip-container">
   <h1>Sugestões de Lançamento</h1>
-  <div class="td-tip-container">
-    <h2
-      *ngIf="
-        (transportDocuments && transportDocuments.length > 0) ||
-        minNumberSerie1 ||
-        minNumberSerie11
-      "
-    >
-      CT-e | NFS-e
-    </h2>
-    <p *ngIf="transportDocuments && transportDocuments.length > 0">
+  <div
+    class="td-tip-container"
+    *ngIf="(transportDocuments && transportDocuments.length > 0) || minNumberSerie1 || minNumberSerie11"
+  >
+    <h2>CT-e | NFS-e</h2>
+    <p>
       Emissão de <span class="bcyellow">{{ mostRecentIssueDate }}</span> até:
       <span class="bcyellow">{{ today }}</span
       >, por que o último registro tem emissão em {{ mostRecentIssueDate }}
@@ -46,36 +41,42 @@
     </p>
   </div>
   <mat-divider></mat-divider>
-  <div class="invoice-tip-container" style="margin-top: 10px;">
-    <h2
-      *ngIf="
-        (transportDocuments && transportDocuments.length > 0) ||
-        minNumberSerie1 ||
-        minNumberSerie11
-      "
-    >
-      Canhotos
-    </h2>
+  <div
+    class="invoice-tip-container"
+    style="margin-top: 10px"
+    *ngIf="minNumberNfseByPendingInvoice || minNumberCteByPendingInvoice"
+  >
+    <h2>Canhotos</h2>
 
     <mat-divider></mat-divider>
     <p
       style="margin-top: 10px"
       *ngIf="minDateNfseByPendingInvoice && minNumberNfseByPendingInvoice"
     >
-      Da NFS-e
-      <span class="bcyellow">{{ minNumberNfseByPendingInvoice }}</span> até
-      <span class="bcyellow">{{ maxNumberNfseByPendingInvoice }}</span> série 1,
-      de <span class="bcyellow">{{ minDateNfseByPendingInvoice | date : 'dd/MM/yyyy' }}</span> até
-      <span class="bcyellow">{{ maxDateNfseByPendingInvoice | date : 'dd/MM/yyyy'}}</span
-      >, por que consta como pendente de digitalização ou pendente de aprovação
+     
+      De
+      <span class="bcyellow">{{
+        minDateNfseByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span>
+      até
+      <span class="bcyellow">{{
+        maxDateNfseByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span
+      > série 1, por que constam NFS-e pendentes de digitalização ou pendente de aprovação
     </p>
     <p *ngIf="minDateCteByPendingInvoice && minNumberCteByPendingInvoice">
       Do CT-e
       <span class="bcyellow">{{ minNumberCteByPendingInvoice }}</span> até
       <span class="bcyellow">{{ maxNumberCteByPendingInvoice }}</span> série 11,
-      de <span class="bcyellow">{{ minDateCteByPendingInvoice | date : 'dd/MM/yyyy'}}</span> até
-      <span class="bcyellow">{{ maxDateCteByPendingInvoice | date : 'dd/MM/yyyy' }}</span
-      >, por que consta como pendente de digitalização ou pendente de aprovação
+      de
+      <span class="bcyellow">{{
+        minDateCteByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span>
+      até
+      <span class="bcyellow">{{
+        maxDateCteByPendingInvoice | date : "dd/MM/yyyy"
+      }}</span
+      >, por que constam CT-e pendentes de digitalização ou pendente de aprovação
     </p>
   </div>
 </div>
