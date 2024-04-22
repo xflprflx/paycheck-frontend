@@ -10,6 +10,7 @@ export class UploadEventsService {
   documentPosted = new EventEmitter<void>();
   invoiceFileSent = new EventEmitter<Invoice[]>();
   transportDocumentFileSent = new EventEmitter<TransportDocument[]>();
+  transportDocumentPosted = new EventEmitter<void>();
   paymentFileSent = new EventEmitter<Payment[]>();
   isLoading = new EventEmitter<boolean>();
   onCleaningFile = new EventEmitter<void>();
