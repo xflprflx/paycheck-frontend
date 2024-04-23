@@ -1,6 +1,17 @@
+<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px">
+  A condição de pagamento ainda não foi configurada. Faça isso no card abaixo
+  antes de continuar.
+</h2>
 <app-config *ngIf="!config"></app-config>
+<h2
+  *ngIf="transportDocuments.length == 0 && payments.length == 0"
+  style="margin-left: 25px; margin-top: 25px"
+>
+  Nenhum documento lançado! Vá ao menu
+  <span style="font-style: italic">Lançamentos</span> para começar ou ajuste o filtro.
+</h2>
 <app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
-<div class="payment-card-container">
+<div class="payment-card-container" *ngIf="transportDocuments.length > 0">
   <app-payment-card
     [money]="true"
     title="Pagamentos Pendentes"
@@ -31,7 +42,7 @@
   ></app-payment-card>
 </div>
 <div class="charts">
-  <div >
+  <div>
     <app-payment-card
       [money]="true"
       title="Pagamentos Abatidos"
@@ -45,6 +56,7 @@
   <app-timeline
     [payments]="payments"
     [transportDocuments]="transportDocuments"
+    *ngIf="payments.length > 0 || transportDocuments.length > 0"
   ></app-timeline>
 </div>
 <app-table
