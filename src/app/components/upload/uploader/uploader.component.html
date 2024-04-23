@@ -32,8 +32,8 @@
     <p style="margin-top: 10px" *ngIf="minNumberSerie1 && maxNumberSerie1">
       Da NFS-e <span class="bcyellow">{{ minNumberSerie1 }}</span> até
       <span class="bcyellow">{{ maxNumberSerie1 }}</span> série 1, por que há
-      pagamentos já lançados que não constam estas NFS-e no sistema
-    </p>
+      pagamentos já lançados que não constam estas NFS-e no sistema<br>
+      <small>ATENÇÃO: coloque também a <span class="bcyellow">data de emissão</span> para evitar o lançamento de NFS-e indesejadas. NFS-e podem repetir a numeração de um ano para o outro.</small></p>
     <p *ngIf="minNumberSerie11 && maxNumberSerie11">
       Do CT-e <span class="bcyellow">{{ minNumberSerie11 }}</span> até
       <span class="bcyellow">{{ maxNumberSerie11 }}</span> série 11, por que há
