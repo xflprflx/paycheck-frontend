@@ -1,7 +1,16 @@
-<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px;">A condição de pagamento ainda não foi configurada. Faça isso no card abaixo antes de continuar.</h2>
+<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px">
+  A condição de pagamento ainda não foi configurada. Faça isso no card abaixo
+  antes de continuar.
+</h2>
 <app-config *ngIf="!config"></app-config>
-<h2 *ngIf="transportDocuments.length == 0 && payments.length == 0" style="margin-left: 25px; margin-top: 25px;">Nenhum documento lançado! Vá ao menu <span style="font-style: italic;">Lançamentos</span> para começar.</h2>
-<app-filter (onSearchRequest)="specDashboard($event)" *ngIf="transportDocuments.length > 0 || payments.length > 0"></app-filter>
+<h2
+  *ngIf="transportDocuments.length == 0 && payments.length == 0"
+  style="margin-left: 25px; margin-top: 25px"
+>
+  Nenhum documento lançado! Vá ao menu
+  <span style="font-style: italic">Lançamentos</span> para começar ou ajuste o filtro.
+</h2>
+<app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
 <div class="payment-card-container" *ngIf="transportDocuments.length > 0">
   <app-payment-card
     [money]="true"
@@ -32,8 +41,8 @@
     color="rgb(121, 177, 121)"
   ></app-payment-card>
 </div>
-<div class="charts" *ngIf="transportDocuments.length > 0 || payments.length > 0">
-  <div >
+<div class="charts">
+  <div>
     <app-payment-card
       [money]="true"
       title="Pagamentos Abatidos"
@@ -47,9 +56,10 @@
   <app-timeline
     [payments]="payments"
     [transportDocuments]="transportDocuments"
+    *ngIf="payments.length > 0 || transportDocuments.length > 0"
   ></app-timeline>
 </div>
-<app-table *ngIf="transportDocuments.length > 0"
+<app-table
   [transportDocuments]="transportDocuments"
   [specification]="specification"
 ></app-table>
