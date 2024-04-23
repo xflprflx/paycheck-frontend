@@ -77,6 +77,7 @@ export class TimelineComponent implements OnChanges, OnInit {
       }
     });
 
+
     // Generate labels and values for each category
     const barLabelsSet = new Set<string>([
       ...Object.keys(categoriesTotalPayment),
@@ -87,14 +88,15 @@ export class TimelineComponent implements OnChanges, OnInit {
     const barLabels = Array.from(barLabelsSet).sort((a, b) => moment(a, "MMM-YYYY").valueOf() - moment(b, "MMM-YYYY").valueOf());
 
     const barAmountsPayment = barLabels.map(
-      (key) => categoriesTotalPayment[key] || 0
+      (key) => parseFloat((categoriesTotalPayment[key] || 0).toFixed(2))
     );
     const barAmountsForecastScanned = barLabels.map(
-      (key) => categoriesTotalForecastScanned[key] || 0
+      (key) => parseFloat((categoriesTotalForecastScanned[key] || 0).toFixed(2))
     );
     const barAmountsForecastApproval = barLabels.map(
-      (key) => categoriesTotalForecastApproval[key] || 0
+      (key) => parseFloat((categoriesTotalForecastApproval[key] || 0).toFixed(2))
     );
+    
 
     const ctx = document.getElementById("bar-chart") as HTMLCanvasElement;
     this.barChart = new Chart(ctx, {
