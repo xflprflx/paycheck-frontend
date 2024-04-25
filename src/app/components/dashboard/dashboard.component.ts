@@ -38,13 +38,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.configService.getPaymentTerms().subscribe((response) => {
       this.config = response;
-    })
+    });
     this.dashboardEventService.onUpdatePaymentTerms.subscribe((response) => {
       this.config = response;
-    })
+    });
     this.dashboardEventService.onUpdateTable.subscribe((response) => {
       this.specDashboard(response);
     });
+
     this.paymentService.getPayments().subscribe((response) => {
       this.payments = response;
     });
