@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
-import { TransportDocument } from 'src/app/models/transport-document';
-import { DashboardEventService } from 'src/app/services/dashboard-event.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { ChartOptions, ChartType } from "chart.js";
+import { Label } from "ng2-charts";
+import { TransportDocument } from "src/app/models/transport-document";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
 
 @Component({
   selector: "app-payment-status",
@@ -68,8 +68,8 @@ export class PaymentStatusComponent implements OnInit {
       this.chartData = Object.values(groupedData).map((value) => {
         return parseFloat(value.toFixed(2)); // Converte a string em número
       });
-      console.log(this.chartData)
       // Dentro do ngOnInit ou outro método apropriado:
-    });
+    }
+  );
   }
 }

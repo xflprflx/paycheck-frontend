@@ -23,8 +23,20 @@ img {
     margin-right: .6rem;
 }
 
-.menu {
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .menu {
     margin: 1rem 0 0 1rem;
+    color: rgb(63, 49, 49);
+    background: linear-gradient(90deg, rgba(184,220,255,1) 0%, rgba(180,191,230,1) 58%);
+}
+
+.table {
+    margin: 1rem 2rem 0 0;
     color: rgb(63, 49, 49);
     background: linear-gradient(90deg, rgba(184,220,255,1) 0%, rgba(180,191,230,1) 58%);
 }

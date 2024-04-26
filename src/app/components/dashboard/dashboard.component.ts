@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit {
   approvalLeadTimeLabel: string;
   payments: Payment[] = [];
   config: number;
+  isLoading: boolean;
+  showTable: boolean;
 
   constructor(
     private transportDocumentService: TransportDocumentService,
@@ -38,6 +40,13 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    //this.dashboardEventService.isLoading.emit(true);
+
+    this.dashboardEventService.showTable.subscribe(() => {
+      this.showTable = !this.showTable;
+    });
+
     this.configService.getPaymentTerms().subscribe((response) => {
       this.config = response;
     });
@@ -55,30 +64,17 @@ export class DashboardComponent implements OnInit {
       this.paidAmountValue = response.paidAmountValue;
       this.debateAmountValue = response.debateAmountValue;
       this.scannedLeadTimeValue = response.scannedLeadTimeValue;
-      this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
+      this.scannedLeadTimeLabel =
+        this.scannedLeadTimeValue > 1 ? "dias" : "dia";
       this.approvalLeadTimeValue = response.approvalLeadTimeValue;
-      this.approvalLeadTimeLabel = this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+      this.approvalLeadTimeLabel =
+        this.approvalLeadTimeValue > 1 ? "dias" : "dia";
       setTimeout(() => {
         this.dashboardEventService.initDash.emit(this.transportDocuments);
-        console.log(this.transportDocuments)
+        //this.dashboardEventService.isLoading.emit(false);
       });
-    })
-
-/*    this.paymentService.getPayments().subscribe((response) => {
-      this.payments = response;
     });
-    this.transportDocumentService
-      .getTransportDocuments()
-      .subscribe((response) => {
-        this.transportDocuments = response;
-        this.pendingAmount();
-        this.paidAmount();
-        this.debateAmount();
-        this.scannedLeadTime();
-        this.approvalLeadTime();
-        this.dashboardEventService.initDash.emit(this.transportDocuments);
-        console.log(this.transportDocuments);
-      });*/
+    this.isLoading = false;
   }
 
   specDashboard(spec: Specification) {
