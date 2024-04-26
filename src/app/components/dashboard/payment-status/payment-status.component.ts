@@ -68,6 +68,7 @@ export class PaymentStatusComponent implements OnInit {
       this.chartData = Object.values(groupedData).map((value) => {
         return parseFloat(value.toFixed(2)); // Converte a string em número
       });
+      console.log(this.chartData)
       // Dentro do ngOnInit ou outro método apropriado:
     });
   }

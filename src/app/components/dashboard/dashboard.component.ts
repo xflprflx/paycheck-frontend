@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardEventService.onUpdateTable.subscribe((response) => {
       this.specDashboard(response);
     });
-    
+
     this.dashboardService.getDashboardProjection().subscribe((response) => {
       this.payments = response.payments;
       this.transportDocuments = response.transportDocuments;
@@ -58,11 +58,13 @@ export class DashboardComponent implements OnInit {
       this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
       this.approvalLeadTimeValue = response.approvalLeadTimeValue;
       this.approvalLeadTimeLabel = this.approvalLeadTimeValue > 1 ? "dias" : "dia";
-      this.dashboardEventService.initDash.emit(this.transportDocuments);
-      console.log(this.transportDocuments)
+      setTimeout(() => {
+        this.dashboardEventService.initDash.emit(this.transportDocuments);
+        console.log(this.transportDocuments)
+      });
     })
 
-    /*this.paymentService.getPayments().subscribe((response) => {
+/*    this.paymentService.getPayments().subscribe((response) => {
       this.payments = response;
     });
     this.transportDocumentService
@@ -75,6 +77,7 @@ export class DashboardComponent implements OnInit {
         this.scannedLeadTime();
         this.approvalLeadTime();
         this.dashboardEventService.initDash.emit(this.transportDocuments);
+        console.log(this.transportDocuments);
       });*/
   }
 
