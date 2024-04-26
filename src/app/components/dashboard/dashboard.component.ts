@@ -47,7 +47,8 @@ export class DashboardComponent implements OnInit {
     this.dashboardEventService.onUpdateTable.subscribe((response) => {
       this.specDashboard(response);
     });
-
+    let startTime = new Date().getTime();
+    
     this.dashboardService.getDashboardProjection().subscribe((response) => {
       this.payments = response.payments;
       this.transportDocuments = response.transportDocuments;
@@ -58,8 +59,14 @@ export class DashboardComponent implements OnInit {
       this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
       this.approvalLeadTimeValue = response.approvalLeadTimeValue;
       this.approvalLeadTimeLabel = this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+      this.dashboardEventService.initDash.emit(this.transportDocuments);
+      console.log(this.transportDocuments)
     })
-
+    let endTime = new Date().getTime();
+    let duration = endTime - startTime; // Duração em milissegundos
+    console.log(
+      "Tempo de execução da consulta: " + duration + " milissegundos"
+    );
     /*this.paymentService.getPayments().subscribe((response) => {
       this.payments = response;
     });
