@@ -1,5 +1,5 @@
 import { UploadEventsService } from 'src/app/services/upload-events.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TransportDocumentService } from 'src/app/services/transport-document.service';
 import { PaymentService } from 'src/app/services/payment.service';
@@ -25,7 +25,8 @@ export class NavComponent implements OnInit {
     private dashboardEventService: DashboardEventService,
     private transportDocumentService: TransportDocumentService,
     private modelEventService: ModelEventService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -51,12 +52,15 @@ export class NavComponent implements OnInit {
   }
 
   showTable() {
-    if(this.showTableValue == false) {
+    if(!this.showTableValue) {
       this.loading = true;
       this.showTableValue = true;
     } else {
       this.showTableValue = false;
     }
-    setTimeout(() => this.dashboardEventService.showTable.emit());
+    setTimeout(() => {
+      this.dashboardEventService.showTable.emit();
+      this.cdr.detectChanges();
+    }, 2000);
   }
 }
