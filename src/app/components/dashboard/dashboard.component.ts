@@ -41,20 +41,19 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    //this.dashboardEventService.isLoading.emit(true);
 
-    this.dashboardEventService.showTable.subscribe(() => {
-      this.showTable = !this.showTable;
-    });
+    this.dashboardEventService.showTable.subscribe(() => this.showTable = !this.showTable);
+    this.dashboardEventService.onUpdatePaymentTerms.subscribe((response) => this.config = response);   
+    this.dashboardEventService.onUpdateTable.subscribe(() => this.getAll());
 
+    this.getAll();
+    
+    this.isLoading = false;
+  }
+
+  getAll() {
     this.configService.getPaymentTerms().subscribe((response) => {
       this.config = response;
-    });
-    this.dashboardEventService.onUpdatePaymentTerms.subscribe((response) => {
-      this.config = response;
-    });
-    this.dashboardEventService.onUpdateTable.subscribe((response) => {
-      this.specDashboard(response);
     });
 
     this.dashboardService.getDashboardProjection().subscribe((response) => {
@@ -71,10 +70,9 @@ export class DashboardComponent implements OnInit {
         this.approvalLeadTimeValue > 1 ? "dias" : "dia";
       setTimeout(() => {
         this.dashboardEventService.initDash.emit(this.transportDocuments);
-        //this.dashboardEventService.isLoading.emit(false);
       });
     });
-    this.isLoading = false;
+
   }
 
   specDashboard(spec: Specification) {

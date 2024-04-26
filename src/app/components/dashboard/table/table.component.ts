@@ -102,12 +102,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -119,12 +115,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -136,12 +128,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
