@@ -8,6 +8,7 @@ import { DateUtilService } from "./../../services/date-utils.service";
 import { Payment } from "src/app/models/payment";
 import { PaymentService } from "src/app/services/payment.service";
 import { ConfigService } from "src/app/services/config.service";
+import { DashboardService } from "src/app/services/dashboard.service";
 
 @Component({
   selector: "app-dashboard",
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit {
     private dateUtilService: DateUtilService,
     private dashboardEventService: DashboardEventService,
     private paymentService: PaymentService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private dashboardService: DashboardService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +48,19 @@ export class DashboardComponent implements OnInit {
       this.specDashboard(response);
     });
 
-    this.paymentService.getPayments().subscribe((response) => {
+    this.dashboardService.getDashboardProjection().subscribe((response) => {
+      this.payments = response.payments;
+      this.transportDocuments = response.transportDocuments;
+      this.pendingAmountValue = response.pendingAmountValue;
+      this.paidAmountValue = response.paidAmountValue;
+      this.debateAmountValue = response.debateAmountValue;
+      this.scannedLeadTimeValue = response.scannedLeadTimeValue;
+      this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
+      this.approvalLeadTimeValue = response.approvalLeadTimeValue;
+      this.approvalLeadTimeLabel = this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+    })
+
+    /*this.paymentService.getPayments().subscribe((response) => {
       this.payments = response;
     });
     this.transportDocumentService
@@ -59,7 +73,7 @@ export class DashboardComponent implements OnInit {
         this.scannedLeadTime();
         this.approvalLeadTime();
         this.dashboardEventService.initDash.emit(this.transportDocuments);
-      });
+      });*/
   }
 
   specDashboard(spec: Specification) {
