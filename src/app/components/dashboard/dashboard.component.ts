@@ -52,6 +52,7 @@ export class DashboardComponent implements OnInit {
     this.transportDocumentService
       .getTransportDocuments()
       .subscribe((response) => {
+
         this.transportDocuments = response;
         this.pendingAmount();
         this.paidAmount();
