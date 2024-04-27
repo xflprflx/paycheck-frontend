@@ -21,6 +21,7 @@
     <!-- <app-header></app-header> -->
     <div class="button-container">
       <button
+      [matTooltip]="drawer.opened ? 'Recolher menu lateral' : 'Expandir menu lateral'"
         class="menu mat-elevation-z8"
         (click)="drawer.toggle()"
         mat-icon-button
@@ -28,11 +29,13 @@
         <mat-icon>menu</mat-icon>
       </button>
       <button
+        [matTooltip]="showTableValue ? 'Recolher tabela' : 'Mostrar tabela'"
         class="table mat-elevation-z8"
+        [ngClass]="{'hidden-table': showTableValue, 'show-table': !showTableValue}"
         (click)="showTable()"
         mat-icon-button
       >
-        <mat-icon>table</mat-icon>
+        <mat-icon>grid_on</mat-icon>
       </button>
     </div>
     <router-outlet></router-outlet>

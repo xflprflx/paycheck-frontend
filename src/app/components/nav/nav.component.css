@@ -36,9 +36,20 @@ img {
 }
 
 .table {
-    margin: 1rem 2rem 0 0;
+    margin: 1rem 2rem 0 1rem;
     color: rgb(63, 49, 49);
+}
+
+.show-table {
     background: linear-gradient(90deg, rgba(184,220,255,1) 0%, rgba(180,191,230,1) 58%);
+}
+
+.hidden-table {
+    background: linear-gradient(90deg, rgb(255, 214, 184) 0%, rgb(230, 187, 180) 58%);
+}
+
+.show-table-tooltip {
+    color: white;
 }
 
 .loading-overlay {

@@ -77,7 +77,24 @@ export class DashboardComponent implements OnInit {
 
   specDashboard(spec: Specification) {
     this.specification = spec;
-    this.paymentService.getPaymentsFiltered(spec).subscribe((response) => {
+    this.dashboardService.getDashboardProjectionFiltered(spec).subscribe((response)=> {
+      this.payments = response.payments;
+      this.transportDocuments = response.transportDocuments;
+      this.pendingAmountValue = response.pendingAmountValue;
+      this.paidAmountValue = response.paidAmountValue;
+      this.debateAmountValue = response.debateAmountValue;
+      this.scannedLeadTimeValue = response.scannedLeadTimeValue;
+      this.scannedLeadTimeLabel =
+        this.scannedLeadTimeValue > 1 ? "dias" : "dia";
+      this.approvalLeadTimeValue = response.approvalLeadTimeValue;
+      this.approvalLeadTimeLabel =
+        this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+      setTimeout(() => {
+        this.dashboardEventService.initDash.emit(this.transportDocuments);
+      });
+    })
+
+    /*this.paymentService.getPaymentsFiltered(spec).subscribe((response) => {
       this.payments = response;
     });
     this.transportDocumentService
@@ -89,7 +106,7 @@ export class DashboardComponent implements OnInit {
         this.debateAmount();
         this.scannedLeadTime();
         this.approvalLeadTime();
-      });
+      });*/
   }
 
   pendingAmount() {
