@@ -62,7 +62,7 @@ export class InvoicePreviewComponent implements OnInit {
         this.uploadEventsService.isLoading.emit(false);
       },
       (error) => {
-        this.toast.error(error.error);
+        this.toast.error(error.error.message);
         this.uploadEventsService.isLoading.emit(false);
       }
     );

@@ -10,12 +10,11 @@ import { DateUtilService } from './date-utils.service';
 })
 export class InvoiceService {
 
-  constructor(private http: HttpClient, private dateUtilService: DateUtilService) { }
+  constructor(private http: HttpClient) { }
 
   postInvoiceList(invoices: Invoice[]): Observable<string> {
-    
-    return this.http.post(
-      `${API_CONFIG.baseUrl}/invoices/list`, invoices, { "responseType":"text" });
+    return this.http.post<string>(
+      `${API_CONFIG.baseUrl}/invoices/list`, invoices);
   }
 
   sendFileAndGetInvoiceList(file: File): Observable<Invoice[]> {

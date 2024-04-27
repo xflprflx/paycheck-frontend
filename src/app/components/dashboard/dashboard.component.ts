@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Payment } from 'src/app/models/payment';
-import { Specification } from 'src/app/models/specification';
-import { TransportDocument } from 'src/app/models/transport-document';
-import { ConfigService } from 'src/app/services/config.service';
-import { DashboardEventService } from 'src/app/services/dashboard-event.service';
-import { DashboardService } from 'src/app/services/dashboard.service';
+import { Component, OnInit } from "@angular/core";
+import { Payment } from "src/app/models/payment";
+import { Specification } from "src/app/models/specification";
+import { TransportDocument } from "src/app/models/transport-document";
+import { ConfigService } from "src/app/services/config.service";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
+import { DashboardService } from "src/app/services/dashboard.service";
 
-import { DashboardProjection } from './../../models/dashboard-projection';
+import { DashboardProjection } from "./../../models/dashboard-projection";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-dashboard",
@@ -31,7 +32,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardEventService: DashboardEventService,
     private configService: ConfigService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -54,10 +56,11 @@ export class DashboardComponent implements OnInit {
     this.configService.getPaymentTerms().subscribe((response) => {
       this.config = response;
     });
-    this.dashboardService.getDashboardProjection().subscribe((response) => {
-      this.mountDashboardProjection(response);
-    });
-    
+    this.dashboardService.getDashboardProjection().subscribe(
+      (response) => {
+        this.mountDashboardProjection(response);
+      }
+    );
   }
 
   specDashboard(spec: Specification) {
@@ -66,6 +69,10 @@ export class DashboardComponent implements OnInit {
       .getDashboardProjectionFiltered(spec)
       .subscribe((response) => {
         this.mountDashboardProjection(response);
+      },
+      (error) => {
+        console.log(error)
+        this.toast.info(error.error.message);
       });
   }
 
