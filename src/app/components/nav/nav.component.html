@@ -1,6 +1,6 @@
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" opened>
-    <img src="assets/img/logo.svg" alt="Logo">
+    <img src="assets/img/logo.svg" alt="Logo" />
     <mat-nav-list class="nav-list">
       <a mat-list-item routerLink="dashboard">
         <i class="material-icons">show_chart</i>
@@ -19,13 +19,25 @@
 
   <div class="sidenav-content">
     <!-- <app-header></app-header> -->
-    <button
-      class="menu mat-elevation-z8"
-      (click)="drawer.toggle()"
-      mat-icon-button
-    >
-      <mat-icon>menu</mat-icon>
-    </button>
+    <div class="button-container">
+      <button
+      [matTooltip]="drawer.opened ? 'Recolher menu lateral' : 'Expandir menu lateral'"
+        class="menu mat-elevation-z8"
+        (click)="drawer.toggle()"
+        mat-icon-button
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <button
+        [matTooltip]="showTableValue ? 'Recolher tabela' : 'Mostrar tabela'"
+        class="table mat-elevation-z8"
+        [ngClass]="{'hidden-table': showTableValue, 'show-table': !showTableValue}"
+        (click)="showTable()"
+        mat-icon-button
+      >
+        <mat-icon>grid_on</mat-icon>
+      </button>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </mat-drawer-container>

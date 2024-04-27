@@ -10,5 +10,7 @@ export class DashboardEventService {
   onUpdateTable = new EventEmitter<Specification>();
   initDash = new EventEmitter<TransportDocument[]>();
   onUpdatePaymentTerms = new EventEmitter<number>();
+  isLoading = new EventEmitter<boolean>();
+  showTable = new EventEmitter<void>();
   constructor() { }
 }

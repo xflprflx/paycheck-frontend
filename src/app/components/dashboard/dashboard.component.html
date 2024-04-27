@@ -2,16 +2,21 @@
   A condição de pagamento ainda não foi configurada. Faça isso no card abaixo
   antes de continuar.
 </h2>
-<app-config *ngIf="!config"></app-config>
+<app-config *ngIf="!config && !isLoading"></app-config>
 <h2
-  *ngIf="transportDocuments.length == 0 && payments.length == 0"
+  *ngIf="transportDocuments.length == 0 && payments.length == 0 && !isLoading"
   style="margin-left: 25px; margin-top: 25px"
 >
   Nenhum documento lançado! Vá ao menu
-  <span style="font-style: italic">Lançamentos</span> para começar ou ajuste o filtro.
+  <span style="font-style: italic">Lançamentos</span> para começar ou ajuste o
+  filtro.
 </h2>
+
 <app-filter (onSearchRequest)="specDashboard($event)"></app-filter>
-<div class="payment-card-container" *ngIf="transportDocuments.length > 0 || payments.length > 0">
+<div
+  class="payment-card-container"
+  *ngIf="transportDocuments.length > 0 || payments.length > 0"
+>
   <app-payment-card
     [money]="true"
     title="Pagamentos Pendentes"
@@ -44,14 +49,14 @@
 <div class="charts">
   <div>
     <app-payment-card
-    *ngIf="transportDocuments.length > 0 || payments.length > 0"
+      *ngIf="transportDocuments.length > 0 || payments.length > 0"
       [money]="true"
       title="Pagamentos Abatidos"
       [value]="debateAmountValue"
       color="rgb(243, 130, 130)"
     ></app-payment-card>
     <app-payment-status
-    *ngIf="transportDocuments.length > 0 || payments.length > 0"
+      *ngIf="transportDocuments.length > 0 || payments.length > 0"
       [transportDocuments]="transportDocuments"
     ></app-payment-status>
   </div>
@@ -61,7 +66,9 @@
     *ngIf="payments.length > 0 || transportDocuments.length > 0"
   ></app-timeline>
 </div>
+
 <app-table
+  *ngIf="showTable"
   [transportDocuments]="transportDocuments"
   [specification]="specification"
 ></app-table>
