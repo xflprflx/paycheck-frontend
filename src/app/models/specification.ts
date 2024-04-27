@@ -29,17 +29,8 @@ export class Specification {
     paymentStatus?: number
   ) {
     const currentDate = new Date();
-    this.issueStart =
-      this.dateToString(issueStart) ||
-      this.dateToString(
-        new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() - 6,
-          currentDate.getDate()
-        )
-      );
-    this.issueEnd =
-      this.dateToString(issueEnd) || this.dateToString(currentDate);
+    this.issueStart = this.dateToString(issueStart);
+    this.issueEnd = this.dateToString(issueEnd);
     this.scannedStart = this.dateToString(scannedStart);
     this.scannedEnd = this.dateToString(scannedEnd);
     this.forecastScStart = this.dateToString(forecastScStart);

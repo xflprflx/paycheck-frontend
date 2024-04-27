@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
@@ -11,7 +19,7 @@ import { DashboardEventService } from "src/app/services/dashboard-event.service"
 import { PreviewPdfComponent } from "./preview-pdf/preview-pdf.component";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { TableModel } from "src/app/models/tablemodel";
 
 @Component({
@@ -21,7 +29,7 @@ import { TableModel } from "src/app/models/tablemodel";
 })
 export class TableComponent implements OnInit {
   @Input()
-  transportDocuments: TransportDocument[] = []
+  transportDocuments: TransportDocument[] = [];
 
   @ViewChild(MatTable) table: MatTable<any>;
 
@@ -51,7 +59,7 @@ export class TableComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<TransportDocument>(
-    this.transportDocuments,
+    this.transportDocuments
   );
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -62,21 +70,24 @@ export class TableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.dashboardEventService.onConfirmeDialog.subscribe((response) => {
-      if(this.specification !== undefined) {
+      if (this.specification !== undefined) {
         this.dashboardEventService.onUpdateTable.emit(this.specification);
       }
       this.dashboardEventService.onUpdateTable.emit(new Specification());
-    })
+    });
+   }
+
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dashboardEventService.isLoading.emit(false);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.transportDocuments && changes.transportDocuments.currentValue) {
       this.dataSource.data = changes.transportDocuments.currentValue;
-      this.dataSource.paginator = this.paginator;
     }
-    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -91,12 +102,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if(this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -108,12 +115,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if(this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -125,12 +128,8 @@ export class TableComponent implements OnInit {
       data: { transportDocument: transportDocument },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if(this.specification !== undefined) {
-        this.dashboardEventService.onUpdateTable.emit(this.specification);
-      } else {
-        this.dashboardEventService.onUpdateTable.emit(new Specification());
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.dashboardEventService.onUpdateTable.emit();
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -142,19 +141,17 @@ export class TableComponent implements OnInit {
       data: { transportDocuments: transportDocuments },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   downloadPdf() {
-    const doc = new jsPDF('l', 'px', 'a4'); // 'l' para orientação horizontal
-    autoTable(doc, { html: '#pdfTable', startY: 20 });
-    doc.save('table.pdf');
+    const doc = new jsPDF("l", "px", "a4"); // 'l' para orientação horizontal
+    autoTable(doc, { html: "#pdfTable", startY: 20 });
+    doc.save("table.pdf");
   }
 
   exportToExcel(): void {
-    const values = this.transportDocuments.map(x => new TableModel(x))
+    const values = this.transportDocuments.map((x) => new TableModel(x));
     const data = values;
     const header = [
       "Número",
@@ -170,26 +167,27 @@ export class TableComponent implements OnInit {
       "Status Pagamento",
       "Pago em",
       "Valor pago",
-      "Diferença"
+      "Diferença",
     ];
     const headerRow = {};
     header.forEach((item, index) => {
       headerRow[XLSX.utils.encode_col(index)] = item;
     });
-  
-    const dataRows = data.map(obj => {
+
+    const dataRows = data.map((obj) => {
       const row = {};
       Object.keys(obj).forEach((key, index) => {
         row[XLSX.utils.encode_col(index)] = obj[key];
       });
       return row;
     });
-  
-    const workSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([headerRow, ...dataRows], { skipHeader: true });
+
+    const workSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      [headerRow, ...dataRows],
+      { skipHeader: true }
+    );
     const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, 'data');
-    XLSX.writeFile(workBook, 'Pagamentos.xlsx');
+    XLSX.utils.book_append_sheet(workBook, workSheet, "data");
+    XLSX.writeFile(workBook, "Pagamentos.xlsx");
   }
-
-
 }
