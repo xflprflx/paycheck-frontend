@@ -24,6 +24,8 @@ export class DashboardComponent implements OnInit {
   scannedLeadTimeLabel: string;
   approvalLeadTimeValue: number;
   approvalLeadTimeLabel: string;
+  paymentLeadTimeValue: number;
+  paymentLeadTimeLabel: string;
   payments: Payment[] = [];
   config: number;
   isLoading: boolean;
@@ -86,7 +88,9 @@ export class DashboardComponent implements OnInit {
     this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
     this.approvalLeadTimeValue = dashboardProjection.approvalLeadTimeValue;
     this.approvalLeadTimeLabel =
-      this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+    this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+    this.paymentLeadTimeValue = dashboardProjection.paymentLeadTimeValue;
+    this.paymentLeadTimeLabel = this.paymentLeadTimeValue > 1 ? "dias" : "dia";
     setTimeout(() => {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });

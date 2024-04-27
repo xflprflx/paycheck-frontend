@@ -13,8 +13,8 @@ export class InvoiceService {
   constructor(private http: HttpClient) { }
 
   postInvoiceList(invoices: Invoice[]): Observable<string> {
-    return this.http.post<string>(
-      `${API_CONFIG.baseUrl}/invoices/list`, invoices);
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/invoices/list`, invoices, {responseType: "text"});
   }
 
   sendFileAndGetInvoiceList(file: File): Observable<Invoice[]> {
