@@ -1,11 +1,11 @@
-<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px">
+<h2 *ngIf="!config" style="margin-left: 25px; margin-top: 25px; color: red">
   A condição de pagamento ainda não foi configurada. Faça isso no card abaixo
   antes de continuar.
 </h2>
 <app-config *ngIf="!config && !isLoading"></app-config>
 <h2
   *ngIf="transportDocuments.length == 0 && payments.length == 0 && !isLoading"
-  style="margin-left: 25px; margin-top: 25px"
+  style="margin-left: 25px; margin-top: 25px; color: red"
 >
   Nenhum documento encontrado! Vá ao menu
   <span style="font-style: italic">Lançamentos</span> para começar ou ajuste o

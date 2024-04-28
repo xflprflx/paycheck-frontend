@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });
   }
+
   mountEmptyDashboardProjection() {
     this.payments = [];
     this.transportDocuments = [];
@@ -111,5 +112,4 @@ export class DashboardComponent implements OnInit {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });
   }
-  
 }

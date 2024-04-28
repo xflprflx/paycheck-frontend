@@ -16,13 +16,17 @@
     <mat-step>
       <ng-template matStepLabel>Lançar Notas Fiscais</ng-template>
       <h2>Notas Fiscais</h2>
+      <h2 *ngIf="!paymentTerms && !loading" style="margin-left: 25px; margin-top: 25px; color: red;">
+        A condição de pagamento ainda não foi configurada. Faça isso no card abaixo
+        antes de continuar.
+      </h2>
+      <app-config *ngIf="!paymentTerms && !loading"></app-config>
       <app-uploader
+        *ngIf="paymentTerms && !loading"
         (fileEvent)="receiveFile($event, 'nf')"
         img="./assets/img/excel.svg"
       >
-        <app-invoice-preview
-          class="preview"
-        ></app-invoice-preview>
+        <app-invoice-preview class="preview"></app-invoice-preview>
       </app-uploader>
     </mat-step>
 
@@ -33,9 +37,7 @@
         (fileEvent)="receiveFile($event, 'nf')"
         img="./assets/img/pdf.svg"
       >
-        <app-payment-preview
-          class="preview"
-        ></app-payment-preview>
+        <app-payment-preview class="preview"></app-payment-preview>
       </app-uploader>
     </mat-step>
   </mat-stepper>

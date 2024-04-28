@@ -3,6 +3,8 @@ import { ToastrService } from "ngx-toastr";
 import { Invoice } from "src/app/models/invoice";
 import { Payment } from "src/app/models/payment";
 import { TransportDocument } from "src/app/models/transport-document";
+import { ConfigService } from "src/app/services/config.service";
+import { DashboardEventService } from "src/app/services/dashboard-event.service";
 import { DateUtilService } from "src/app/services/date-utils.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { InvoiceService } from "src/app/services/invoice.service";
@@ -23,6 +25,7 @@ export class UploadStepperComponent implements OnInit {
   invoices: Invoice[];
   payments: Payment[];
   loading: boolean = false;
+  paymentTerms: number;
 
   toggleEditMode() {
     this.isEditable = !this.isEditable;
@@ -35,10 +38,16 @@ export class UploadStepperComponent implements OnInit {
     private uploadEventsService: UploadEventsService,
     private paymentService: PaymentService,
     private invoiceService: InvoiceService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private configService: ConfigService,
+    private dashboardEventService: DashboardEventService
   ) {}
 
   ngOnInit() {
+    this.configService.getPaymentTerms().subscribe((response) => this.paymentTerms = response);
+    this.dashboardEventService.onUpdatePaymentTerms.subscribe(
+      (response) => (this.paymentTerms = response)
+    );
     this.uploadEventsService.onCleaningFile.subscribe(() => {
       this.file = null;
     });
