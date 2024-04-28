@@ -54,28 +54,32 @@ export class DashboardComponent implements OnInit {
     this.isLoading = false;
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.dashboardEventService.onDashboard.emit(true);
+    });
+  }
+
   getAll() {
     this.configService.getPaymentTerms().subscribe((response) => {
       this.config = response;
     });
-    this.dashboardService.getDashboardProjection().subscribe(
-      (response) => {
-        this.mountDashboardProjection(response);
-      }
-    );
+    this.dashboardService.getDashboardProjection().subscribe((response) => {
+      this.mountDashboardProjection(response);
+    });
   }
 
   specDashboard(spec: Specification) {
     this.specification = spec;
-    this.dashboardService
-      .getDashboardProjectionFiltered(spec)
-      .subscribe((response) => {
+    this.dashboardService.getDashboardProjectionFiltered(spec).subscribe(
+      (response) => {
         this.mountDashboardProjection(response);
       },
       (error) => {
         this.toast.info(error.error.message);
         this.mountEmptyDashboardProjection();
-      });
+      }
+    );
   }
 
   mountDashboardProjection(dashboardProjection: DashboardProjection) {
@@ -88,7 +92,7 @@ export class DashboardComponent implements OnInit {
     this.scannedLeadTimeLabel = this.scannedLeadTimeValue > 1 ? "dias" : "dia";
     this.approvalLeadTimeValue = dashboardProjection.approvalLeadTimeValue;
     this.approvalLeadTimeLabel =
-    this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+      this.approvalLeadTimeValue > 1 ? "dias" : "dia";
     this.paymentLeadTimeValue = dashboardProjection.paymentLeadTimeValue;
     this.paymentLeadTimeLabel = this.paymentLeadTimeValue > 1 ? "dias" : "dia";
     setTimeout(() => {
@@ -105,7 +109,7 @@ export class DashboardComponent implements OnInit {
     this.scannedLeadTimeValue = 0;
     this.scannedLeadTimeLabel = "dias";
     this.approvalLeadTimeValue = 0;
-    this.approvalLeadTimeLabel = "dias"
+    this.approvalLeadTimeLabel = "dias";
     this.paymentLeadTimeValue = 0;
     this.paymentLeadTimeLabel = "dias";
     setTimeout(() => {

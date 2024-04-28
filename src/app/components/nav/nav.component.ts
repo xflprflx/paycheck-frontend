@@ -16,6 +16,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 })
 export class NavComponent implements OnInit {
   loading: boolean = false;
+  onDashboard: boolean;
   showTableValue: boolean = false;
   transportDocuments: TransportDocument[];
   payments: Payment[];
@@ -33,6 +34,10 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.navigate(["dashboard"]);
+    this.dashboardEventService.onDashboard.subscribe((onDashboard) => {
+      this.onDashboard = onDashboard;
+      console.log(this.onDashboard)
+    })
     this.uploadEventService.isLoading.subscribe((loading) => {
       this.loading = loading;
     });

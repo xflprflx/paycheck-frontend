@@ -100,6 +100,12 @@ export class UploadStepperComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.dashboardEventService.onDashboard.emit(false);
+    });
+  }
+
   isExcelFile(file: File): boolean {
     return (
       file.type === "text/csv" ||

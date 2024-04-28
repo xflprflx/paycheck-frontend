@@ -24,6 +24,12 @@ export class ConfigComponent implements OnInit {
       .subscribe((x) => (this.paymentTerms = x));
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.dashboardEventService.onDashboard.emit(false);
+    });
+  }
+
   savePaymentTerms(paymentTerms: number) {
     this.configService
       .updatePaymentTerms(new Parameters(1, paymentTerms))

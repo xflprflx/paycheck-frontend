@@ -31,6 +31,7 @@
       <button
         [matTooltip]="showTableValue ? 'Recolher tabela' : 'Mostrar tabela'"
         class="table mat-elevation-z8"
+        *ngIf="onDashboard"
         [ngClass]="{'hidden-table': showTableValue, 'show-table': !showTableValue}"
         (click)="showTable()"
         mat-icon-button
