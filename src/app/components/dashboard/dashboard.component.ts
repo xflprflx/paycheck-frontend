@@ -73,8 +73,8 @@ export class DashboardComponent implements OnInit {
         this.mountDashboardProjection(response);
       },
       (error) => {
-        this.mountEmptyDashboardProjection();
         this.toast.info(error.error.message);
+        this.mountEmptyDashboardProjection();
       });
   }
 
@@ -95,7 +95,6 @@ export class DashboardComponent implements OnInit {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });
   }
-
   mountEmptyDashboardProjection() {
     this.payments = [];
     this.transportDocuments = [];
@@ -105,12 +104,12 @@ export class DashboardComponent implements OnInit {
     this.scannedLeadTimeValue = 0;
     this.scannedLeadTimeLabel = "dias";
     this.approvalLeadTimeValue = 0;
-    this.approvalLeadTimeLabel =
-    this.approvalLeadTimeValue > 1 ? "dias" : "dia";
+    this.approvalLeadTimeLabel = "dias"
     this.paymentLeadTimeValue = 0;
-    this.paymentLeadTimeLabel = this.paymentLeadTimeValue > 1 ? "dias" : "dia";
+    this.paymentLeadTimeLabel = "dias";
     setTimeout(() => {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });
   }
+  
 }
