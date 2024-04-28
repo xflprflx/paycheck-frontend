@@ -22,6 +22,7 @@ export class DashboardService {
     spec: Specification
   ): Observable<DashboardProjection> {
     let params = this.specDashboard(spec);
+    console.log(params)
     return this.http.get<DashboardProjection>(
       `${API_CONFIG.baseUrl}/dashboard/filtered`,
       { params }
@@ -66,7 +67,11 @@ export class DashboardService {
     if(spec.paymentEnd != null) {
       params = params.append("paymentEnd", spec.paymentEnd);
     }
+    /*if(spec.paymentStatus != null) {
+      params = params.append("paymentStatus", spec.paymentStatus);
+    }*/
     if(spec.paymentStatus != null) {
+//      const paymentStatusString = spec.paymentStatus.join(','); // Convertendo array de números para string separada por vírgulas
       params = params.append("paymentStatus", spec.paymentStatus);
     }
     return params;
