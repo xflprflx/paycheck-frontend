@@ -22,6 +22,7 @@ export class DashboardService {
     spec: Specification
   ): Observable<DashboardProjection> {
     let params = this.specDashboard(spec);
+    console.log(params)
     return this.http.get<DashboardProjection>(
       `${API_CONFIG.baseUrl}/dashboard/filtered`,
       { params }

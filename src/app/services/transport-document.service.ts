@@ -50,60 +50,11 @@ export class TransportDocumentService {
     });
   }
 
-  getTransportDocumentsFiltered(
-    spec: Specification
-  ): Observable<TransportDocument[]> {
-    let params = this.specDashboard(spec);
-    return this.http.get<TransportDocument[]>(
-      `${API_CONFIG.baseUrl}/transportDocuments/filtered`,
-      { params }
-    );
-  }
-
   sendFileAndGetTransportDocumentList(file: File): Observable<TransportDocument[]> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     return this.http.post<TransportDocument[]>(`${API_CONFIG.baseUrl}/transportDocuments/file`, formData);
   }
 
-  specDashboard(spec: Specification) {
-    let params = new HttpParams();
-    params = params.append("issueStart", spec.issueStart);
-    params = params.append("issueEnd", spec.issueEnd);
-    if(spec.scannedStart != null) {
-      params = params.append("scannedStart", spec.scannedStart);
-    }
-    if(spec.scannedEnd != null) {
-      params = params.append("scannedEnd", spec.scannedEnd);
-    }
-    if(spec.forecastScStart != null) {
-      params = params.append("forecastScStart", spec.forecastScStart);
-    }
-    if(spec.forecastScEnd != null) {
-      params = params.append("forecastScEnd", spec.forecastScEnd);
-    }
-    if(spec.forecastApprStart != null) {
-      params = params.append("forecastApprStart", spec.forecastApprStart);
-    }
-    if(spec.forecastApprEnd != null) {
-      params = params.append("forecastApprEnd", spec.forecastApprEnd);
-    }
-    if(spec.approvalStart != null) {
-      params = params.append("approvalStart", spec.approvalStart);
-    }
-    if(spec.approvalEnd != null) {
-      params = params.append("approvalEnd", spec.approvalEnd);
-    }
-    if(spec.paymentStart != null) {
-      params = params.append("paymentStart", spec.paymentStart);
-    }
-    if(spec.paymentEnd != null) {
-      params = params.append("paymentEnd", spec.paymentEnd);
-    }
-    if(spec.paymentStatus != null) {
-      params = params.append("paymentStatus", spec.paymentStatus);
-    }
-    
-    return params;
-  }
+
 }

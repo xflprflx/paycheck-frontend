@@ -73,8 +73,8 @@ export class DashboardComponent implements OnInit {
         this.mountDashboardProjection(response);
       },
       (error) => {
-        console.log(error)
         this.toast.info(error.error.message);
+        this.mountEmptyDashboardProjection();
       });
   }
 
@@ -91,6 +91,23 @@ export class DashboardComponent implements OnInit {
     this.approvalLeadTimeValue > 1 ? "dias" : "dia";
     this.paymentLeadTimeValue = dashboardProjection.paymentLeadTimeValue;
     this.paymentLeadTimeLabel = this.paymentLeadTimeValue > 1 ? "dias" : "dia";
+    setTimeout(() => {
+      this.dashboardEventService.initDash.emit(this.transportDocuments);
+    });
+  }
+
+  mountEmptyDashboardProjection() {
+    this.payments = [];
+    this.transportDocuments = [];
+    this.pendingAmountValue = 0.0;
+    this.paidAmountValue = 0.0;
+    this.debateAmountValue = 0.0;
+    this.scannedLeadTimeValue = 0;
+    this.scannedLeadTimeLabel = "dias";
+    this.approvalLeadTimeValue = 0;
+    this.approvalLeadTimeLabel = "dias"
+    this.paymentLeadTimeValue = 0;
+    this.paymentLeadTimeLabel = "dias";
     setTimeout(() => {
       this.dashboardEventService.initDash.emit(this.transportDocuments);
     });
