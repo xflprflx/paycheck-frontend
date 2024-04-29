@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import { Payment } from "src/app/models/payment";
 import { Specification } from "src/app/models/specification";
 import { TransportDocument } from "src/app/models/transport-document";
@@ -8,6 +8,7 @@ import { DashboardService } from "src/app/services/dashboard.service";
 
 import { DashboardProjection } from "./../../models/dashboard-projection";
 import { ToastrService } from "ngx-toastr";
+import { NavStateService } from "src/app/services/nav-state.service";
 
 @Component({
   selector: "app-dashboard",
@@ -35,15 +36,21 @@ export class DashboardComponent implements OnInit {
     private dashboardEventService: DashboardEventService,
     private configService: ConfigService,
     private dashboardService: DashboardService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private navStateService: NavStateService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.dashboardEventService.showTable.subscribe(
-      () => (this.showTable = !this.showTable)
-    );
+    this.navStateService.showTableValue$.subscribe((showTable) => {
+      setTimeout(() => {
+        this.showTable = showTable;
+        this.cdr.detectChanges();
+      });
+    });
+
     this.dashboardEventService.onUpdatePaymentTerms.subscribe(
       (response) => (this.config = response)
     );

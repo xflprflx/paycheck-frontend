@@ -11,7 +11,6 @@ export class DashboardEventService {
   initDash = new EventEmitter<TransportDocument[]>();
   onUpdatePaymentTerms = new EventEmitter<number>();
   isLoading = new EventEmitter<boolean>();
-  showTable = new EventEmitter<void>();
   onDashboard = new EventEmitter<boolean>();
   constructor() { }
 }
