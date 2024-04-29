@@ -23,7 +23,7 @@
     *ngIf="(transportDocuments && transportDocuments.length > 0) || minNumberSerie1 || minNumberSerie11"
   >
     <h2>CT-e | NFS-e</h2>
-    <p>
+    <p *ngIf="transportDocuments.length > 0">
       Emissão de <span class="bcyellow">{{ mostRecentIssueDate }}</span> até:
       <span class="bcyellow">{{ today }}</span
       >, por que o último registro tem emissão em {{ mostRecentIssueDate }}
