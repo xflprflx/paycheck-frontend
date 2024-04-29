@@ -16,17 +16,6 @@ mat-form-field {
   margin-right: 10px;
 }
 
-::ng-deep .mat-tooltip {
-  background-color: #1f5087;
-  color: blue;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-::ng-deep .mat-tooltip-arrow {
-  background-color: #333;
-}
-
 .italic-text {
   font-style: italic;
 }
